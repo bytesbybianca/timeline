@@ -1,3 +1,18 @@
 .hidden {
     display: none;
 }
+
+body, header {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.header {
+    margin-bottom: 5rem;
+    background-color: white;
+    filter: drop-shadow(0 0 0.75rem rgb(240, 240, 240));
+}
+
+.logo-small {
+    height: 5rem;
+}
