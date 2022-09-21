@@ -1,0 +1,70 @@
+<%- include('partials/header') -%>
+
+  <div>
+    <ul>
+      <li id="newTimelineBtn">New Timeline</li>
+      <li id="timelineInfoBtn">Information</li>
+    </ul>
+  </div>
+
+  <h1>Your Timelines</h1>
+
+  <div class="mt-5 hidden" id="timelineInfo">
+    <h2>Information</h2>
+    <p>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum corrupti doloribus aliquam explicabo enim et architecto autem, vel cupiditate deserunt dolores similique quaerat suscipit sunt numquam molestiae inventore distinctio porro.
+    </p>
+  </div>
+
+  <div class="mt-5 hidden" id="newTimeline">
+    <h2>Create a Timeline</h2>
+    <form action="/timelines/createTimeline" enctype="multipart/form-data" method="POST">
+      <div class="mb-3">
+          <label for="timelineName" class="form-label">Name</label>
+          <input type="text" class="form-control" id="timelineName" name="title">
+      </div>
+      <div class="mb-3">
+        <label for="timelineThumb" class="form-label">Thumbnail</label>
+        <input type="file" class="form-control" id="timelineThumb" name="file">
+      </div>
+      <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+    </form>
+  </div>
+
+  
+  
+  <div class="row">
+    <div class="col-12">
+        <!-- Timeline Area-->
+        <div class="apland-timeline-area">
+          <% for(var i=0; i < timelines.length; i++) {%>
+              <!-- Single Timeline Content-->
+              <div class="single-timeline-area">
+                  <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                    <!-- Timeline name -->
+                      <p>Year</p>
+                  </div>
+                  <div class="row">
+                      <div class="col-12 col-md-6 col-lg-4">
+                          <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                              <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
+                              <div class="timeline-text">
+                                <a href="/timelines/<%= timelines[i]._id%>">
+                                  <h6><%= timelines[i].timelineName %></h6>
+                                  <img class="img-fluid" src="<%= timelines[i].timelineThumb %>">
+                                </a>
+                                  <span>1/01/2000 - 2/01/2001</span>
+                                  <p>Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, voluptatum adipisci! Eveniet ab quasi incidunt quos assumenda, sunt iure ea error commodi aut eligendi odit aperiam esse quaerat possimus aliquid!</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script src="/js/timeline.js"></script>
+
+<%- include('partials/footer') -%>

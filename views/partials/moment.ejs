@@ -1,0 +1,18 @@
+<ul class="row list-unstyled">
+    <% for(var i=0; i < moments.length; i++) {%>
+      <li class="col-6 justify-content-between mt-5">
+            <% if(moments[i].journalEntry) { %>
+                <h3>Journal entry:</h3>
+                <span><%= moments[i].journalEntry %></span>
+            <% } else if(moments[i].tweetId) { %>
+                <h3>Tweet:</h3>
+                <span>this has a tweet id</span>
+            <% } else if(moments[i].location) { %>
+                <h3>Location:</h3>
+                <span><%= moments[i].location %></span>
+            <% } else if(moments[i].momentImage) { %>
+                <img class="img-fluid" src="<%= moments[i].momentImage %>">
+            <% } %>
+      </li>
+    <% } %>
+</ul>

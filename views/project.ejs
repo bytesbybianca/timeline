@@ -1,0 +1,85 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-6">
+      <h2><%= project.timelineName %></h2>
+      <img class="img-fluid" src="<%= project.timelineThumb %>" />
+    </div>
+
+    <%# maybe make the add project a pop up and partial? %>
+
+    <div class="mt-5">
+      <h2>Create a moment</h2>
+      
+      <form action="/timelines/<%= project._id %>/createMoment" enctype="multipart/form-data" method="POST">
+        <div class="mb-3">
+          <label for="momentType">Choose a type:</label>
+
+          <select name="momentType" id="momentType">
+              <option value="">--Please choose an option--</option>
+              <option value="photo">Photo</option>
+              <option value="journal">Journal entry</option>
+              <option value="location">Location</option>
+              <option value="twitter">Twitter</option>
+              <option value="ig">Instagram</option>
+          </select>
+        </div>
+        <%# hidden %>
+        <input id="timelineProject" name="timelineProject" value="<%= project._id %>" hidden>
+
+        <div class="mb-3 momentImageContainer hidden">
+          <label for="momentImage" class="form-label">Image upload</label>
+          <input type="file" class="form-control" id="momentImage" name="file">
+        </div>
+        <div class="mb-3 locationContainer hidden">
+          <label for="location">Location:</label>
+
+          <input type="text" id="location" name="location"
+                 minlength="1" size="10">
+        </div>
+        <div class="mb-3 tweetIdContainer hidden">
+          <label for="tweetId">Tweet ID:</label>
+
+          <input type="text" id="tweetId" name="tweetId"
+                 minlength="1" size="10">
+        </div>
+        <div class="mb-3 journalContainer hidden">
+          <label for="journalEntry">Journal entry:</label>
+
+          <textarea id="journalEntry" name="journal"
+                    rows="5" cols="45"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="date">Date:</label>
+
+          <input type="date" id="journal" name="date"
+                 value="2018-07-22"
+                 min="2018-01-01" max="2018-12-31">
+          
+        </div>
+        <div class="mb-3">
+          <label for="time">Time:</label>
+
+          <input type="time" id="time" name="time">          
+        </div>
+        <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+      </form>
+    </div>
+
+    <%# 
+      partials for each type of post
+      conditionals, if type is twitter, twitter partial
+      etc etc
+    %>
+
+    <%- include('partials/moment') -%>
+
+    <div class="col-6 mt-5">
+      <a class="btn btn-primary" href="/timelines">Return to Timelines</a>
+    </div>
+  </div>
+</div>
+
+<script src="/js/project.js"></script>
+
+<%- include('partials/footer') -%>
