@@ -1,35 +1,5 @@
 <%- include('partials/header') -%>
 
-<%# OLD NAV
-  <div>
-    <ul>
-      <li id="newTimelineBtn">New Timeline</li>
-      <li id="timelineInfoBtn">Information</li>
-    </ul>
-  </div>
-
-  <div class="mt-5 hidden" id="timelineInfo">
-    <h2>Information</h2>
-    <p>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nostrum corrupti doloribus aliquam explicabo enim et architecto autem, vel cupiditate deserunt dolores similique quaerat suscipit sunt numquam molestiae inventore distinctio porro.
-    </p>
-  </div>
-
-  <div class="mt-5 hidden" id="newTimeline">
-    <h2>Create a Timeline</h2>
-    <form action="/timelines/createTimeline" enctype="multipart/form-data" method="POST">
-      <div class="mb-3">
-          <label for="timelineName" class="form-label">Name</label>
-          <input type="text" class="form-control" id="timelineName" name="title">
-      </div>
-      <div class="mb-3">
-        <label for="timelineThumb" class="form-label">Thumbnail</label>
-        <input type="file" class="form-control" id="timelineThumb" name="file">
-      </div>
-      <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
-    </form>
-  </div>
-  %>
 <div class="d-flex justify-content-end m-5">
   <div class="row">
     <!-- New branch modal -->
@@ -55,11 +25,11 @@
                   <label for="timelineThumb" class="form-label">Thumbnail</label>
                   <input type="file" class="form-control" id="timelineThumb" name="file">
                 </div>
-                <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+                <button type="submit" class="btn btn-dark btn-sm text-nowrap" value="Upload">Submit</button>
               </form>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+              <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -83,7 +53,7 @@
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat minus aliquam cum porro provident culpa alias voluptates, architecto impedit nostrum repudiandae soluta itaque illum voluptatibus totam deserunt nemo consequuntur non!
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+              <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -92,39 +62,42 @@
   </div>
 </div>
 
-  <h1>Your Timeline</h1>
-  <h2>Branches</h2>  
-  
-  <div class="row">
-    <div class="col-12">
+  <!-- Page -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Your Timeline</h1>
+        <h2 class="mb-5">Branches</h2>  
         <!-- Timeline Area-->
         <div class="apland-timeline-area">
           <% for(let i = 0; i < timelines.length; i++) {%>
-              <!-- Single Timeline Content-->
-              <div class="single-timeline-area">
-                  <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                    <!-- Timeline name -->
-                      <p>Year</p>
-                  </div>
-                  <div class="row">
-                      <div class="col-12 col-md-6 col-lg-4">
-                          <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                              <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
-                              <div class="timeline-text">
-                                <a href="/timelines/<%= timelines[i]._id%>">
-                                  <h6><%= timelines[i].timelineName %></h6>
-                                  <img class="img-fluid" src="<%= timelines[i].timelineThumb %>">
-                                </a>
-                                  <span>1/01/2000 - 2/01/2001</span>
-                                  <p>Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, voluptatum adipisci! Eveniet ab quasi incidunt quos assumenda, sunt iure ea error commodi aut eligendi odit aperiam esse quaerat possimus aliquid!</p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
+            <!-- Single Timeline Content-->
+            <div class="single-timeline-area">
+              <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                <!-- Timeline name -->
+                <p>Year</p>
               </div>
-            <% } %>
+              <div class="row">
+                <div class="col-12 col-md-6 col-lg-8">
+                  <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                    <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
+                    <div class="timeline-text">
+                      <a href="/timelines/<%= timelines[i]._id%>">
+                        <h6><%= timelines[i].timelineName %></h6>
+                        <img class="img-fluid" src="<%= timelines[i].timelineThumb %>">
+                      </a>
+                      <span>1/01/2000 - 2/01/2001</span>
+                      <p>Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, voluptatum adipisci! Eveniet ab quasi incidunt quos assumenda, sunt iure ea error commodi aut eligendi odit aperiam esse quaerat possimus aliquid!</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
         </div>
+      </div>
     </div>
-</div>
-
+  </div>
+      
 <%- include('partials/footer') -%>

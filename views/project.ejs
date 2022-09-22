@@ -12,57 +12,62 @@
       <h2>Create a moment</h2>
       
       <form action="/timelines/<%= project._id %>/createMoment" enctype="multipart/form-data" method="POST">
-        <div class="mb-3">
-          <label for="momentType">Choose a type:</label>
 
-          <select name="momentType" id="momentType">
-              <option value="">--Please choose an option--</option>
-              <option value="photo">Photo</option>
-              <option value="journal">Journal entry</option>
-              <option value="location">Location</option>
-              <option value="twitter">Twitter</option>
-              <option value="ig">Instagram</option>
-          </select>
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <input type="radio" class="btn-check" name="momentType" id="photo" autocomplete="off" value="photo" data-bs-toggle="collapse" data-bs-target=".momentImageContainer" aria-expanded="true" aria-controls="momentImageContainer" checked>
+          <label class="btn btn-outline-primary" for="photo">Photo</label>
+        
+          <input type="radio" class="btn-check" name="momentType" id="journal" autocomplete="off" value="journal" data-bs-toggle="collapse" data-bs-target=".journalContainer" aria-expanded="false" aria-controls="journalContainer">
+          <label class="btn btn-outline-primary" for="journal">Journal</label>
+        
+          <input type="radio" class="btn-check" name="momentType" id="location" autocomplete="off" value="location" data-bs-toggle="collapse" data-bs-target=".locationContainer" aria-expanded="true" aria-controls="locationContainer">
+          <label class="btn btn-outline-primary" for="location">Location</label>
+        
+          <input type="radio" class="btn-check" name="momentType" id="twitter" autocomplete="off" value="twitter" data-bs-toggle="collapse" data-bs-target=".tweetIdContainer" aria-expanded="true" aria-controls="tweetIdContainer">
+          <label class="btn btn-outline-primary" for="twitter">Twitter</label>
         </div>
+        
         <%# hidden %>
         <input id="timelineProject" name="timelineProject" value="<%= project._id %>" hidden>
 
-        <div class="mb-3 momentImageContainer hidden">
-          <label for="momentImage" class="form-label">Image upload</label>
-          <input type="file" class="form-control" id="momentImage" name="file">
+        <div id="collapseContainer">  
+          <div class="mb-3 momentImageContainer show" data-bs-parent="#collapseContainer">
+            <label for="momentImage" class="form-label">Image upload</label>
+            <input type="file" class="form-control" id="momentImage" name="file">
+          </div>
+          <div class="mb-3 locationContainer collapse" data-bs-parent="#collapseContainer">
+            <label for="location">Location:</label>
+            
+            <input type="text" id="location" name="location"
+            minlength="1" size="10">
+          </div>
+          <div class="mb-3 tweetIdContainer collapse" data-bs-parent="#collapseContainer">
+            <label for="tweetId">Tweet ID:</label>
+            
+            <input type="text" id="tweetId" name="tweetId"
+            minlength="1" size="10">
+          </div>
+          <div class="mb-3 journalContainer collapse" data-bs-parent="#collapseContainer">
+            <label for="journalEntry">Journal entry:</label>
+            
+            <textarea id="journalEntry" name="journal"
+            rows="5" cols="45"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="date">Date:</label>
+            
+            <input type="date" id="journal" name="date"
+            value="2018-07-22"
+            min="2018-01-01" max="2018-12-31">
+            
+          </div>
+          <div class="mb-3">
+            <label for="time">Time:</label>
+            
+            <input type="time" id="time" name="time">          
+          </div>
+          <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
         </div>
-        <div class="mb-3 locationContainer hidden">
-          <label for="location">Location:</label>
-
-          <input type="text" id="location" name="location"
-                 minlength="1" size="10">
-        </div>
-        <div class="mb-3 tweetIdContainer hidden">
-          <label for="tweetId">Tweet ID:</label>
-
-          <input type="text" id="tweetId" name="tweetId"
-                 minlength="1" size="10">
-        </div>
-        <div class="mb-3 journalContainer hidden">
-          <label for="journalEntry">Journal entry:</label>
-
-          <textarea id="journalEntry" name="journal"
-                    rows="5" cols="45"></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="date">Date:</label>
-
-          <input type="date" id="journal" name="date"
-                 value="2018-07-22"
-                 min="2018-01-01" max="2018-12-31">
-          
-        </div>
-        <div class="mb-3">
-          <label for="time">Time:</label>
-
-          <input type="time" id="time" name="time">          
-        </div>
-        <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
       </form>
     </div>
 
@@ -79,7 +84,5 @@
     </div>
   </div>
 </div>
-
-<script src="/js/project.js"></script>
 
 <%- include('partials/footer') -%>
