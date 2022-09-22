@@ -1,13 +1,12 @@
 <%- include('partials/header') -%>
 
+<%# OLD NAV
   <div>
     <ul>
       <li id="newTimelineBtn">New Timeline</li>
       <li id="timelineInfoBtn">Information</li>
     </ul>
   </div>
-
-  <h1>Your Timelines</h1>
 
   <div class="mt-5 hidden" id="timelineInfo">
     <h2>Information</h2>
@@ -30,14 +29,77 @@
       <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
     </form>
   </div>
+  %>
+<div class="d-flex justify-content-end m-5">
+  <div class="row">
+    <!-- New branch modal -->
+    <div class="col">
+      <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#newBranchModal">
+        New branch
+      </button>
 
-  
+      <div class="modal fade" id="newBranchModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1>Create a new branch</h1>
+              <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/timelines/createTimeline" enctype="multipart/form-data" method="POST">
+                <div class="mb-3">
+                  <label for="timelineName" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="timelineName" name="title">
+                </div>
+                <div class="mb-3">
+                  <label for="timelineThumb" class="form-label">Thumbnail</label>
+                  <input type="file" class="form-control" id="timelineThumb" name="file">
+                </div>
+                <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info modal -->
+    <div class="col">
+      <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#infoModal">
+        Information
+      </button>
+
+      <div class="modal fade" id="infoModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1>Information</h1>
+              <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat minus aliquam cum porro provident culpa alias voluptates, architecto impedit nostrum repudiandae soluta itaque illum voluptatibus totam deserunt nemo consequuntur non!
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <h1>Your Timeline</h1>
+  <h2>Branches</h2>  
   
   <div class="row">
     <div class="col-12">
         <!-- Timeline Area-->
         <div class="apland-timeline-area">
-          <% for(var i=0; i < timelines.length; i++) {%>
+          <% for(let i = 0; i < timelines.length; i++) {%>
               <!-- Single Timeline Content-->
               <div class="single-timeline-area">
                   <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
@@ -64,7 +126,5 @@
         </div>
     </div>
 </div>
-
-<script src="/js/timeline.js"></script>
 
 <%- include('partials/footer') -%>
