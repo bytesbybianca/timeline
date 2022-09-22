@@ -25,7 +25,7 @@ module.exports = {
       console.log(`🌸 🌸 project ${project.id} 🌸 🌸`)
       const moments = await Moment.find({ timelineProject: project.id })
       console.log(`🌸 🌸 ${moments}  🌸 🌸`)
-      res.render("project.ejs", { project: project, moments: moments, user: req.user });
+      res.render("branch.ejs", { project: project, moments: moments, user: req.user });
     } catch (err) {
       console.log(err);
     }
