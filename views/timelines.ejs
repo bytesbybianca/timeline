@@ -67,7 +67,22 @@
     <div class="row">
       <div class="col-12">
         <h1>Your Timeline</h1>
-        <h2 class="mb-5">Branches</h2>  
+        <h2 class="mb-5">
+          <% if(!timelines.length) { %>
+            You have no branches
+
+            <div class="row">
+              <!-- New branch modal -->
+              <div class="col">
+                <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#newBranchModal">
+                  Create new branch
+                </button>
+              </div>
+            </div>
+          <% } else { %>
+            Branches
+          <% } %>
+        </h2>  
         <!-- Timeline Area-->
         <div class="apland-timeline-area">
           <% for(let i = 0; i < timelines.length; i++) {%>
