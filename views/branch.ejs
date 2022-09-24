@@ -12,7 +12,7 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h1>Create a new branch</h1>
+              <h1>Create a new moment</h1>
               <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -80,10 +80,24 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
 
     <div class="col-6">
+      <h1>Your Branch</h1>
       <h2><%= project.timelineName %></h2>
+      <% if(moments.length) { %>
+        <h6><%= moments[0].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %> - <%= moments[moments.length - 1].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %></h6>
+      <% } %>
       <img class="img-fluid" src="<%= project.timelineThumb %>" />
+    </div>
+
+    <div class="container p-4">
+      <div class="row">
+        <div class="col">
+          <h2 class="mb-5">Moments</h2>
+        </div>
+      </div>
     </div>
 
     <%- include('partials/moment') -%>
@@ -91,7 +105,6 @@
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/timelines">Return to Timelines</a>
     </div>
-  </div>
-</div>
+
 
 <%- include('partials/footer') -%>

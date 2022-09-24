@@ -25,6 +25,9 @@
                   <label for="timelineThumb" class="form-label">Thumbnail</label>
                   <input type="file" class="form-control" id="timelineThumb" name="file">
                 </div>
+                <%# hidden %>
+                <input id="firstDate" name="firstDate" value="" hidden>
+                <input id="lastDate" name="lastDate" value="" hidden>
                 <button type="submit" class="btn btn-dark btn-sm text-nowrap" value="Upload">Submit</button>
               </form>
             </div>
@@ -101,7 +104,9 @@
                         <h6><%= timelines[i].timelineName %></h6>
                         <img class="img-fluid" src="<%= timelines[i].timelineThumb %>">
                       </a>
-                      <span>1/01/2000 - 2/01/2001</span>
+                      <% if(timelines[i].firstDate) { %>
+                        <span><%= timelines[i].firstDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %> - <%= timelines[i].lastDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %></span>
+                      <% } %>
                       <p>Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, voluptatum adipisci! Eveniet ab quasi incidunt quos assumenda, sunt iure ea error commodi aut eligendi odit aperiam esse quaerat possimus aliquid!</p>
                     </div>
                   </div>

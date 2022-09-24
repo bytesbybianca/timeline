@@ -44,7 +44,7 @@ module.exports = {
         user: req.user.id,
       });
       
-      console.log(req);
+      // console.log(req);
       console.log("A new moment has been created!");
       // TO-DO: REDIRECT TO PROJECT ID
       res.redirect("/timelines");
