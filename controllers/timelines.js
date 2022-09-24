@@ -24,7 +24,6 @@ module.exports = {
       const project = await Timeline.findById(req.params.projectId);
       console.log(`🌸 🌸 project ${project.id} 🌸 🌸`)
       const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" }).lean();
-      console.log(`🌸 🌸 ${moments}  🌸 🌸`)
       res.render("branch.ejs", { project: project, moments: moments, user: req.user });
     } catch (err) {
       console.log(err);
@@ -56,11 +55,23 @@ module.exports = {
     try {
       // Find branch by id
       const project = await Timeline.findById(req.params.projectId);
-      // Delete image from cloudinary
+      // Delete branch image from cloudinary
       await cloudinary.uploader.destroy(project.cloudinaryId);
-      // Delete post from db
+
+      const moments = await Moment.find({ timelineProject: project.id }).lean();
+
+      // Loop through moments in branch to delete all moment images from cloudinary
+      for(let i = 0; i < moments.length; i++) {
+        if(moments[i].cloudinaryId) {
+          await cloudinary.uploader.destroy(moments[i].cloudinaryId);
+        }
+      }
+
+      // Delete branch from Timeline
       await Timeline.remove({ _id: req.params.projectId });
-      console.log("Deleted Post");
+      // Delete all moments in branch
+      await Moment.remove({ timelineProject: req.params.projectId });
+      console.log("Deleted branch");
       res.redirect("/timelines");
     } catch (err) {
       res.redirect("/timelines");
