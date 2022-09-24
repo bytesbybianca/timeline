@@ -10,3 +10,8 @@ body, header {
 .logo-small {
     height: 3rem;
 }
+
+/* font awesome icons */
+.fa.btn {
+    font-weight:900 !important;
+  }

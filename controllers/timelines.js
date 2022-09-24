@@ -13,8 +13,8 @@ module.exports = {
   // },
   getTimelines: async (req, res) => {
     try {
-      const timelines = await Timeline.find({ user: req.user.id }).sort({ createdAt: "desc" }).lean();
-      res.render("timelines.ejs", { timelines: timelines });
+      const timelines = await Timeline.find({ user: req.user.id }).sort({ firstDate: "asc" }).lean();
+      res.render("timelines.ejs", { timelines: timelines, user: req.user });
     } catch (err) {
       console.log(err);
     }
@@ -37,6 +37,7 @@ module.exports = {
 
       await Timeline.create({
         timelineName: req.body.title,
+        description: req.body.description,
         timelineThumb: result.secure_url,
         cloudinaryId: result.public_id,
         firstDate: req.body.firstDate, 
@@ -49,6 +50,20 @@ module.exports = {
       res.redirect("/timelines");
     } catch (err) {
       console.log(err);
+    }
+  },
+  deleteBranch: async (req, res) => {
+    try {
+      // Find branch by id
+      const project = await Timeline.findById(req.params.projectId);
+      // Delete image from cloudinary
+      await cloudinary.uploader.destroy(project.cloudinaryId);
+      // Delete post from db
+      await Timeline.remove({ _id: req.params.projectId });
+      console.log("Deleted Post");
+      res.redirect("/timelines");
+    } catch (err) {
+      res.redirect("/timelines");
     }
   },
   createMoment: async (req, res) => {
