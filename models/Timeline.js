@@ -13,6 +13,14 @@ const TimelineSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  firstDate: {
+    type: Date,
+    require: true,
+  },
+  lastDate: {
+    type: Date,
+    require: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

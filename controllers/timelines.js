@@ -23,7 +23,7 @@ module.exports = {
     try {
       const project = await Timeline.findById(req.params.projectId);
       console.log(`🌸 🌸 project ${project.id} 🌸 🌸`)
-      const moments = await Moment.find({ timelineProject: project.id })
+      const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" }).lean();
       console.log(`🌸 🌸 ${moments}  🌸 🌸`)
       res.render("branch.ejs", { project: project, moments: moments, user: req.user });
     } catch (err) {
@@ -39,11 +39,13 @@ module.exports = {
         timelineName: req.body.title,
         timelineThumb: result.secure_url,
         cloudinaryId: result.public_id,
+        firstDate: req.body.firstDate, 
+        lastDate: req.body.lastDate, 
         user: req.user.id,
       });
       
       console.log("A new timeline has been created!");
-      console.log(req);
+      // console.log(req);
       res.redirect("/timelines");
     } catch (err) {
       console.log(err);
@@ -73,8 +75,17 @@ module.exports = {
         user: req.user.id,
         timelineProject: req.body.timelineProject,
       });
+
+      // sorts moments by project id and asending dates
+      const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" }).lean();
+
+      // update first and last branch date with each new moment
+      await Timeline.findOneAndUpdate({ _id: project.id },{
+        firstDate: moments[0].date, 
+        lastDate: moments[moments.length -1].date, 
+      })
       
-      console.log(req);
+      // console.log(req);
       console.log("🌸 🌸 A new moment has been created! 🌸 🌸");
       res.redirect(`/timelines/${project.id}`);
       console.log(`🌸 🌸 Successfully redirected to /timelines/${project.id} 🌸 🌸`);
