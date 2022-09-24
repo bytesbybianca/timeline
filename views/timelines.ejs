@@ -25,6 +25,11 @@
                   <label for="timelineThumb" class="form-label">Thumbnail</label>
                   <input type="file" class="form-control" id="timelineThumb" name="file">
                 </div>
+                <div class="mb-3">
+                  <label for="description">Description:</label>
+                  <textarea id="description" name="description"
+                  rows="5" cols="45"></textarea>
+                </div>
                 <%# hidden %>
                 <input id="firstDate" name="firstDate" value="" hidden>
                 <input id="lastDate" name="lastDate" value="" hidden>
@@ -92,8 +97,10 @@
             <!-- Single Timeline Content-->
             <div class="single-timeline-area">
               <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                <!-- Timeline name -->
-                <p>Year</p>
+                <!-- Timeline year -->
+                <% if(timelines[i].firstDate) { %>
+                  <p><%= timelines[i].firstDate.toLocaleString(('en-us'), { year: 'numeric' }) %></p>
+                <% } %>
               </div>
               <div class="row">
                 <div class="col-12 col-md-6 col-lg-8">
@@ -107,7 +114,22 @@
                       <% if(timelines[i].firstDate) { %>
                         <span><%= timelines[i].firstDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %> - <%= timelines[i].lastDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %></span>
                       <% } %>
-                      <p>Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, voluptatum adipisci! Eveniet ab quasi incidunt quos assumenda, sunt iure ea error commodi aut eligendi odit aperiam esse quaerat possimus aliquid!</p>
+                      <% if(timelines[i].description) { %>
+                        <p><%= timelines[i].description %></p>
+                      <% } %>
+
+                      <div class="row justify-content-between">
+                        <%if(timelines[i].user == user.id){ %>
+                          <form
+                            action="/timelines/deleteBranch/<%= timelines[i]._id %>?_method=DELETE"
+                            method="POST"
+                            class="col-3"
+                          >
+                            <button class="btn btn-light fa fa-trash" type="submit"></button>
+                          </form>
+                          <%}%>
+                      </div>
+
                     </div>
                   </div>
                 </div>

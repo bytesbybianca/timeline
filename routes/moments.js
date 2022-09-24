@@ -11,4 +11,6 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 router.post("/createMoment", upload.single("file"), momentsController.createMoment);
 
+router.delete("/:momentId/deleteMoment", momentsController.deleteMoment);
+
 module.exports = router;

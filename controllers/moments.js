@@ -52,4 +52,21 @@ module.exports = {
       console.log(err);
     }
   },
+  deleteMoment: async (req, res) => {
+    try {
+      // Find moment by id
+      const moment = await Moment.findById(req.params.momentId);
+      const branch = moment.timelineProject
+      // Delete image from cloudinary
+      if(moment.cloudinaryId) {
+        await cloudinary.uploader.destroy(moment.cloudinaryId);
+      }
+      // Delete post from db
+      await Moment.remove({ _id: req.params.momentId });
+      console.log("Deleted Post");
+      res.redirect("/timelines/"+branch);
+    } catch (err) {
+      res.redirect("/timelines/"+branch);
+    }
+  },
 };
