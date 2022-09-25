@@ -5,12 +5,9 @@ const momentsController = require("../controllers/moments");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Post Routes - simplified for now
-// router.get("/:projectId", timelinesController.getProject);
-
-// router.post("/createTimeline", upload.single("file"), timelinesController.createTimeline);
-
-router.post("/createMoment", upload.single("file"), momentsController.createMoment);
 
 router.delete("/:momentId/deleteMoment", momentsController.deleteMoment);
+
+router.put("/:momentId/editMoment", upload.single("file"), momentsController.editMoment);
 
 module.exports = router;
