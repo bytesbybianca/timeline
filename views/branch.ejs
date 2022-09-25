@@ -1,110 +1,109 @@
 <%- include('partials/header') -%>
-<div class="container">
-  <div class="row justify-content-center mt-5">
 
-    <!-- New moment modal -->
-    <div class="col">
-      <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#newMomentModal">
-        New moment
-      </button>
+<!-- Branch hero -->
+<div style="background: linear-gradient(
+  to bottom,
+  hsla(0, 0%, 0%, 0),
+  hsla(0, 0%, 0%, 0.8)
+  ), url(<%= project.timelineThumb %>)" class="jumbotron bg-cover text-white">
+    <div class="container py-5 text-center">
+      <!-- Branch name -->
+      <h1 class="display-4 font-weight-bold"><%= project.timelineName %></h1>
+      <!-- Branch description -->
+      <p class="font-italic mb-0">Description Lorem ipsum dolor sit amet.</p>
+        <% if(moments.length) { %>
+          <p><%= moments[0].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %> - <%= moments[moments.length - 1].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %></p>
+        <% } %>
+        <button class="btn btn-light text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
+          New moment
+        </button>
+      </div>
+    </div>
+ 
+<!-- Moments -->
+<div class="container py-5">
+  <h2 class="h3 font-weight-bold">Moments</h2>
+  <div class="row">
+      <div class="col-lg-10 mb-4">
+        <%- include('partials/moment') -%>
+      </div>
+  </div>
+</div>
 
-      <div class="modal fade" id="newMomentModal">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1>Create a new moment</h1>
-              <button class="btn-close" data-bs-dismiss="modal"></button>
+<!-- New moment modal -->
+<div class="col">
+  <div class="modal fade" id="newMomentModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1>Create a new moment</h1>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/timelines/<%= project._id %>/createMoment" enctype="multipart/form-data" method="POST">
+
+            <div class="mb-3">
+
+              <% const now = new Date().toISOString().slice(0, 16) %>
+
+              <label for="date">Choose a time for this moment:</label><br>
+              <input type="datetime-local" id="date"
+                    name="date" value="<%= now %>">
+              
             </div>
-            <div class="modal-body">
-              <form action="/timelines/<%= project._id %>/createMoment" enctype="multipart/form-data" method="POST">
 
-                <div class="mb-3">
-
-                  <% const now = new Date().toISOString().slice(0, 16) %>
-
-                  <label for="date">Choose a time for this moment:</label><br>
-                  <input type="datetime-local" id="date"
-                        name="date" value="<%= now %>">
-                  
-                </div>
-
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                  <input type="radio" class="btn-check" name="momentType" id="photo" autocomplete="off" value="photo" data-bs-toggle="collapse" data-bs-target=".momentImageContainer" aria-expanded="true" aria-controls="momentImageContainer" checked>
-                  <label class="btn btn-outline-primary" for="photo">Photo</label>
-                
-                  <input type="radio" class="btn-check" name="momentType" id="journal" autocomplete="off" value="journal" data-bs-toggle="collapse" data-bs-target=".journalContainer" aria-expanded="false" aria-controls="journalContainer">
-                  <label class="btn btn-outline-primary" for="journal">Journal</label>
-                
-                  <input type="radio" class="btn-check" name="momentType" id="location" autocomplete="off" value="location" data-bs-toggle="collapse" data-bs-target=".locationContainer" aria-expanded="true" aria-controls="locationContainer">
-                  <label class="btn btn-outline-primary" for="location">Location</label>
-                
-                  <input type="radio" class="btn-check" name="momentType" id="twitter" autocomplete="off" value="twitter" data-bs-toggle="collapse" data-bs-target=".tweetIdContainer" aria-expanded="true" aria-controls="tweetIdContainer">
-                  <label class="btn btn-outline-primary" for="twitter">Twitter</label>
-                </div>
-                
-                <%# hidden %>
-                <input id="timelineProject" name="timelineProject" value="<%= project._id %>" hidden>
-        
-                <div id="collapseContainer">  
-                  <div class="mb-3 momentImageContainer show" data-bs-parent="#collapseContainer">
-                    <label for="momentImage" class="form-label">Image upload</label>
-                    <input type="file" class="form-control" id="momentImage" name="file">
-                  </div>
-                  <div class="mb-3 locationContainer collapse" data-bs-parent="#collapseContainer">
-                    <label for="location">Location:</label>
-                    
-                    <input type="text" id="location" name="location"
-                    minlength="1" size="10">
-                  </div>
-                  <div class="mb-3 tweetIdContainer collapse" data-bs-parent="#collapseContainer">
-                    <label for="tweetId">Tweet ID:</label>
-                    
-                    <input type="text" id="tweetId" name="tweetId"
-                    minlength="1" size="10">
-                  </div>
-                  <div class="mb-3 journalContainer collapse" data-bs-parent="#collapseContainer">
-                    <label for="journalEntry">Journal entry:</label>
-                    
-                    <textarea id="journalEntry" name="journal"
-                    rows="5" cols="45"></textarea>
-                  </div>
-                  
-                  <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
-                </div>
-              </form>
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+              <input type="radio" class="btn-check" name="momentType" id="photo" autocomplete="off" value="photo" data-bs-toggle="collapse" data-bs-target=".momentImageContainer" aria-expanded="true" aria-controls="momentImageContainer" checked>
+              <label class="btn btn-outline-primary" for="photo">Photo</label>
+            
+              <input type="radio" class="btn-check" name="momentType" id="journal" autocomplete="off" value="journal" data-bs-toggle="collapse" data-bs-target=".journalContainer" aria-expanded="false" aria-controls="journalContainer">
+              <label class="btn btn-outline-primary" for="journal">Journal</label>
+            
+              <input type="radio" class="btn-check" name="momentType" id="location" autocomplete="off" value="location" data-bs-toggle="collapse" data-bs-target=".locationContainer" aria-expanded="true" aria-controls="locationContainer">
+              <label class="btn btn-outline-primary" for="location">Location</label>
+            
+              <input type="radio" class="btn-check" name="momentType" id="twitter" autocomplete="off" value="twitter" data-bs-toggle="collapse" data-bs-target=".tweetIdContainer" aria-expanded="true" aria-controls="tweetIdContainer">
+              <label class="btn btn-outline-primary" for="twitter">Twitter</label>
             </div>
-            <div class="modal-footer">
-              <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
+            
+            <%# hidden %>
+            <input id="timelineProject" name="timelineProject" value="<%= project._id %>" hidden>
+    
+            <div id="collapseContainer">  
+              <div class="mb-3 momentImageContainer show" data-bs-parent="#collapseContainer">
+                <label for="momentImage" class="form-label">Image upload</label>
+                <input type="file" class="form-control" id="momentImage" name="file">
+              </div>
+              <div class="mb-3 locationContainer collapse" data-bs-parent="#collapseContainer">
+                <label for="location">Location:</label>
+                
+                <input type="text" id="location" name="location"
+                minlength="1" size="10">
+              </div>
+              <div class="mb-3 tweetIdContainer collapse" data-bs-parent="#collapseContainer">
+                <label for="tweetId">Tweet ID:</label>
+                
+                <input type="text" id="tweetId" name="tweetId"
+                minlength="1" size="10">
+              </div>
+              <div class="mb-3 journalContainer collapse" data-bs-parent="#collapseContainer">
+                <label for="journalEntry">Journal entry:</label>
+                
+                <textarea id="journalEntry" name="journal"
+                rows="5" cols="45"></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
             </div>
-          </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-    <div class="col-6">
-      <h1>Your Branch</h1>
-      <h2><%= project.timelineName %></h2>
-      <% if(moments.length) { %>
-        <h6><%= moments[0].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %> - <%= moments[moments.length - 1].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %></h6>
-      <% } %>
-      <img class="img-fluid" src="<%= project.timelineThumb %>" />
-    </div>
-
-    <div class="container p-4">
-      <div class="row">
-        <div class="col">
-          <h2 class="mb-5">Moments</h2>
-        </div>
-      </div>
-    </div>
-
-    <%- include('partials/moment') -%>
-
-    <div class="col-6 mt-5">
-      <a class="btn btn-primary" href="/timelines">Return to Timelines</a>
-    </div>
 
 
 <%- include('partials/footer') -%>
