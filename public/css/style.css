@@ -11,7 +11,24 @@ body, header {
     height: 3rem;
 }
 
-/* font awesome icons */
+/*
+*
+* ==========================================
+* font awesome icons
+* ==========================================
+*
+*/
 .fa.btn, .far.btn {
     font-weight:900 !important;
+}
+
+/*
+*
+* ==========================================
+* moment header
+* ==========================================
+*
+*/
+.bg-cover {
+    background-size: cover !important;
 }
