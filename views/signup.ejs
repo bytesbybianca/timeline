@@ -1,39 +1,104 @@
 <%- include('partials/header') -%>
-    <main class="container">
+
+<head>
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+
+    <section class="ftco-section">
+      <div class="container">
         <div class="row justify-content-center">
-            <section class="col-6 mt-5">
+          <div class="col-md-12 col-lg-10">
+            <div class="wrap d-lg-flex">
+              <div class="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last">
+                <div class="text w-100">
+                  <h2>Thanks for joining Timeline!</h2>
+                  <p>Already have an account?</p>
+                  <a href="/login" class="btn btn-white btn-outline-white">Sign in</a>
+                </div>
+              </div>
+              <div class="login-wrap p-4 p-lg-5">
+                <div class="d-flex">
+                  <div class="w-100">
+                    <h3 class="mb-4">Sign Up</h3>
+                  </div>
+                </div>
+
+                <!-- Display sign up error messages -->
                 <% if (locals.messages.errors) { %>
-                    <% messages.errors.forEach( el => { %>
-                        <div class="alert alert-danger"><%= el.msg %></div>
-                    <% }) %>    
+                  <% messages.errors.forEach( el => { %>
+                      <div class="alert alert-danger"><%= el.msg %></div>
+                  <% }) %>    
                 <% } %>
                 <% if (locals.messages.info) { %>
                     <% messages.info.forEach( el => { %>
                         <div class="alert alert-info"><%= el.msg %></div>
                     <% }) %>    
                 <% } %>
-                <form action="/signup" method="POST">
-                    <div class="mb-3">
-                        <label for="userName" class="form-label">User Name</label>
-                        <input type="text" class="form-control" id="userName" name="userName">
-                      </div>
-                    <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-                      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+
+                <form action="/signup" method="POST" class="signin-form">
+                  <div class="form-group mb-3">
+                    <label class="label" for="userName">Username</label>
+                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Username" required>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label 
+                    class="label" 
+                    for="exampleInputEmail1" >
+                      Email address
+                    </label>
+                    <input 
+                      type="email"
+                      class="form-control"
+                      id="exampleInputEmail1"
+                      aria-describedby="emailHelp"
+                      name="email"
+                      placeholder="you@you.com"
+                      required
+                    />
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone.</div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label class="label" for="password">Password</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      name="password"
+                      placeholder="password"
+                      required
+                    >
+                  </div>
+                  <div class="form-group mb-3">
+                    <label class="label" for="confirmPassword">Confirm password</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      placeholder="password"
+                      required
+                    >
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="form-control btn btn-primary submit px-3">Sign Up</button>
+                  </div>
+                  <div class="form-group d-md-flex">
+                    <div class="w-50 text-left">
+                      <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+                      <input type="checkbox" checked>
+                      <span class="checkmark"></span>
+                      </label>
                     </div>
-                    <div class="mb-3">
-                      <label for="password" class="form-label">Password</label>
-                      <input type="password" class="form-control" id="password" name="password">
+                    <div class="w-50 text-md-right">
+                      <a href="#">Forgot Password</a>
                     </div>
-                    <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
-                      </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
-            </section>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-    </main>
+      </div>
+    </section>
 
 <%- include('partials/footer') -%>
