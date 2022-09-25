@@ -12,6 +12,6 @@ body, header {
 }
 
 /* font awesome icons */
-.fa.btn {
+.fa.btn, .far.btn {
     font-weight:900 !important;
-  }
+}

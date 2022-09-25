@@ -18,31 +18,87 @@
                   <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
                     <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
                     <div class="timeline-text">
-                        <% if(moments[i].journalEntry) { %>
+                        <% if(moments[i].momentType === 'journal') { %>
                             <h6>Journal entry:</h6>
                             <span><%= moments[i].journalEntry %></span>
-                        <% } else if(moments[i].tweetId) { %>
+                        <% } else if(moments[i].momentType === 'twitter') { %>
                             <h6>Tweet:</h6>
                             <span>this has a tweet id</span>
-                        <% } else if(moments[i].location) { %>
+                        <% } else if(moments[i].momentType === 'location') { %>
                             <h6>Location:</h6>
                             <span><%= moments[i].location %></span>
-                        <% } else if(moments[i].momentImage) { %>
+                        <% } else if(moments[i].momentType === 'photo') { %>
                             <h6>Photo:</h6>
                             <img class="img-fluid" src="<%= moments[i].momentImage %>">
                         <% } %>
 
-                        <div class="row justify-content-between">
-                          <%if(moments[i].user == user.id){ %>
-                            <form
+                        <%if(moments[i].user == user.id){ %>
+                          <!-- Edit moment -->
+                          <div class="row mb-3">
+                            <div class="col">
+                              <button class="btn btn-light far fa-edit" type="submit" data-toggle="collapse" data-target="#editMoment<%=moments[i]._id%>" aria-expanded="false" aria-controls="editMoment<%=moments[i]._id%>"></button>
+                            </div>
+
+                          <!-- Delete moment -->
+                            <div class="col">
+                              <form
                               action="/moments/<%= moments[i]._id %>/deleteMoment?_method=DELETE"
                               method="POST"
-                              class="col-3"
-                            >
-                              <button class="btn btn-light fa fa-trash" type="submit"></button>
-                            </form>
-                            <%}%>
-                        </div>
+                              enctype="multipart/form-data"
+                              >
+                                <button class="btn btn-light fa fa-trash" type="submit"></button>
+                              </form>
+                            </div>
+                          </div>
+
+                          <!-- Edit moment collapsible -->
+                          <div class="row collapse" id="editMoment<%=moments[i]._id%>">
+                            <div class="col">
+                              <form
+                              action="/moments/<%= moments[i]._id %>/editMoment?_method=PUT"
+                              method="POST"
+                              >
+                                <!-- Edit time -->
+                                <div class="row mb-3">
+                                  <div class="col">
+                                    <% const momentDate = new Date(moments[i].date).toISOString().slice(0, 16) %>
+                                    <label for="date">Change date and time for this moment:</label><br>
+                                    <input type="datetime-local" id="date"
+                                      name="date" value="<%= momentDate %>">
+                                  </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                  <div class="col">
+                                    <!-- Edit journal entries -->
+                                    <% if(moments[i].momentType === 'journal') { %>
+                                      <label for="editJournalEntry">Journal entry:</label>
+                                      <textarea id="editJournalEntry" name="journal"
+                                      rows="5" cols="45"><%= moments[i].journalEntry %></textarea>
+                                    <% } %>
+                                    <!-- Edit location -->
+                                    <% if(moments[i].momentType === 'location') { %>
+                                      <label for="editLocation">Location:</label>
+                                      <input type="text" id="editLocation" name="location"
+                                      minlength="1" size="10" value="<%= moments[i].location %>">
+                                    <% } %>
+                                    <!-- Edit photo -->
+                                    <% if(moments[i].momentType === 'photo') { %>
+                                      <label for="editMomentImage" class="form-label">Image upload</label>
+                                      <input type="file" class="form-control" id="editMomentImage" name="file">
+                                    <% } %>
+                                  </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                  <div class="col">
+                                    <button type="submit" class="btn btn-primary" value="Upload">Save</button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        <%}%>
                     </div>
                   </div>
                 </div>
