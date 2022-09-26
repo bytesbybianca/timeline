@@ -91,53 +91,75 @@
             Branches
           <% } %>
         </h2>  
-        <!-- Timeline Area-->
-        <div class="apland-timeline-area">
-          <% for(let i = 0; i < timelines.length; i++) {%>
+        
+        
+
+        <!-- Loop through each unique year for each branch -->
+        <% for(const year in branchByYear) { %>
+          <!-- One timeline area/side bar for each year   -->
+          <!-- Timeline Area-->
+          <!-- Side bar and year -->
+          <div class="apland-timeline-area">
             <!-- Single Timeline Content-->
             <div class="single-timeline-area">
               <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
                 <!-- Timeline year -->
-                <% if(timelines[i].firstDate) { %>
-                  <p><%= timelines[i].firstDate.toLocaleString(('en-us'), { year: 'numeric' }) %></p>
+                <% if(branchByYear[year][0].firstDate) { %>
+                  <p><%= branchByYear[year][0].firstDate.toLocaleString(('en-us'), { year: 'numeric' }) %></p>
                 <% } %>
               </div>
-              <section class="row">
-                <div class="col-12 col-md-6 col-lg-8">
-                  <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                    <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
-                    <div class="timeline-text">
-                      <a href="/timelines/<%= timelines[i]._id%>">
-                        <h6><%= timelines[i].timelineName %></h6>
-                        <img class="img-fluid" src="<%= timelines[i].timelineThumb %>">
-                      </a>
-                      <% if(timelines[i].firstDate) { %>
-                        <span><%= timelines[i].firstDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %> - <%= timelines[i].lastDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %></span>
-                      <% } %>
-                      <% if(timelines[i].description) { %>
-                        <p><%= timelines[i].description %></p>
-                      <% } %>
+          <!-- Side bar and year end -->
+          <section class="row">
+            <!-- Loop through an array of branch objects in one year -->
+            <% for(let i = 0; i < branchByYear[year].length; i++) { %>
+              <!-- Conditionals for size of div for length of branch by year -->
+              <% let sizeForOne = 'col-lg-8'%>
+              <% let sizeForMore = 'col-lg-4'%>
+              <div class="col-12 col-md-6 
+              <% if(branchByYear[year].length == 1) { %>
+                <%= sizeForOne %>
+              <% } else if(branchByYear[year].length > 1) {%>
+                <%= sizeForMore %>
+              <% } %>
+              ">
+            <!-- Branch object -->
+            <% let currentBranch = branchByYear[year][i] %>
+              <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
+                <div class="timeline-text">
+                  <a href="/timelines/<%= currentBranch._id%>">
+                    <h6><%= currentBranch.timelineName %></h6>
+                    <img class="img-fluid" src="<%= currentBranch.timelineThumb %>">
+                  </a>
+                  <% if(currentBranch.firstDate) { %>
+                    <span><%= currentBranch.firstDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %> - <%= currentBranch.lastDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %></span>
+                  <% } %>
+                  <% if(currentBranch.description) { %>
+                    <p><%= currentBranch.description %></p>
+                  <% } %>
 
-                      <div class="row justify-content-between">
-                        <%if(timelines[i].user == user.id){ %>
-                          <form
-                            action="/timelines/deleteBranch/<%= timelines[i]._id %>?_method=DELETE"
-                            method="POST"
-                            class="col-3"
-                          >
-                            <button class="btn btn-light fa fa-trash" type="submit"></button>
-                          </form>
-                          <%}%>
-                      </div>
-
-                    </div>
+                  <div class="row justify-content-between">
+                    <%if(currentBranch.user == user.id){ %>
+                      <form
+                        action="/timelines/deleteBranch/<%= currentBranch._id %>?_method=DELETE"
+                        method="POST"
+                        class="col-3"
+                      >
+                        <button class="btn btn-light fa fa-trash" type="submit"></button>
+                      </form>
+                      <%}%>
                   </div>
+
                 </div>
-              </section>
+              </div>
             </div>
-          <% } %>
+            <% } %>
+          </section>
         </div>
+        <% } %>
       </div>
+      <!-- Timeline area end -->
+
     </div>
   </div>
 <%- include('partials/footer') -%>

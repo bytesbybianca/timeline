@@ -14,7 +14,27 @@ module.exports = {
   getTimelines: async (req, res) => {
     try {
       const timelines = await Timeline.find({ user: req.user.id }).sort({ firstDate: "asc" }).lean();
-      res.render("timelines.ejs", { timelines: timelines, user: req.user });
+
+      let branchByYear = {}
+      for(key in timelines) {
+        let branchYear
+        if(timelines[key].firstDate == null) {
+          branchYear = Number('0')
+        } else if(timelines[key].firstDate) {
+          branchYear = timelines[key].firstDate.toLocaleString('en-US', { year: 'numeric' })
+        }
+          // if branch year is in object, add to array
+          if(branchYear in branchByYear) {
+            branchByYear[branchYear].push(timelines[key])
+          } else if(!(branchYear in branchByYear)) {
+            // if not, create array
+            branchByYear[branchYear] = []
+            branchByYear[branchYear].push(timelines[key])
+          }
+        }
+      console.log(branchByYear)
+
+      res.render("timelines.ejs", { timelines: timelines, user: req.user, branchByYear: branchByYear });
     } catch (err) {
       console.log(err);
     }
