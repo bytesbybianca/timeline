@@ -9,7 +9,6 @@ router.get("/:projectId", timelinesController.getProject);
 
 router.post("/createTimeline", upload.single("file"), timelinesController.createTimeline);
 
-// router.post("/:projectId/createMoment", upload.single("file"), timelinesController.createMoment);
 router.post("/:projectId/createMoment", upload.single("file"), timelinesController.createMoment);
 
 router.delete("/deleteBranch/:projectId", timelinesController.deleteBranch);
