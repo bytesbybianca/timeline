@@ -1,3 +1,9 @@
+/* COLORS
+timeline dot & icon: #8E5D8E
+year & icon hover: #ce9cce
+
+*/
+
 body {
     margin-top: 20px;
 }
@@ -54,7 +60,7 @@ body {
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    background-color: #f1c40f;
+    background-color: #8E5D8E;
     content: "";
     top: 50%;
     right: 26px;
@@ -63,7 +69,7 @@ body {
 }
 .single-timeline-area .timeline-date p {
     margin-bottom: 0;
-    color: #020710;
+    color: #ce9cce;
     font-size: 13px;
     text-transform: uppercase;
     font-weight: 500;
@@ -89,7 +95,7 @@ body {
     transition-duration: 500ms;
     width: 30px;
     height: 30px;
-    background-color: #f1c40f;
+    background-color: #8E5D8E;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 30px;
     flex: 0 0 30px;
@@ -112,7 +118,7 @@ body {
 }
 .single-timeline-area .single-timeline-content:hover .timeline-icon,
 .single-timeline-area .single-timeline-content:focus .timeline-icon {
-    background-color: #020710;
+    background-color: #ce9cce;
 }
 .single-timeline-area .single-timeline-content:hover .timeline-text h6,
 .single-timeline-area .single-timeline-content:focus .timeline-text h6 {

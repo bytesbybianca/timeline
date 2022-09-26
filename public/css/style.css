@@ -11,16 +11,6 @@ body, header {
     height: 2rem !important;
 }
 
-/*
-*
-* ==========================================
-* font awesome icons
-* ==========================================
-*
-*/
-.fa.btn, .far.btn, .fa {
-    font-weight:900 !important;
-}
 
 /*
 *

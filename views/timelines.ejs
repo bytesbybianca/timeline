@@ -2,7 +2,7 @@
 
 <div class="d-flex justify-content-end m-5">
   <div class="row">
-    <!-- New branch modal -->
+    <%# New branch modal %>
     <div class="col">
       <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#newBranchModal">
         New branch
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <!-- Info modal -->
+    <%# Info modal %>
     <div class="col">
       <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#infoModal">
         Information
@@ -70,7 +70,7 @@
   </div>
 </div>
 
-  <!-- Page -->
+  <%# Page %>
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -80,7 +80,7 @@
             You have no branches
 
             <div class="row">
-              <!-- New branch modal -->
+              <%# New branch modal %>
               <div class="col">
                 <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#newBranchModal">
                   Create new branch
@@ -92,27 +92,26 @@
           <% } %>
         </h2>  
         
-        
-
-        <!-- Loop through each unique year for each branch -->
+        <%# Timeline start %>
+        <%# Loop through each unique year for each branch %>
         <% for(const year in branchByYear) { %>
-          <!-- One timeline area/side bar for each year   -->
-          <!-- Timeline Area-->
-          <!-- Side bar and year -->
+          <%# One timeline area/side bar for each year   %>
+          <%# Timeline Area %>
+          <%# Side bar and year %>
           <div class="apland-timeline-area">
-            <!-- Single Timeline Content-->
+            <%# Single Timeline Content %>
             <div class="single-timeline-area">
               <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                <!-- Timeline year -->
+                <%# Timeline year %>
                 <% if(branchByYear[year][0].firstDate) { %>
                   <p><%= branchByYear[year][0].firstDate.toLocaleString(('en-us'), { year: 'numeric' }) %></p>
                 <% } %>
               </div>
-          <!-- Side bar and year end -->
+          <%# Side bar and year end %>
           <section class="row">
-            <!-- Loop through an array of branch objects in one year -->
+            <%# Loop through an array of branch objects in one year %>
             <% for(let i = 0; i < branchByYear[year].length; i++) { %>
-              <!-- Conditionals for size of div for length of branch by year -->
+              <%# Conditionals for size of div for length of branch by year %>
               <% let sizeForOne = 'col-lg-8'%>
               <% let sizeForMore = 'col-lg-4'%>
               <div class="col-12 col-md-6 
@@ -122,10 +121,10 @@
                 <%= sizeForMore %>
               <% } %>
               ">
-            <!-- Branch object -->
+            <%# Branch object %>
             <% let currentBranch = branchByYear[year][i] %>
               <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
+                <div class="timeline-icon"><i class="fab fa-pagelines" aria-hidden="true"></i></div>
                 <div class="timeline-text">
                   <a href="/timelines/<%= currentBranch._id%>">
                     <h6><%= currentBranch.timelineName %></h6>
@@ -158,7 +157,7 @@
         </div>
         <% } %>
       </div>
-      <!-- Timeline area end -->
+      <%# Timeline area end %>
 
     </div>
   </div>

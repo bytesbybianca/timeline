@@ -10,7 +10,11 @@
       <!-- Branch name -->
       <h1 class="display-4 font-weight-bold"><%= project.timelineName %></h1>
       <!-- Branch description -->
-      <p class="font-italic mb-0">Description Lorem ipsum dolor sit amet.</p>
+      <p class="font-italic mb-0">
+        <% if(project.description) { %>
+          <%= project.description %>
+        <% } %>
+      </p>
         <% if(moments.length) { %>
           <p><%= moments[0].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %> - <%= moments[moments.length - 1].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %></p>
         <% } %>
