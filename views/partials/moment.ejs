@@ -1,16 +1,27 @@
-<!-- Page -->
+<%# Page %>
+
 <div class="container">
     <div class="row">
       <div class="col-12">
-        <!-- Timeline Area-->
+        <%# Timeline Area%>
         <div class="apland-timeline-area">
           <% for(let i = 0; i < moments.length; i++) {%>
-            <!-- Single Timeline Content-->
+            <%# Single Timeline Content%>
+            <%# Year divider %>
             <div class="single-timeline-area">
-              <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                <!-- Timeline year -->
+              <span class="month-range visibility">month - month</span>
+              <div class="timeline-date year-dot wow fadeInLeft">
+                <p id="year-start">
+                  2020
+                </p>
+              </div>
+            </div>
+            <div class="single-timeline-area">
+              <div class="timeline-date month-dot wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                <%# Timeline year %>
                 <p><%= moments[i].date.toLocaleString(('en-US'), {
-                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
                 }) %></p>
               </div>
               <div class="row">
@@ -23,32 +34,33 @@
                         <i class="fas fa-pen-alt" aria-hidden="true"></i>
                       <% } if(moments[i].momentType === 'twitter') { %>
                         <i class="fab fa-twitter" aria-hidden="true"></i>
+                      <% } if(moments[i].momentType === 'photo') { %>
+                        <i class="far fa-images" aria-hidden="true"></i>
                       <% } %>
-                      <i class="fa fa-address-card" aria-hidden="true"></i>
                     </div>
                     <div class="timeline-text">
                         <% if(moments[i].momentType === 'journal') { %>
-                            <h6>Journal entry:</h6>
+                            <h6 class="text-dark">Journal entry:</h6>
                             <span><%= moments[i].journalEntry %></span>
                         <% } else if(moments[i].momentType === 'twitter') { %>
-                            <h6>Tweet:</h6>
+                            <h6 class="text-dark">Tweet:</h6>
                             <span>this has a tweet id</span>
                         <% } else if(moments[i].momentType === 'location') { %>
-                            <h6>Location:</h6>
+                            <h6 class="text-dark">Location:</h6>
                             <span><%= moments[i].location %></span>
                         <% } else if(moments[i].momentType === 'photo') { %>
-                            <h6>Photo:</h6>
+                            <h6 class="text-dark">Photo:</h6>
                             <img class="img-fluid" src="<%= moments[i].momentImage %>">
                         <% } %>
 
                         <%if(moments[i].user == user.id){ %>
-                          <!-- Edit moment -->
+                          <%# Edit moment %>
                           <div class="row mb-3">
                             <div class="col">
                               <button class="btn btn-light far fa-edit" type="submit" data-toggle="collapse" data-target="#editMoment<%=moments[i]._id%>" aria-expanded="false" aria-controls="editMoment<%=moments[i]._id%>"></button>
                             </div>
 
-                          <!-- Delete moment -->
+                          <%# Delete moment %>
                             <div class="col">
                               <form
                               action="/moments/<%= moments[i]._id %>/deleteMoment?_method=DELETE"
@@ -60,14 +72,14 @@
                             </div>
                           </div>
 
-                          <!-- Edit moment collapsible -->
+                          <%# Edit moment collapsible %>
                           <div class="row collapse" id="editMoment<%=moments[i]._id%>">
                             <div class="col">
                               <form
                               action="/moments/<%= moments[i]._id %>/editMoment?_method=PUT"
                               method="POST"
                               >
-                                <!-- Edit time -->
+                                <%# Edit time %>
                                 <div class="row mb-3">
                                   <div class="col">
                                     <% const momentDate = new Date(moments[i].date).toISOString().slice(0, 16) %>
@@ -79,19 +91,19 @@
 
                                 <div class="row mb-3">
                                   <div class="col">
-                                    <!-- Edit journal entries -->
+                                    <%# Edit journal entries %>
                                     <% if(moments[i].momentType === 'journal') { %>
                                       <label for="editJournalEntry">Journal entry:</label>
                                       <textarea id="editJournalEntry" name="journal"
                                       rows="5" cols="45"><%= moments[i].journalEntry %></textarea>
                                     <% } %>
-                                    <!-- Edit location -->
+                                    <%# Edit location %>
                                     <% if(moments[i].momentType === 'location') { %>
                                       <label for="editLocation">Location:</label>
                                       <input type="text" id="editLocation" name="location"
                                       minlength="1" size="10" value="<%= moments[i].location %>">
                                     <% } %>
-                                    <!-- Edit photo -->
+                                    <%# Edit photo %>
                                     <% if(moments[i].momentType === 'photo') { %>
                                       <label for="editMomentImage" class="form-label">Image upload</label>
                                       <input type="file" class="form-control" id="editMomentImage" name="file">

@@ -3,18 +3,12 @@ const Timeline = require("../models/Timeline");
 const Moment = require("../models/Moment");
 
 module.exports = {
-  // getProfile: async (req, res) => {
-  //   try {
-  //     const posts = await Post.find({ user: req.user.id });
-  //     res.render("profile.ejs", { posts: posts, user: req.user });
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // },
   getTimelines: async (req, res) => {
     try {
+      // Find branches by user, sorted by firstDate in ascending order
       const timelines = await Timeline.find({ user: req.user.id }).sort({ firstDate: "asc" }).lean();
 
+      // branchByYear object to be grouped by year for ejs
       let branchByYear = {}
       for(key in timelines) {
         let branchYear
@@ -33,8 +27,7 @@ module.exports = {
           }
         }
       console.log(branchByYear)
-
-      res.render("timelines.ejs", { timelines: timelines, user: req.user, branchByYear: branchByYear });
+      res.render("timelines.ejs", { timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
     } catch (err) {
       console.log(err);
     }
@@ -43,8 +36,26 @@ module.exports = {
     try {
       const project = await Timeline.findById(req.params.projectId);
       console.log(`🌸 🌸 project ${project.id} 🌸 🌸`)
-      const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" }).lean();
-      res.render("branch.ejs", { project: project, moments: moments, user: req.user });
+      const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" })
+      
+      // branchByYear object to be grouped by year for ejs
+      let momentByDate = {}
+      for(key in moments) {
+        let momentYear = moments[key].date.toLocaleString('en-US', { year: 'numeric' })
+        let momentMonth = moments[key].date.toLocaleString('en-US', { month: 'long' })
+          // if branch year is in object, add to array
+          if(!(momentYear in momentByDate)) {
+            // if not, create array
+            momentByDate[momentYear] = {}
+          }
+          if(!(momentMonth in momentByDate[momentYear])) {
+            momentByDate[momentYear][momentMonth] = []
+          }
+          momentByDate[momentYear][momentMonth].push(moments[key]._id)
+          console.log(moments[key]) // figure out how to get entire object in momentByDate
+      }
+      console.log(momentByDate)
+      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentByDateId: momentByDate });
     } catch (err) {
       console.log(err);
     }

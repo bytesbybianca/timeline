@@ -101,7 +101,7 @@
           <div class="apland-timeline-area">
             <%# Single Timeline Content %>
             <div class="single-timeline-area">
-              <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+              <div class="timeline-date branch wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
                 <%# Timeline year %>
                 <% if(branchByYear[year][0].firstDate) { %>
                   <p><%= branchByYear[year][0].firstDate.toLocaleString(('en-us'), { year: 'numeric' }) %></p>
@@ -127,14 +127,14 @@
                 <div class="timeline-icon"><i class="fab fa-pagelines" aria-hidden="true"></i></div>
                 <div class="timeline-text">
                   <a href="/timelines/<%= currentBranch._id%>">
-                    <h6><%= currentBranch.timelineName %></h6>
+                    <h6 class="timeline-name text-dark"><%= currentBranch.timelineName %></h6>
                     <img class="img-fluid" src="<%= currentBranch.timelineThumb %>">
                   </a>
                   <% if(currentBranch.firstDate) { %>
-                    <span><%= currentBranch.firstDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %> - <%= currentBranch.lastDate.toLocaleString(('en-us'), { dateStyle: 'full' }) %></span>
+                    <span class="branch-dates"><%= currentBranch.firstDate.toLocaleString(('en-us'), { dateStyle: 'short' }) %> - <%= currentBranch.lastDate.toLocaleString(('en-us'), { dateStyle: 'short' }) %></span>
                   <% } %>
                   <% if(currentBranch.description) { %>
-                    <p><%= currentBranch.description %></p>
+                    <p class="branch-description"><%= currentBranch.description %></p>
                   <% } %>
 
                   <div class="row justify-content-between">

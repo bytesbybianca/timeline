@@ -22,3 +22,20 @@ body, header {
 .bg-cover {
     background-size: cover !important;
 }
+
+a:hover, .timeline-name.text-dark:hover {
+    color: #7A477C !important;
+}
+
+.branch-dates, .branch-description {
+    font-size: .75rem;
+    color: #524b55;
+}
+
+.branch-description {
+    font-style: italic;
+}
+
+.visibility {
+    visibility: hidden;
+}

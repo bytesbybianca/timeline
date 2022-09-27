@@ -29,6 +29,14 @@
   <h2 class="h3 font-weight-bold">Moments</h2>
   <div class="row">
       <div class="col-lg-10 mb-4">
+        <% if(!moments.length) { %>
+          <p class="mt-4 mb-0">
+            You haven't created any moments yet!
+          </p>
+          <button class="btn btn-light text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
+            New moment
+          </button>
+        <% } %>
         <%- include('partials/moment') -%>
       </div>
   </div>
