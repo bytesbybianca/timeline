@@ -1,5 +1,9 @@
 <%- include('partials/header') -%>
 
+<head>
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+
 <!-- Branch hero -->
 <div style="background: linear-gradient(
   to bottom,
@@ -8,7 +12,7 @@
   ), url(<%= project.timelineThumb %>)" class="jumbotron bg-cover text-white">
     <div class="container py-5 text-center">
       <!-- Branch name -->
-      <h1 class="display-4 font-weight-bold"><%= project.timelineName %></h1>
+      <h1 class="display-4 font-weight-bold text-white"><%= project.timelineName %></h1>
       <!-- Branch description -->
       <p class="font-italic mb-0">
         <% if(project.description) { %>
@@ -66,16 +70,16 @@
 
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
               <input type="radio" class="btn-check" name="momentType" id="photo" autocomplete="off" value="photo" data-bs-toggle="collapse" data-bs-target=".momentImageContainer" aria-expanded="true" aria-controls="momentImageContainer" checked>
-              <label class="btn btn-outline-primary" for="photo">Photo</label>
+              <label class="btn btn-outline-dark" for="photo">Photo</label>
             
               <input type="radio" class="btn-check" name="momentType" id="journal" autocomplete="off" value="journal" data-bs-toggle="collapse" data-bs-target=".journalContainer" aria-expanded="false" aria-controls="journalContainer">
-              <label class="btn btn-outline-primary" for="journal">Journal</label>
+              <label class="btn btn-outline-dark" for="journal">Journal</label>
             
               <input type="radio" class="btn-check" name="momentType" id="location" autocomplete="off" value="location" data-bs-toggle="collapse" data-bs-target=".locationContainer" aria-expanded="true" aria-controls="locationContainer">
-              <label class="btn btn-outline-primary" for="location">Location</label>
+              <label class="btn btn-outline-dark" for="location">Location</label>
             
               <input type="radio" class="btn-check" name="momentType" id="twitter" autocomplete="off" value="twitter" data-bs-toggle="collapse" data-bs-target=".tweetIdContainer" aria-expanded="true" aria-controls="tweetIdContainer">
-              <label class="btn btn-outline-primary" for="twitter">Twitter</label>
+              <label class="btn btn-outline-dark" for="twitter">Twitter</label>
             </div>
             
             <%# hidden %>
@@ -105,7 +109,7 @@
                 rows="5" cols="45"></textarea>
               </div>
               
-              <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+              <button type="submit" class="btn btn btn-primary" value="Upload">Submit</button>
             </div>
           </form>
         </div>
@@ -116,6 +120,5 @@
     </div>
   </div>
 </div>
-
 
 <%- include('partials/footer') -%>

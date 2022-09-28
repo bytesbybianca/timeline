@@ -23,7 +23,7 @@ body, header {
     background-size: cover !important;
 }
 
-a:hover, .timeline-name.text-dark:hover {
+header a:hover, .timeline-name.text-dark:hover {
     color: #7A477C !important;
 }
 

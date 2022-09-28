@@ -38,24 +38,22 @@ module.exports = {
       console.log(`🌸 🌸 project ${project.id} 🌸 🌸`)
       const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" })
       
-      // branchByYear object to be grouped by year for ejs
-      let momentByDate = {}
-      for(key in moments) {
-        let momentYear = moments[key].date.toLocaleString('en-US', { year: 'numeric' })
-        let momentMonth = moments[key].date.toLocaleString('en-US', { month: 'long' })
-          // if branch year is in object, add to array
-          if(!(momentYear in momentByDate)) {
-            // if not, create array
-            momentByDate[momentYear] = {}
+      const test = await Moment.aggregate([
+        {
+          $group: {
+            _id: {
+              year: { $year: "$date" },
+              month: { $month: "$date" },
+              day: { $dayOfMonth: "$date" },
+            },
           }
-          if(!(momentMonth in momentByDate[momentYear])) {
-            momentByDate[momentYear][momentMonth] = []
-          }
-          momentByDate[momentYear][momentMonth].push(moments[key]._id)
-          console.log(moments[key]) // figure out how to get entire object in momentByDate
-      }
-      console.log(momentByDate)
-      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentByDateId: momentByDate });
+        },
+        { $sort: {_id: 1} },
+      ]);
+
+      console.log(test)
+
+      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url });
     } catch (err) {
       console.log(err);
     }

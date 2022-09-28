@@ -44,7 +44,7 @@
                             <span><%= moments[i].journalEntry %></span>
                         <% } else if(moments[i].momentType === 'twitter') { %>
                             <h6 class="text-dark">Tweet:</h6>
-                            <span>this has a tweet id</span>
+                            <span>this has a tweet id of <%= moments[i].tweetId %></span>
                         <% } else if(moments[i].momentType === 'location') { %>
                             <h6 class="text-dark">Location:</h6>
                             <span><%= moments[i].location %></span>
