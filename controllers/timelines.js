@@ -37,11 +37,13 @@ module.exports = {
       const project = await Timeline.findById(req.params.projectId);
       console.log(`🌸 🌸 project ${project.id} 🌸 🌸`)
       const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" })
-      
+      const momentDate = moments[0].date
+      console.log(momentDate)
       const test = await Moment.aggregate([
         {
           $group: {
             _id: {
+              timelineProject: "$timelineProject" ,
               year: { $year: "$date" },
               month: { $month: "$date" },
               day: { $dayOfMonth: "$date" },
@@ -49,9 +51,10 @@ module.exports = {
           }
         },
         { $sort: {_id: 1} },
-      ]);
+      ])
 
       console.log(test)
+      // console.log(testTwo)
 
       res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url });
     } catch (err) {
