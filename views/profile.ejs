@@ -1,46 +1,53 @@
 <%- include('partials/header') -%>
-<div class="container">
-  <div class="row mt-5">
-      <div class="col-6">
-          <div>
-              <p><strong>User Name</strong>: <%= user.userName %></p>
-              <p><strong>Email</strong>: <%= user.email %></p>
-              <a href="/logout" class="col-3 btn btn-primary">Logout</a>
+
+  <section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-12 col-xl-4">
+
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body text-center">
+            <div class="mt-3 mb-4">
+              <img src="/imgs/IMG_5286 2.JPG"
+                class="rounded-circle img-fluid" style="width: 100px;" />
+            </div>
+            <h4 class="mb-2">Julie L. Arsenault</h4>
+            <p class="text-muted mb-4">@Programmer <span class="mx-2">|</span> <a
+                href="#!">mdbootstrap.com</a></p>
+            <div class="mb-4 pb-2">
+              <button type="button" class="btn btn-outline-dark btn-floating">
+                <i class="fab fa-facebook-f fa-lg"></i>
+              </button>
+              <button type="button" class="btn btn-outline-dark btn-floating">
+                <i class="fab fa-twitter fa-lg"></i>
+              </button>
+              <button type="button" class="btn btn-outline-dark btn-floating">
+                <i class="fab fa-skype fa-lg"></i>
+              </button>
+            </div>
+            <button type="button" class="btn btn-primary btn-rounded btn-lg">
+              Message now
+            </button>
+            <div class="d-flex justify-content-between text-center mt-5 mb-2">
+              <div>
+                <p class="mb-2 h5">8471</p>
+                <p class="text-muted mb-0">Wallets Balance</p>
+              </div>
+              <div class="px-3">
+                <p class="mb-2 h5">8512</p>
+                <p class="text-muted mb-0">Income amounts</p>
+              </div>
+              <div>
+                <p class="mb-2 h5">4751</p>
+                <p class="text-muted mb-0">Total Transactions</p>
+              </div>
+            </div>
           </div>
-          <div class="mt-5">
-            <h2>Add a memory</h2>
-            <form action="/post/createPost" enctype="multipart/form-data" method="POST">
-              <div class="mb-3">
-                  <label for="title" class="form-label">Title</label>
-                  <input type="text" class="form-control" id="title" name="title">
-              </div>
-              <div class="mb-3">
-                <label for="caption" class="form-label">Caption</label>
-                <textarea class="form-control" id="caption" name="caption"></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="imgUpload" class="form-label">Image</label>
-                <input type="file" class="form-control" id="imageUpload" name="file">
-              </div>
-              <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
-            </form>
-          </div>
+        </div>
+
       </div>
-      <div class="col-6">
-        <ul class="row list-unstyled">
-        <% for(var i=0; i<posts.length; i++) {%>
-          <li class="col-6 justify-content-between mt-5">
-            <a href="/post/<%= posts[i]._id%>">
-              <img class="img-fluid" src="<%= posts[i].image%>">
-            </a>
-          </li>
-        <% } %>
-        </ul>
-        <div class="row justify-content-center mt-5">
-          <a class="btn btn-primary" href="/timelines">Return to Timelines</a>
-        </div>  
-      </div>  
     </div>
   </div>
-</div>
+</section>
+
 <%- include('partials/footer') -%>
