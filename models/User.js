@@ -5,6 +5,22 @@ const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true },
   email: { type: String, unique: true },
   password: String,
+  pfp: {
+    type: String,
+    default: "https://res.cloudinary.com/dc29mlsuv/image/upload/v1664650259/default-pfp_coyku4.svg",
+  },
+  followers: {
+    type: Array,
+    default: [],
+  },
+  following: {
+    type: Array,
+    default: [],
+  },
+  dateJoined: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 // Password hash middleware.

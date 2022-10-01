@@ -1,11 +1,20 @@
 const cloudinary = require("../middleware/cloudinary");
 const Post = require("../models/Post");
+const Timeline = require("../models/Timeline");
+const Moment = require("../models/Moment");
+const User = require("../models/User");
 
 module.exports = {
   getProfile: async (req, res) => {
     try {
+      const profile = await User.findById(req.params.userId)
       const posts = await Post.find({ user: req.user.id });
-      res.render("profile.ejs", { posts: posts, user: req.user, url: req.url });
+      const branchCount = await Timeline.countDocuments({ user: profile.id })
+      const momentCount = await Moment.countDocuments({ user: profile.id })
+
+      console.log(profile)
+
+      res.render("profile.ejs", { posts: posts, profile: profile, branchCount: branchCount, momentCount: momentCount, user: req.user, url: req.url });
     } catch (err) {
       console.log(err);
     }
