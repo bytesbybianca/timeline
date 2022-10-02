@@ -85,6 +85,38 @@ module.exports = {
       console.log(err);
     }
   },
+  editBranch: async (req, res) => {
+    try {
+      if(req.file.path) {
+        // Find branch by id
+        const branch = await Timeline.findById(req.params.branchId);
+        // Delete branch image from cloudinary
+        await cloudinary.uploader.destroy(branch.cloudinaryId);
+
+        const result = await cloudinary.uploader.upload(req.file.path);
+        await Timeline.findOneAndUpdate(
+          { _id: req.params.branchId },
+          {
+            timelineThumb: result.secure_url,
+            cloudinaryId: result.public_id,
+          }
+        ); 
+      }
+
+      await Timeline.findOneAndUpdate(
+        { _id: req.params.branchId },
+        {
+          privacy: req.body.privacy,
+          description: req.body.description,
+        }
+      );     
+    
+      console.log("Branch updated");
+      res.redirect(`/timelines`);
+    } catch (err) {
+      console.log(err);
+    }
+  },
   deleteBranch: async (req, res) => {
     try {
       // Find branch by id

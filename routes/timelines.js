@@ -11,6 +11,8 @@ router.post("/createTimeline", upload.single("file"), timelinesController.create
 
 router.post("/:projectId/createMoment", upload.single("file"), timelinesController.createMoment);
 
+router.put("/:branchId/editBranch", upload.single("file"), timelinesController.editBranch);
+
 router.delete("/deleteBranch/:projectId", timelinesController.deleteBranch);
 
 module.exports = router;
