@@ -41,39 +41,39 @@
           <div class="card-body p-4 text-black">
 
             <div class="mb-5">
-              <p class="lead fw-normal mb-1">Following</p>
+              <p class="lead fw-normal mb-1">Followers</p>
 
-              <%# if no following %>
-              <% if(!following.length) { %>
+              <%# if no followers %>
+              <% if(!followers.length) { %>
                 <div class="p-4" style="background-color: #f8f9fa;">
                   <div class="row px-3">
-                    Not following anyone yet!
+                    No followers yet!
                   </div>
                 </div>
-              <%# if following %>
+              <%# if followers %>
               <% } else { %>
-                <% for(let i = 0; i < following.length; i++) { %>
+                <% for(let i = 0; i < followers.length; i++) { %>
                   <div class="p-4" style="background-color: #f8f9fa;">
                     <div class="row">
   
                       <div class="mt-3 mb-4 col-2">
-                        <img src="<%= following[i].pfp %>"
+                        <img src="<%= followers[i].pfp %>"
                           class="rounded-circle img-fluid"" />
                       </div>
                       <div class="col-10">
     
                         <h5>
-                          <a href="/profile/<%= following[i].id %>"><%= following[i].userName %></a>
+                          <a href="/profile/<%= followers[i].id %>"><%= followers[i].userName %></a>
                         </h5>
-                        <% if(following[i].name) { %>
-                          <h6><%= following[i].name %></h6>
+                        <% if(followers[i].name) { %>
+                          <h6><%= followers[i].name %></h6>
                         <% } %>
                         
                         <p>
                         <%# if this person isn't you, include follow info%>
-                        <% if(following[i].id !== user.id) { %>
+                        <% if(followers[i].id !== user.id) { %>
                           <%# if this person also follows you %>
-                          <% if(following[i].following.includes(user.id)) { %>
+                          <% if(followers[i].followers.includes(user.id)) { %>
                               This person follows you.
                           <%# if this person does not follow you %>
                           <% } else { %>

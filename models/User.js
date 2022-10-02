@@ -9,9 +9,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "https://res.cloudinary.com/dc29mlsuv/image/upload/v1664650259/default-pfp_coyku4.svg",
   },
+  pfpId: {
+    type: String,
+    default: "",
+  },
   pfh: {
     type: String,
     default: "https://res.cloudinary.com/dc29mlsuv/image/upload/v1664665436/default-header_on98cc.png",
+  },
+  pfhId: {
+    type: String,
+    default: "",
   },
   followers: {
     type: Array,

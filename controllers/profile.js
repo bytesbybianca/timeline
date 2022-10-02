@@ -44,6 +44,16 @@ module.exports = {
       console.log(err);
     }
   },
+  getFollowers: async (req, res) => {
+    try {
+      const profile = await User.findById(req.params.profileId)
+      const followers = await User.find({ _id: { "$in": profile.followers } })
+
+      res.render("followers.ejs", { profile: profile, followers: followers, user: req.user, url: req.url });
+    } catch (err) {
+      console.log(err);
+    }
+  },
   getFeed: async (req, res) => {
     try {
       const posts = await Post.find().sort({ createdAt: "desc" }).lean();

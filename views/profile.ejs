@@ -65,8 +65,10 @@
                 <p class="small text-muted mb-0">Moments</p>
               </div>
               <div class="px-3">
-                <p class="mb-1 h5"><%= profile.followers.length %></p>
-                <p class="small text-muted mb-0">Followers</p>
+                <a href="/profile/<%= profile.id %>/followers">
+                  <p class="mb-1 h5"><%= profile.followers.length %></p>
+                  <p class="small text-muted mb-0">Followers</p>
+                </a>
               </div>
               <div>
                 <a href="/profile/<%= profile.id %>/following">

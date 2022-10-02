@@ -9,6 +9,8 @@ router.get("/:id", ensureAuth, profileController.getPost);
 
 router.get("/:profileId/following", profileController.getFollowing);
 
+router.get("/:profileId/followers", profileController.getFollowers);
+
 router.post("/createPost", upload.single("file"), profileController.createPost);
 
 router.put("/follow/:profileId", profileController.followUser);
