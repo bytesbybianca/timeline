@@ -49,11 +49,11 @@ header a:hover, .timeline-name.text-dark:hover {
 
 .gradient-custom-2 {
     /* fallback for old browsers */
-    background: #fbc2eb;
+    background: #331A44;
     
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1));
+    background: -webkit-linear-gradient(to right, #4D2B5D, #281837);
     
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(251, 194, 235, 1), rgba(166, 193, 238, 1))
+    background: linear-gradient(to right, #4D2B5D, #281837)
     }

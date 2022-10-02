@@ -21,6 +21,10 @@ const TimelineSchema = new mongoose.Schema({
     type: Date,
     require: true,
   },
+  privacy: {
+    type: String,
+    require: true,
+  },
   description: {
     type: String,
     require: false,

@@ -36,9 +36,10 @@ module.exports = {
     try {
       const project = await Timeline.findById(req.params.projectId);
       console.log(`🌸 🌸 project ${project.id} 🌸 🌸`)
+      // console.log(Moment.length)
       const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" })
-      const momentDate = moments[0].date
-      console.log(momentDate)
+      // const momentDate = moments[0].date
+      // console.log(momentDate)
       const test = await Moment.aggregate([
         {
           $group: {
@@ -53,7 +54,7 @@ module.exports = {
         { $sort: {_id: 1} },
       ])
 
-      console.log(test)
+      // console.log(test)
       // console.log(testTwo)
 
       res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url });
@@ -73,6 +74,7 @@ module.exports = {
         cloudinaryId: result.public_id,
         firstDate: req.body.firstDate, 
         lastDate: req.body.lastDate, 
+        privacy: req.body.privacy, 
         user: req.user.id,
       });
       

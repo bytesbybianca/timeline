@@ -18,6 +18,16 @@
             <div class="modal-body">
               <form action="/timelines/createTimeline" enctype="multipart/form-data" method="POST">
                 <div class="mb-3">
+                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="privacy" id="public" autocomplete="off" value="public" >
+                    <label class="btn btn-outline-dark" for="public">Public</label>
+                  
+                    <input type="radio" class="btn-check" name="privacy" id="private" autocomplete="off" value="private" checked>
+                    <label class="btn btn-outline-dark" for="private">Private</label>
+                  
+                  </div>
+                </div>
+                <div class="mb-3">
                   <label for="timelineName" class="form-label">Name</label>
                   <input type="text" class="form-control" id="timelineName" name="title">
                 </div>
@@ -161,4 +171,5 @@
 
     </div>
   </div>
+
 <%- include('partials/footer') -%>

@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "https://res.cloudinary.com/dc29mlsuv/image/upload/v1664650259/default-pfp_coyku4.svg",
   },
+  pfh: {
+    type: String,
+    default: "https://res.cloudinary.com/dc29mlsuv/image/upload/v1664665436/default-header_on98cc.png",
+  },
   followers: {
     type: Array,
     default: [],

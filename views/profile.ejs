@@ -5,26 +5,46 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-lg-9 col-xl-7">
         <div class="card">
-          <div class="rounded-top text-white d-flex flex-row" style="background-color: #eee; height:200px;">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #8E5D8E; background: url(<%= profile.pfh %>); height:200px; background-position: center; background-size: cover;">
             <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
               <!-- Profile pic -->
               <img src="<%= profile.pfp %>"
                 alt="Profile picture" class="img-fluid img-thumbnail mt-4 mb-2"
                 style="width: 150px; z-index: 1">
+                <%# if this profile is the user's page, allow to edit %>
                 <% if(profile.id === user.id) { %>
                   <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
                   style="z-index: 1;">
                   Edit profile
                   </button>
+                <%# if this profile not the user's page %>
                 <% } else { %>
-                  <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-                  style="z-index: 1;">
-                  Follow
-                  </button>
+                  <%# if they are not following them, show follow button %>
+                  <% if(!(user.following.includes(profile.id))) { %>
+                  <form
+                  class="col-1"
+                  action="/post/follow/<%= profile.id %>?_method=PUT"
+                  method="POST"
+                  >
+                    <button class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                    style="z-index: 1;" type="submit">Follow</button>
+                  </form>
+                  <% } %>
+                  <%# if they are following them, show following %>
+                  <% if(user.following.includes(profile.id)) { %>
+                    <form
+                    class="col-1"
+                    action="/post/unfollow/<%= profile.id %>?_method=PUT"
+                    method="POST"
+                    >
+                      <button class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                      style="z-index: 1;" type="submit">Unfollow</button>
+                    </form>
+                  <% } %>
                 <% } %>
             </div>
             <div class="ms-3" style="margin-top: 130px;">
-              <h5>
+              <h5 class="text-light">
                 <% if(profile.name) { %>
                   <%= profile.name %>
                 <% } else { %>
@@ -45,11 +65,11 @@
                 <p class="small text-muted mb-0">Moments</p>
               </div>
               <div class="px-3">
-                <p class="mb-1 h5"><%= user.followers.length %></p>
+                <p class="mb-1 h5"><%= profile.followers.length %></p>
                 <p class="small text-muted mb-0">Followers</p>
               </div>
               <div>
-                <p class="mb-1 h5"><%= user.following.length %></p>
+                <p class="mb-1 h5"><%= profile.following.length %></p>
                 <p class="small text-muted mb-0">Following</p>
               </div>
             </div>
@@ -58,36 +78,46 @@
             <div class="mb-5">
               <p class="lead fw-normal mb-1">About</p>
               <div class="p-4" style="background-color: #f8f9fa;">
-                <p class="font-italic mb-1">Time keeping since</p>
-                <p class="font-italic mb-1"><%= user.dateJoined.toLocaleString("en-US", { month: "long", year: "numeric" }) %></p>
-                <p><%= user.id %></p>
-                <p><%= profile.id %></p>
+                <p class="font-italic mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit minus quam totam commodi deserunt nisi quos, assumenda at perspiciatis ipsa praesentium tenetur labore aliquid corporis quibusdam unde, quia, corrupti facilis?</p>
+                <p class="font-italic mb-1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic ullam laborum sequi autem numquam officia tenetur eveniet unde qui, similique animi cupiditate quidem facere obcaecati tempore enim corrupti deserunt! Asperiores.</p>
               </div>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-4">
               <p class="lead fw-normal mb-0">Public branches</p>
               <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
             </div>
-            <div class="row g-2">
-              <div class="col mb-2">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                  alt="image 1" class="w-100 rounded-3">
-              </div>
-              <div class="col mb-2">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                  alt="image 1" class="w-100 rounded-3">
-              </div>
-            </div>
-            <div class="row g-2">
-              <div class="col">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                  alt="image 1" class="w-100 rounded-3">
-              </div>
-              <div class="col">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                  alt="image 1" class="w-100 rounded-3">
-              </div>
-            </div>
+
+            <%# Count of public branches is 0%>
+            <% if(!timelines.length) { %>
+              <div>Nothing to see here!</div>
+            <% } %>
+
+            <% for(let i = 0; i < timelines.length; i++) { %>
+              <% if(timelines[i].privacy === 'public') { %>
+                <%# if an even number, start new row %>
+                <% if(i % 2 === 0 || i === 0) { %>
+                  <div class="row g-2">
+                <% } %>
+  
+                <%# Link and image to Branch %>
+                <div class="col mb-2">
+                  <a href="/timelines/<%= timelines[i]._id %>">
+                    <p><%= timelines[i].timelineName %></p>
+                    <div class="w-100 rounded-3" style="height: 12rem; background: url(<%= timelines[i].timelineThumb %>); background-size: cover; background-position: center;">
+
+                    </div>
+                    
+                  </a>
+                </div>
+  
+                <%# if odd number, end row %>
+                <% if(i % 2 !== 0 || timelines.length === 1) { %>
+                  </div>
+                <% } %>
+              <% } %>
+
+            <% } %>
+
           </div>
         </div>
       </div>
