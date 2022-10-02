@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/auth");
 const homeController = require("../controllers/home");
-const postsController = require("../controllers/posts");
+const profileController = require("../controllers/profile");
 const timelinesController = require("../controllers/timelines");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Main Routes - simplified for now
 router.get("/", homeController.getIndex);
-router.get("/profile/:userId", ensureAuth, postsController.getProfile);
+router.get("/profile/:userId", ensureAuth, profileController.getProfile);
 router.get("/timelines", ensureAuth, timelinesController.getTimelines);
 router.get("/login", authController.getLogin);
 router.post("/login", authController.postLogin);

@@ -15,16 +15,31 @@ module.exports = {
       const publicCount = await Timeline.countDocuments({ user: req.params.userId, privacy: "public" })
 
 
-      // Get a random number
-      const random = Math.floor(Math.random() * momentCount)
+      let random, randomMoment, randomBranch
 
-      // Query users' moments and fetch one offset by random #
-      const randomMoment = await Moment.findOne({ user: req.user.id }).skip(random)
-      const randomBranch = await Timeline.findById( randomMoment.timelineProject )
+      console.log(randomMoment)
+      
+      if(momentCount > 0) {
+        // Get a random number
+        random = Math.floor(Math.random() * momentCount)
+        // Query users' moments and fetch one offset by random #
+        randomMoment = await Moment.findOne({ user: profile.id }).skip(random)
+        randomBranch = await Timeline.findById( randomMoment.timelineProject )
+      }
 
       console.log(randomMoment, randomBranch)
 
       res.render("profile.ejs", { posts: posts, profile: profile, branchCount: branchCount, momentCount: momentCount, timelines: timelines, publicCount: publicCount, randomMoment: randomMoment, randomBranch: randomBranch, user: req.user, url: req.url });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  getFollowing: async (req, res) => {
+    try {
+      const profile = await User.findById(req.params.profileId)
+      const following = await User.find({ _id: { "$in": profile.following } })
+
+      res.render("following.ejs", { profile: profile, following: following, user: req.user, url: req.url });
     } catch (err) {
       console.log(err);
     }
