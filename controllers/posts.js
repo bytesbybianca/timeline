@@ -11,12 +11,20 @@ module.exports = {
       const posts = await Post.find({ user: req.user.id });
       const branchCount = await Timeline.countDocuments({ user: profile.id })
       const momentCount = await Moment.countDocuments({ user: profile.id })
-      const timelines = await Timeline.find({ user: req.params.userId, privacy: "public" }).sort({ firstDate: "asc" }).lean();
+      const timelines = await Timeline.find({ user: req.params.userId, privacy: "public" }).limit(4).sort({ firstDate: "asc" }).lean();
       const publicCount = await Timeline.countDocuments({ user: req.params.userId, privacy: "public" })
 
-      console.log(profile)
 
-      res.render("profile.ejs", { posts: posts, profile: profile, branchCount: branchCount, momentCount: momentCount, timelines: timelines, publicCount: publicCount, user: req.user, url: req.url });
+      // Get a random number
+      const random = Math.floor(Math.random() * momentCount)
+
+      // Query users' moments and fetch one offset by random #
+      const randomMoment = await Moment.findOne({ user: req.user.id }).skip(random)
+      const randomBranch = await Timeline.findById( randomMoment.timelineProject )
+
+      console.log(randomMoment, randomBranch)
+
+      res.render("profile.ejs", { posts: posts, profile: profile, branchCount: branchCount, momentCount: momentCount, timelines: timelines, publicCount: publicCount, randomMoment: randomMoment, randomBranch: randomBranch, user: req.user, url: req.url });
     } catch (err) {
       console.log(err);
     }
