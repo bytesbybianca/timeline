@@ -11,10 +11,12 @@ module.exports = {
       const posts = await Post.find({ user: req.user.id });
       const branchCount = await Timeline.countDocuments({ user: profile.id })
       const momentCount = await Moment.countDocuments({ user: profile.id })
+      const timelines = await Timeline.find({ user: req.params.userId, privacy: "public" }).sort({ firstDate: "asc" }).lean();
+      const publicCount = await Timeline.countDocuments({ user: req.params.userId, privacy: "public" })
 
       console.log(profile)
 
-      res.render("profile.ejs", { posts: posts, profile: profile, branchCount: branchCount, momentCount: momentCount, user: req.user, url: req.url });
+      res.render("profile.ejs", { posts: posts, profile: profile, branchCount: branchCount, momentCount: momentCount, timelines: timelines, publicCount: publicCount, user: req.user, url: req.url });
     } catch (err) {
       console.log(err);
     }
@@ -50,6 +52,59 @@ module.exports = {
       });
       console.log("Post has been added!");
       res.redirect("/profile");
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  followUser: async (req, res) => {
+    try {
+      const user = req.user.id
+      const profileToFollow = req.params.profileId
+
+      console.log(user, profileToFollow)
+
+      // add to user's following
+      await User.findOneAndUpdate(
+        { _id: user },
+        { 
+          $push: { following: profileToFollow }
+        }
+      );
+      // add to profile followed users's followers
+      await User.findOneAndUpdate(
+        { _id: profileToFollow },
+        { 
+          $push: { followers: user }
+        }
+      );
+      console.log(`Followed user ${req.params.profileId}`);
+      res.redirect(`/profile/${req.params.profileId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  unfollowUser: async (req, res) => {
+    try {
+      const user = req.user.id
+      const profileToUnfollow = req.params.profileId
+
+      // remove from user's following
+      await User.findOneAndUpdate(
+        { _id: user },
+        { 
+          $pull: { following: profileToUnfollow }
+        }
+      );
+
+      // remove from profile followed users' followers
+      await User.findOneAndUpdate(
+        { _id: profileToUnfollow },
+        { 
+          $pull: { followers: user }
+        }
+      );
+      console.log(`Unfollowed user ${req.params.profileId}`);
+      res.redirect(`/profile/${req.params.profileId}`);
     } catch (err) {
       console.log(err);
     }
