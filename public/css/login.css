@@ -4706,7 +4706,7 @@ border of above: #8a5a8a
       overflow-y: auto; }
   
   .modal {
-    position: fixed;
+    position: fixed !important;
     top: 0;
     left: 0;
     z-index: 1050;
@@ -4717,7 +4717,7 @@ border of above: #8a5a8a
     outline: 0; }
   
   .modal-dialog {
-    position: relative;
+    position: relative !important;
     width: auto;
     margin: 0.5rem;
     pointer-events: none; }

@@ -124,7 +124,7 @@
               <%# Conditionals for size of div for length of branch by year %>
               <% let sizeForOne = 'col-lg-8'%>
               <% let sizeForMore = 'col-lg-4'%>
-              <div class="col-12 col-md-6 
+              <div id="branchContainer<%= branchByYear[year][i]._id %>" class="col-12 col-md-6 
               <% if(branchByYear[year].length == 1) { %>
                 <%= sizeForOne %>
               <% } else if(branchByYear[year].length > 1) {%>
@@ -136,7 +136,7 @@
               <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
                 <div class="timeline-icon"><i class="fab fa-pagelines" aria-hidden="true"></i></div>
                 <div class="timeline-text">
-                  <a href="/timelines/<%= currentBranch._id%>">
+                  <a href="/timelines/<%= currentBranch._id %>">
                     <h6 class="timeline-name text-dark"><%= currentBranch.timelineName %></h6>
                     <img class="img-fluid" src="<%= currentBranch.timelineThumb %>">
                   </a>
@@ -147,16 +147,75 @@
                     <p class="branch-description"><%= currentBranch.description %></p>
                   <% } %>
 
-                  <div class="row justify-content-between">
+                  <div class="row justify-content-between mb-3">
+
                     <%if(currentBranch.user == user.id){ %>
-                      <form
-                        action="/timelines/deleteBranch/<%= currentBranch._id %>?_method=DELETE"
-                        method="POST"
-                        class="col-3"
-                      >
-                        <button class="btn btn-light fa fa-trash" type="submit"></button>
-                      </form>
+                      <%# Edit branch %>
+                      <div class="col">
+                        <button class="btn btn-light far fa-edit" type="submit" data-toggle="collapse" data-target="#editBranch<%= currentBranch._id %>" aria-expanded="false" aria-controls="editBranch<%= currentBranch._id %>"></button>
+                      </div>
+
+                      <%# Delete branch %>
+                      <div class="col">
+                        <form
+                          action="/timelines/deleteBranch/<%= currentBranch._id %>?_method=DELETE"
+                          method="POST"
+                          class="col-3"
+                        >
+                          <button class="btn btn-light fa fa-trash" type="submit"></button>
+                        </form>
+                      </div>
                       <%}%>
+                  </div>
+
+                  <%# Edit branch collapsible %>
+                  <div class="row collapse" id="editBranch<%= currentBranch._id %>">
+                    <div class="col">
+                      <form
+                      action="/timelines/<%= currentBranch._id %>/editBranch?_method=PUT"
+                      method="POST"
+                      enctype="multipart/form-data"
+                      >
+                        <%# Edit privacy option %>
+                        <div class="row mb-3">
+                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="privacy" id="editPublic" autocomplete="off" value="public" 
+                            <% if(currentBranch.privacy === 'public') { %>
+                              checked
+                            <% } %>
+                            >
+                            <label class="btn btn-outline-dark" for="editPublic">Public</label>
+                          
+                            <input type="radio" class="btn-check" name="privacy" id="editPrivate" autocomplete="off" value="private" 
+                            <% if(currentBranch.privacy === 'private') { %>
+                              checked
+                            <% } %>
+                            >
+                            <label class="btn btn-outline-dark" for="editPrivate">Private</label>
+                          
+                          </div>
+                        </div>
+
+                        <%# Change photo %>
+                        <div class="mb-3">
+                          <label for="timelineThumb" class="form-label">Thumbnail</label>
+                          <input type="file" class="form-control" id="timelineThumb" name="file">
+                        </div>
+
+                        <%# Edit description %>
+                        <div class="mb-3">
+                          <label for="description">Description:</label>
+                          <textarea id="description" name="description"
+                          rows="5" cols="45"><%= currentBranch.description %></textarea>
+                        </div>
+
+                        <div class="row mb-3">
+                          <div class="col">
+                            <button type="submit" class="btn btn-primary" value="Upload">Save</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
 
                 </div>
