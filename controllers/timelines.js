@@ -26,8 +26,24 @@ module.exports = {
             branchByYear[branchYear].push(timelines[key])
           }
         }
+
+      const test = await Timeline.aggregate([
+
+        {
+          $group: {
+            _id: {
+              year: { $year: "$firstDate" },
+              month: { $month: "$firstDate" },
+            },
+            branchId: { $push: "$_id" },
+          }
+        },
+        { $sort: {_id: 1} },
+      ])
+
       console.log(branchByYear)
-      res.render("timelines.ejs", { timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
+      console.log(test)
+      res.render("timelines.ejs", { test: test, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
     } catch (err) {
       console.log(err);
     }
