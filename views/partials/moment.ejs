@@ -44,7 +44,8 @@
                             <span><%= moments[i].journalEntry %></span>
                         <% } else if(moments[i].momentType === 'twitter') { %>
                             <h6 class="text-dark">Tweet:</h6>
-                            <span>this has a tweet id of <%= moments[i].tweetId %></span>
+                            <div id="tweet-<%= moments[i].tweetId %>">
+                            </div>
                         <% } else if(moments[i].momentType === 'location') { %>
                             <h6 class="text-dark">Location:</h6>
                             <span><%= moments[i].location %></span>
@@ -130,3 +131,20 @@
       </div>
     </div>
   </div>
+
+<script type="text/javascript" src="/js/twitter.js"></script>
+
+<% for(let i = 0; i < moments.length; i++) { %>
+  <% if(moments[i].momentType === 'twitter') { %>
+    <script type="text/javascript">
+      TwitterWidgetsLoader.load(function(err, twttr) {
+      if(err) {
+        console.error(err);
+        return;
+      }
+    
+      twttr.widgets.createTweet('<%= moments[i].tweetId %>', document.getElementById('tweet-<%= moments[i].tweetId %>'));
+    });
+    </script>
+  <% } %>
+<% } %>
