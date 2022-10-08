@@ -5,7 +5,11 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-lg-9 col-xl-7">
         <div class="card">
-          <div class="rounded-top text-white d-flex flex-row" style="background-color: #8E5D8E; background: url(<%= profile.pfh %>); height:200px; background-position: center; background-size: cover;">
+          <div class="rounded-top text-white d-flex flex-row" style="background: linear-gradient(
+            to bottom,
+            hsla(0, 0%, 0%, 0),
+            hsla(0, 0%, 0%, 0.8)
+            ), url(<%= profile.pfh %>); height:200px; background-position: center; background-size: cover;">
             <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
               <!-- Profile pic -->
               <img src="<%= profile.pfp %>"
@@ -14,7 +18,7 @@
                 <%# if this profile is the user's page, allow to edit %>
                 <% if(profile.id === user.id) { %>
                   <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-                  style="z-index: 1;">
+                  style="z-index: 1;" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                   Edit profile
                   </button>
                 <%# if this profile not the user's page %>
@@ -43,7 +47,7 @@
                   <% } %>
                 <% } %>
             </div>
-            <div class="ms-3" style="margin-top: 130px;">
+            <div class="ms-3" style="margin-top: 160px;">
               <h5 class="text-light">
                 <% if(profile.name) { %>
                   <%= profile.name %>
@@ -51,7 +55,6 @@
                   <%= profile.userName %>
                 <% } %>
               </h5>
-              <p>New York</p>
             </div>
           </div>
           <div class="p-4 text-black" style="background-color: #f8f9fa;">
@@ -84,8 +87,11 @@
             <div class="mb-5">
               <p class="lead fw-normal mb-1">About</p>
               <div class="p-4" style="background-color: #f8f9fa;">
-                <p class="font-italic mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit minus quam totam commodi deserunt nisi quos, assumenda at perspiciatis ipsa praesentium tenetur labore aliquid corporis quibusdam unde, quia, corrupti facilis?</p>
-                <p class="font-italic mb-1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic ullam laborum sequi autem numquam officia tenetur eveniet unde qui, similique animi cupiditate quidem facere obcaecati tempore enim corrupti deserunt! Asperiores.</p>
+                <% if(!profile.about) { %>
+                  <p class="font-italic mb-1">Tell us about yourself!</p>
+                <% } else { %>
+                  <p><%= profile.about %></p>
+                <% } %>
               </div>
             </div>
 
@@ -169,5 +175,43 @@
     </div>
   </div>
 </section>
+
+<!-- Edit profile modal -->
+<div class="col">
+  <div class="modal fade" id="editProfileModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1>Edit your profile</h1>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="rounded-top text-white d-flex flex-row mb-3" style="background-color: #8E5D8E; background: url(<%= profile.pfh %>); height:200px; background-position: center; background-size: cover;">
+            <img src="<%= profile.pfp %>"
+                  alt="Profile picture" class="img-fluid img-thumbnail m-auto"
+                  style="width: 150px; z-index: 1">
+          </div>
+          
+            <form action="/profile/<%= user._id %>/editProfile?_method=PUT"
+              method="POST" enctype="multipart/form-data">
+
+              <div class="mb-3">
+                <label for="editPfp" class="form-label">Profile picture</label>
+                <input type="file" class="form-control" id="editPfp" name="pfp">
+              </div>
+              <div class="mb-3">
+                <label for="editPfh" class="form-label">Header</label>
+                <input type="file" class="form-control" id="editPfh" name="pfh">
+              </div>
+              <button type="submit" class="btn btn-dark btn-sm text-nowrap" value="Upload">Submit</button>
+            </form>
+          </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <%- include('partials/footer') -%>
