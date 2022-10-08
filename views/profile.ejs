@@ -49,8 +49,8 @@
             </div>
             <div class="ms-3" style="margin-top: 160px;">
               <h5 class="text-light">
-                <% if(profile.name) { %>
-                  <%= profile.name %>
+                <% if(profile.displayName) { %>
+                  <%= profile.displayName %>
                 <% } else { %>
                   <%= profile.userName %>
                 <% } %>
@@ -202,6 +202,15 @@
               <div class="mb-3">
                 <label for="editPfh" class="form-label">Header</label>
                 <input type="file" class="form-control" id="editPfh" name="pfh">
+              </div>
+              <div class="mb-3">
+                <label for="displayName" class="form-label">Display Name</label>
+                <input type="text" class="form-control" id="displayName" name="displayName" placeholder="<%= user.displayName %>">
+              </div>
+              <div class="mb-3">
+                <label for="about">About:</label><br>
+                <textarea id="about" name="about"
+                rows="5" cols="45" placeholder="Tell us about yourself!"><% if(user.about) { %><%= user.about %><% } %></textarea>
               </div>
               <button type="submit" class="btn btn-dark btn-sm text-nowrap" value="Upload">Submit</button>
             </form>

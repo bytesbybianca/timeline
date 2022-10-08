@@ -158,6 +158,26 @@ module.exports = {
           }
         ); 
       }
+
+      if(req.body.about) {
+        console.log('got the about!')
+        await User.findOneAndUpdate(
+          { _id: req.params.userId },
+          {
+            about: req.body.about,
+          },
+        ); 
+      }
+
+      if(req.body.displayName) {
+        console.log('got the displayName!')
+        await User.findOneAndUpdate(
+          { _id: req.params.userId },
+          {
+            displayName: req.body.displayName,
+          },
+        ); 
+      }
       
 
       console.log(`Updated user profile ${req.params.userId}`);
