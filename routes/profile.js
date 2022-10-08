@@ -13,6 +13,9 @@ router.get("/:profileId/followers", profileController.getFollowers);
 
 router.post("/createPost", upload.single("file"), profileController.createPost);
 
+const cpUpload = upload.fields([{ name: 'pfp', maxCount: 1 }, { name: 'pfh', maxCount: 1 }])
+router.put("/:userId/editProfile", cpUpload, profileController.editProfile);
+
 router.put("/follow/:profileId", profileController.followUser);
 
 router.put("/unfollow/:profileId", profileController.unfollowUser);

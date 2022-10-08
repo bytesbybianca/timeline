@@ -116,6 +116,56 @@ module.exports = {
       console.log(err);
     }
   },
+  editProfile: async (req, res) => {
+    try {
+      // Find branch by id
+      const userId = await User.findById(req.params.userId);
+
+        // Delete branch image from cloudinary
+      
+      if(req.files['pfp']) {
+        if(userId.pfp !== 'https://res.cloudinary.com/dc29mlsuv/image/upload/v1664650259/default-pfp_coyku4.svg') {
+          console.log(userId.pfp)
+          await cloudinary.uploader.destroy(userId.pfpId);
+          console.log('deleted previous pfp!')
+        } else {
+          console.log('default pfp preserved')
+        }
+
+        const resultPfp = await cloudinary.uploader.upload(req.files['pfp'][0].path, { aspect_ratio: "1.0", height: 150, crop: "lfill" });
+        await User.findOneAndUpdate(
+          { _id: req.params.userId },
+          {
+            pfp: resultPfp.secure_url,
+            pfpId: resultPfp.public_id,
+          }
+        ); 
+      }
+
+      if(req.files['pfh']) {
+        if(userId.pfh !== 'https://res.cloudinary.com/dc29mlsuv/image/upload/v1664665436/default-header_on98cc.png') {
+          await cloudinary.uploader.destroy(userId.pfhId);
+        } else {
+          console.log('default pfh preserved')
+        }
+
+        const resultPfh = await cloudinary.uploader.upload(req.files['pfh'][0].path);
+        await User.findOneAndUpdate(
+          { _id: req.params.userId },
+          {
+            pfh: resultPfh.secure_url,
+            pfhId: resultPfh.public_id,
+          }
+        ); 
+      }
+      
+
+      console.log(`Updated user profile ${req.params.userId}`);
+      res.redirect(`/profile/${req.params.userId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  },
   unfollowUser: async (req, res) => {
     try {
       const user = req.user.id
