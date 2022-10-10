@@ -1,5 +1,7 @@
 <%- include('partials/header') -%>
 
+<body data-bs-spy="scroll" data-bs-target="#timelineDates" data-bs-smooth-scroll="true">
+
 <%# Modals %>
 <div class="d-flex justify-content-end m-5">
   <div class="row">
@@ -84,8 +86,8 @@
 <%# Timeline %>
 <section class="timelineWrapper row">  
 
-    <div id="timelineDates" class="col-4">
-      <div id="list-example" class="list-group sticky-top">
+    <div id="timelineNav" class="col-4">
+      <div id="timelineDates" class="list-group sticky-top">
         <%# loop through all groupings by same year and month%>
         <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
           <% const timeGroup = timelinesGrouped[i] %>
@@ -103,7 +105,7 @@
     </div>
 
     <div id="timelineBranches" class="col-8">
-      <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
+      <div class="scrollspy-example" tabindex="0">
         <%# loop through all groupings by same year and month%>
         <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
     
@@ -119,6 +121,9 @@
               <% const branchData = timeGroup.branchData[j] %>
               <a href="/timelines/<%= branchData.branchId %>">
                 <div class="card mb-3">
+                  <div class="card-header">
+                    Featured
+                  </div>
                   <img class="card-img-top" src="<%= branchData.timelineThumb %>" alt="Card image cap" style="height: 100px;">
                   <div class="card-body">
                     <h5 class="card-title">
