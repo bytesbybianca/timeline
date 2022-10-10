@@ -86,65 +86,104 @@
 <%# Timeline %>
 <section class="timelineWrapper row">  
 
-    <div id="timelineNav" class="col-4">
-      <div id="timelineDates" class="list-group sticky-top">
+    <div class="col">
+      
+      <div id="timelineDates" class="list-group list-group-horizontal sticky-top text-center mb-3">
         <%# loop through all groupings by same year and month%>
         <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
           <% const timeGroup = timelinesGrouped[i] %>
         
-          <a class="list-group-item list-group-item-action" href="#<% if(timeGroup._id.year) { %>group-<%= timeGroup._id.year %><% } else { %>ungrouped<% } %>">
+          <a class="list-group-item list-group-item-action border-0" style="background-color: #F6F7FD;" href="#<% if(timeGroup._id.year) { %>group-<%= timeGroup._id.year %><% } else { %>ungrouped<% } %>">
             <% if(timeGroup._id.year) { %>
               <%= timeGroup._id.year %>
             <% } else { %>
-                Create a moment for this branch to record dates!
+                -
             <% } %>
           </a>
           
         <% } %>
       </div>
-    </div>
 
-    <div id="timelineBranches" class="col-8">
-      <div class="scrollspy-example" tabindex="0">
+      <div class="scrollspy-example w-75 m-auto" tabindex="0">
         <%# loop through all groupings by same year and month%>
         <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
     
-          <% const timeGroup = timelinesGrouped[i] %>
-          <% if(timeGroup._id.year) { %>
-            <div class="row" id="group-<%= timeGroup._id.year %>">
-          <% } else { %>
-            <div class="row" id="ungrouped">
-          <% } %>
-            <%= timeGroup._id.year %>
-            <%# loop through each branch per grouping %>
-            <% for(let j = 0; j < timeGroup.branchData.length; j++) { %>
-              <% const branchData = timeGroup.branchData[j] %>
-              <a href="/timelines/<%= branchData.branchId %>">
-                <div class="card mb-3">
-                  <div class="card-header">
-                    Featured
+        <% const timeGroup = timelinesGrouped[i] %>
+        <% if(timeGroup._id.year) { %>
+          <div class="row" id="group-<%= timeGroup._id.year %>">
+        <% } else { %>
+          <div class="row" id="ungrouped">
+        <% } %>
+
+          <%# year and month badges %>
+          <div class="row mt-4 mb-2">
+            <div class="col">
+              <span class="badge bg-secondary"><%= timeGroup._id.year %></span>
+              <% if(timeGroup.branchData[0].firstDate) { %>
+                <span class="badge bg-dark"><%= timeGroup.branchData[0].firstDate.toLocaleString('en-US', { month: 'long' }) %></span>
+              <% } %>
+            </div>
+          </div>
+
+          <%# loop through each branch per grouping %>
+          <% for(let j = 0; j < timeGroup.branchData.length; j++) { %>
+            <% const branchData = timeGroup.branchData[j] %>
+
+          <%# card %>
+            <a href="/timelines/<%= branchData.branchId %>">
+              <div class="card mt-2 mb-4 position-relative shadow">
+                <div class="row g-0">
+
+                  <div class="col-md-4 pr-md-0">
+                    <img class="card-img-top" src="<%= branchData.timelineThumb %>" alt="Card image cap">
                   </div>
-                  <img class="card-img-top" src="<%= branchData.timelineThumb %>" alt="Card image cap" style="height: 100px;">
-                  <div class="card-body">
-                    <h5 class="card-title">
+
+                  <div class="col-md-8 pl-md-0">
+                    <div class="card-body">
+
+                      <%# branch name %>
+                      <h5 class="card-title">
+                        <%= branchData.timelineName %>
+                      </h5>
+
+                      <%# description %>
+                      <p class="card-text"><%= branchData.description %></p>
+
+                      <%# Display date range in footer%>
                       <% if(branchData.firstDate) { %>
-                        <%= branchData.firstDate.toLocaleString('en-US', { month: 'long' }) %>
+                        <h6 class="card-text">
+                          <%= branchData.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= branchData.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %>
+                        </h6>
                       <% } %>
-                    </h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+                    </div>
                   </div>
+    
+
                 </div>
-              </a>
+
+                  <% if(branchData.privacy === 'private') { %>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark py-1 ps-2">
+                      <%= branchData.privacy %>
+                      <span class="visually-hidden">private branch</span>
+                    </span>
+                  <% } else if(branchData.privacy === 'public') { %>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark py-1 ps-2">
+                      <%= branchData.privacy %>
+                      <span class="visually-hidden">public branch</span>
+                    </span>
+                  <% } %>
+
+              </div>
+            </a>
+
             <% } %>
           </div>
           
         <% } %>
       </div>
     </div>
-
-    <div class="col-8">
-    </div>
+  </div>
   
 </section>
 
