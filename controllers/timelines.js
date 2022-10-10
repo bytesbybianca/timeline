@@ -1,6 +1,7 @@
 const cloudinary = require("../middleware/cloudinary");
 const Timeline = require("../models/Timeline");
 const Moment = require("../models/Moment");
+const mongoose = require("mongoose");
 
 module.exports = {
   getTimelines: async (req, res) => {
@@ -27,23 +28,37 @@ module.exports = {
           }
         }
 
-      const test = await Timeline.aggregate([
-
+      const timelinesGrouped = await Timeline.aggregate([
+        { $match : { user: mongoose.Types.ObjectId(req.user.id) } },
         {
           $group: {
             _id: {
               year: { $year: "$firstDate" },
               month: { $month: "$firstDate" },
             },
-            branchId: { $push: "$_id" },
+            branchData:
+              { $addToSet: 
+                { 
+                  branchId: "$_id", 
+                  timelineName: "$timelineName", 
+                  description: "$description", 
+                  timelineThumb: "$timelineThumb", 
+                  cloudinaryId: "$cloudinaryId", 
+                  firstDate: "$firstDate", 
+                  lastDate: "$lastDate", 
+                  privacy: "$privacy", 
+                  user: "$user", 
+                  createdAt: "$createdAt"
+                }
+             },
           }
         },
         { $sort: {_id: 1} },
       ])
 
-      console.log(branchByYear)
-      console.log(test)
-      res.render("timelines.ejs", { test: test, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
+      // console.log(branchByYear)
+      console.log(timelinesGrouped)
+      res.render("timelines-test.ejs", { timelinesGrouped: timelinesGrouped, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
     } catch (err) {
       console.log(err);
     }
