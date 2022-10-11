@@ -34,7 +34,7 @@ module.exports = {
           $group: {
             _id: {
               year: { $year: "$firstDate" },
-              month: { $month: "$firstDate" },
+              // month: { $month: "$firstDate" },
             },
             branchData:
               { $addToSet: 
@@ -101,7 +101,7 @@ module.exports = {
       console.log(momentsGrouped)
       // console.log(testTwo)
 
-      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped });
+      res.render("branch-test.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped });
     } catch (err) {
       console.log(err);
     }

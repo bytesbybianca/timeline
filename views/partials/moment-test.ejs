@@ -1,0 +1,203 @@
+<%# Moments %>
+<section class="row">
+  <%# Moments Navigation%>
+  <div class="col">
+    <%# Navigation %>
+
+    <nav id="navbar-example3" class="navbar navbar-light bg-light flex-column align-items-stretch p-3">
+      <nav class="nav nav-pills flex-column">
+        <%# Keep track of years added to nav %>
+        <% let navYears = [] %>
+        <% for(let i = 0; i < momentsGrouped.length; i++) { %>
+          <% const momentGroup = momentsGrouped[i] %>
+  
+  
+          <% if(!navYears.includes(momentGroup._id.year)) { %>
+            <% navYears.push(momentGroup._id.year) %>
+            <a class="nav-link" href="#moment-<%= momentGroup._id.year %>"><%= momentGroup._id.year %></a>
+            <nav class="nav nav-pills flex-column">
+          <% } %>
+
+          <a class="nav-link ms-3 my-1" href="#moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>"><%= momentGroup._id.month %></a>
+          
+        <% } %>
+        
+        </nav>
+      </nav>
+    </nav>
+  </div>
+
+  <%# Moments%>
+  <div class="col">
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-offset="0" tabindex="0">
+      <% for(let i = 0; i < momentsGrouped.length; i++) { %>
+        <% const momentGroup = momentsGrouped[i] %>
+
+        <h4 id="moment-<%= momentGroup._id.year %>">
+          <%= momentGroup._id.year %>
+        </h4>
+
+        <% for(let j = 0; j < momentGroup.momentData.length; j++) { %>
+          <% const momentData = momentGroup.momentData[j] %>
+
+          <h6 id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>">
+            <%= momentGroup._id.month %>
+          </h6>
+
+        <% } %>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+
+<%# Page %>
+
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <%# Timeline Area%>
+        <div class="apland-timeline-area">
+          <% for(let i = 0; i < moments.length; i++) {%>
+            <%# Single Timeline Content%>
+            <%# Year divider %>
+            <div class="single-timeline-area">
+              <span class="month-range visibility">month - month</span>
+              <div class="timeline-date year-dot wow fadeInLeft">
+                <p id="year-start">
+                  2020
+                </p>
+              </div>
+            </div>
+            <div class="single-timeline-area">
+              <div class="timeline-date month-dot wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                <%# Timeline year %>
+                <p><%= moments[i].date.toLocaleString(('en-US'), {
+                  month: 'short',
+                  day: 'numeric'
+                }) %></p>
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-6 col-lg-8">
+                  <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                    <div class="timeline-icon">
+                      <% if(moments[i].momentType === 'location') { %>
+                        <i class="fas fa-map-marker" aria-hidden="true"></i>
+                      <% } if(moments[i].momentType === 'journal') { %>
+                        <i class="fas fa-pen-alt" aria-hidden="true"></i>
+                      <% } if(moments[i].momentType === 'twitter') { %>
+                        <i class="fab fa-twitter" aria-hidden="true"></i>
+                      <% } if(moments[i].momentType === 'photo') { %>
+                        <i class="far fa-images" aria-hidden="true"></i>
+                      <% } %>
+                    </div>
+                    <div class="timeline-text">
+                        <% if(moments[i].momentType === 'journal') { %>
+                            <h6 class="text-dark">Journal entry:</h6>
+                            <span><%= moments[i].journalEntry %></span>
+                        <% } else if(moments[i].momentType === 'twitter') { %>
+                            <h6 class="text-dark">Tweet:</h6>
+                            <div id="tweet-<%= moments[i].tweetId %>">
+                            </div>
+                        <% } else if(moments[i].momentType === 'location') { %>
+                            <h6 class="text-dark">Location:</h6>
+                            <span><%= moments[i].location %></span>
+                        <% } else if(moments[i].momentType === 'photo') { %>
+                            <h6 class="text-dark">Photo:</h6>
+                            <img class="img-fluid" src="<%= moments[i].momentImage %>">
+                        <% } %>
+
+                        <%if(moments[i].user == user.id){ %>
+                          <%# Edit moment %>
+                          <div class="row mb-3">
+                            <div class="col">
+                              <button class="btn btn-light far fa-edit" type="submit" data-toggle="collapse" data-target="#editMoment<%=moments[i]._id%>" aria-expanded="false" aria-controls="editMoment<%=moments[i]._id%>"></button>
+                            </div>
+
+                          <%# Delete moment %>
+                            <div class="col">
+                              <form
+                              action="/moments/<%= moments[i]._id %>/deleteMoment?_method=DELETE"
+                              method="POST"
+                              enctype="multipart/form-data"
+                              >
+                                <button class="btn btn-light fa fa-trash" type="submit"></button>
+                              </form>
+                            </div>
+                          </div>
+
+                          <%# Edit moment collapsible %>
+                          <div class="row collapse" id="editMoment<%=moments[i]._id%>">
+                            <div class="col">
+                              <form
+                              action="/moments/<%= moments[i]._id %>/editMoment?_method=PUT"
+                              method="POST"
+                              >
+                                <%# Edit time %>
+                                <div class="row mb-3">
+                                  <div class="col">
+                                    <% const momentDate = new Date(moments[i].date).toISOString().slice(0, 16) %>
+                                    <label for="date">Change date and time for this moment:</label><br>
+                                    <input type="datetime-local" id="date"
+                                      name="date" value="<%= momentDate %>">
+                                  </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                  <div class="col">
+                                    <%# Edit journal entries %>
+                                    <% if(moments[i].momentType === 'journal') { %>
+                                      <label for="editJournalEntry">Journal entry:</label>
+                                      <textarea id="editJournalEntry" name="journal"
+                                      rows="5" cols="45"><%= moments[i].journalEntry %></textarea>
+                                    <% } %>
+                                    <%# Edit location %>
+                                    <% if(moments[i].momentType === 'location') { %>
+                                      <label for="editLocation">Location:</label>
+                                      <input type="text" id="editLocation" name="location"
+                                      minlength="1" size="10" value="<%= moments[i].location %>">
+                                    <% } %>
+                                    <%# Edit photo %>
+                                    <% if(moments[i].momentType === 'photo') { %>
+                                      <label for="editMomentImage" class="form-label">Image upload</label>
+                                      <input type="file" class="form-control" id="editMomentImage" name="file">
+                                    <% } %>
+                                  </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                  <div class="col">
+                                    <button type="submit" class="btn btn-primary" value="Upload">Save</button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        <%}%>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript" src="/js/twitter.js"></script>
+
+<% for(let i = 0; i < moments.length; i++) { %>
+  <% if(moments[i].momentType === 'twitter') { %>
+    <script type="text/javascript">
+      TwitterWidgetsLoader.load(function(err, twttr) {
+      if(err) {
+        console.error(err);
+        return;
+      }
+    
+      twttr.widgets.createTweet('<%= moments[i].tweetId %>', document.getElementById('tweet-<%= moments[i].tweetId %>'));
+    });
+    </script>
+  <% } %>
+<% } %>

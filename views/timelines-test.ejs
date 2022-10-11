@@ -117,13 +117,10 @@
           <div class="row" id="ungrouped">
         <% } %>
 
-          <%# year and month badges %>
+          <%# year badges %>
           <div class="row mt-4 mb-2">
             <div class="col">
               <span class="badge rounded-pill py-2 px-3 bg-secondary"><%= timeGroup._id.year %></span>
-              <% if(timeGroup.branchData[0].firstDate) { %>
-                <span class="badge rounded-pill py-2 px-3 bg-dark"><%= timeGroup.branchData[0].firstDate.toLocaleString('en-US', { month: 'long' }) %></span>
-              <% } %>
             </div>
           </div>
 
