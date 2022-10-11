@@ -58,3 +58,31 @@ header a:hover, .timeline-name.text-dark:hover {
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, #f7f7f7, #f3eef3)
 }
+
+#timelineDates a {
+    color: rgb(120, 120, 120);
+}
+
+#timelineDates .active {
+    color: #9a669a;
+    font-size: 125%;
+}
+
+#timelineDates a:hover {
+    color: #9a669a;
+}
+
+#timelineDates a:after {
+    border-radius: 0.2em;
+    bottom: 0;
+    content: '';
+    height: 0.2em;
+    position: absolute;
+    right: 0;
+    width: 100%;
+    transition: max-width 0.2s ease;
+}
+
+#timelineDates {
+    border-bottom: 1px dotted;
+}

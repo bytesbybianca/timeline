@@ -1,6 +1,7 @@
 const cloudinary = require("../middleware/cloudinary");
 const Timeline = require("../models/Timeline");
 const Moment = require("../models/Moment");
+const mongoose = require("mongoose");
 
 module.exports = {
   getTimelines: async (req, res) => {
@@ -27,23 +28,37 @@ module.exports = {
           }
         }
 
-      const test = await Timeline.aggregate([
-
+      const timelinesGrouped = await Timeline.aggregate([
+        { $match : { user: mongoose.Types.ObjectId(req.user.id) } },
         {
           $group: {
             _id: {
               year: { $year: "$firstDate" },
-              month: { $month: "$firstDate" },
+              // month: { $month: "$firstDate" },
             },
-            branchId: { $push: "$_id" },
+            branchData:
+              { $addToSet: 
+                { 
+                  branchId: "$_id", 
+                  timelineName: "$timelineName", 
+                  description: "$description", 
+                  timelineThumb: "$timelineThumb", 
+                  cloudinaryId: "$cloudinaryId", 
+                  firstDate: "$firstDate", 
+                  lastDate: "$lastDate", 
+                  privacy: "$privacy", 
+                  user: "$user", 
+                  createdAt: "$createdAt"
+                }
+             },
           }
         },
         { $sort: {_id: 1} },
       ])
 
-      console.log(branchByYear)
-      console.log(test)
-      res.render("timelines.ejs", { test: test, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
+      // console.log(branchByYear)
+      console.log(timelinesGrouped)
+      res.render("timelines-test.ejs", { timelinesGrouped: timelinesGrouped, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
     } catch (err) {
       console.log(err);
     }
@@ -56,24 +71,38 @@ module.exports = {
       const moments = await Moment.find({ timelineProject: project.id }).sort({ date: "asc" })
       // const momentDate = moments[0].date
       // console.log(momentDate)
-      const test = await Moment.aggregate([
+      const momentsGrouped = await Moment.aggregate([
+        { $match : { timelineProject: mongoose.Types.ObjectId(req.params.projectId) } },
         {
           $group: {
             _id: {
-              timelineProject: "$timelineProject" ,
               year: { $year: "$date" },
               month: { $month: "$date" },
-              day: { $dayOfMonth: "$date" },
             },
+            momentData:
+              { $addToSet: 
+                { 
+                  momentId: "$_id", 
+                  momentType: "$momentType", 
+                  momentImage: "$momentImage", 
+                  location: "$location", 
+                  tweetId: "$tweetId", 
+                  journalEntry: "$journalEntry", 
+                  date: "$date", 
+                  user: "$user", 
+                  timelineProject: "$timelineProject", 
+                  createdAt: "$createdAt", 
+                }
+             },
           }
         },
         { $sort: {_id: 1} },
       ])
 
-      // console.log(test)
+      console.log(momentsGrouped)
       // console.log(testTwo)
 
-      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url });
+      res.render("branch-test.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped });
     } catch (err) {
       console.log(err);
     }
@@ -103,9 +132,11 @@ module.exports = {
   },
   editBranch: async (req, res) => {
     try {
-      if(req.file.path) {
-        // Find branch by id
-        const branch = await Timeline.findById(req.params.branchId);
+
+      // Find branch by id
+      const branch = await Timeline.findById(req.params.branchId);
+
+      if(req.file) {
         // Delete branch image from cloudinary
         await cloudinary.uploader.destroy(branch.cloudinaryId);
 
@@ -117,15 +148,17 @@ module.exports = {
             cloudinaryId: result.public_id,
           }
         ); 
-      }
-
+      } 
+      
       await Timeline.findOneAndUpdate(
         { _id: req.params.branchId },
         {
+          timelineName: req.body.timelineName,
           privacy: req.body.privacy,
           description: req.body.description,
         }
       );     
+
     
       console.log("Branch updated");
       res.redirect(`/timelines`);
