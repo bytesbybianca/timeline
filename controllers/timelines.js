@@ -131,9 +131,11 @@ module.exports = {
   },
   editBranch: async (req, res) => {
     try {
-      if(req.file.path) {
-        // Find branch by id
-        const branch = await Timeline.findById(req.params.branchId);
+
+      // Find branch by id
+      const branch = await Timeline.findById(req.params.branchId);
+
+      if(req.file) {
         // Delete branch image from cloudinary
         await cloudinary.uploader.destroy(branch.cloudinaryId);
 
@@ -145,15 +147,17 @@ module.exports = {
             cloudinaryId: result.public_id,
           }
         ); 
-      }
-
+      } 
+      
       await Timeline.findOneAndUpdate(
         { _id: req.params.branchId },
         {
+          timelineName: req.body.timelineName,
           privacy: req.body.privacy,
           description: req.body.description,
         }
       );     
+
     
       console.log("Branch updated");
       res.redirect(`/timelines`);

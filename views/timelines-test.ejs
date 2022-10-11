@@ -17,7 +17,7 @@
             <% if(timeGroup._id.year) { %>
               <%= timeGroup._id.year %>
             <% } else { %>
-                -
+                No date
             <% } %>
           </a>
           
@@ -120,9 +120,9 @@
           <%# year and month badges %>
           <div class="row mt-4 mb-2">
             <div class="col">
-              <span class="badge bg-secondary"><%= timeGroup._id.year %></span>
+              <span class="badge rounded-pill py-2 px-3 bg-secondary"><%= timeGroup._id.year %></span>
               <% if(timeGroup.branchData[0].firstDate) { %>
-                <span class="badge bg-dark"><%= timeGroup.branchData[0].firstDate.toLocaleString('en-US', { month: 'long' }) %></span>
+                <span class="badge rounded-pill py-2 px-3 bg-dark"><%= timeGroup.branchData[0].firstDate.toLocaleString('en-US', { month: 'long' }) %></span>
               <% } %>
             </div>
           </div>
@@ -136,107 +136,136 @@
                 <div class="row g-0">
 
                   
-                  <div class="col-md-4 pr-md-0 px-1">
-                    <img class="card-img-top" src="<%= branchData.timelineThumb %>" alt="Card image cap" style="height: 20rem">
+                  
+                  
+                  <div class="col-md-4 px-xl-4 p-2 align-self-center">
+                    <img class="card-img-top img-thumbnail" src="<%= branchData.timelineThumb %>" alt="Card image cap">
                   </div>
-
+                  
                   <div class="col-md-8 pl-md-0">
                     <div class="card-body">
+                      
+                      <%# Edit branch collapsible %>
+                      <div class="row">
 
-                      <%# branch privacy badge %>
-                      <div class="d-flex justify-content-end">
-                        <span class="btn btn-<% if(branchData.privacy === 'private') { %>light<% } else if(branchData.privacy === 'public') { %>warning<% } %>">
-                          <%= branchData.privacy %>
-                        </span>
-                      </div>
-
-                      <%# branch name %>
-                      <h5 class="card-title">
-                        <%= branchData.timelineName %>
-                      </h5>
-
-                      <%# description %>
-                      <p class="card-text"><%= branchData.description %></p>
-
-                      <%# Display date range in footer%>
-                      <% if(branchData.firstDate) { %>
-                        <h6 class="card-text">
-                          <%= branchData.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= branchData.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %>
-                        </h6>
-                      <% } %>
-
-                      <div class="row justify-content-between mb-3">
+                        <div class="col d-flex justify-content-start">
+                          <a href="/timelines/<%= branchData.branchId %>" class="btn btn-outline-secondary">Visit branch</a>
+                        </div>
 
                         <%if(branchData.user == user.id){ %>
-                          <%# Edit branch %>
-                          <div class="col">
-                            <button class="btn btn-light far fa-edit" type="submit" data-toggle="collapse" data-target="#editBranch<%= branchData.branchId %>" aria-expanded="false" aria-controls="editBranch<%= branchData.branchId %>"></button>
+                          <div class="col-xl-1 col-2 d-flex justify-content-end">
+                            <%# Edit button%>
+                            <button class="btn btn-light far fa-edit" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse-<%= branchData.branchId %>" aria-expanded="false" aria-controls="multiCollapseBranch multiCollapseEdit"></button>
                           </div>
-      
+
                           <%# Delete branch %>
-                          <div class="col">
+                          <div class="col-xl-1 col-2 d-flex justify-content-end">
                             <form
                               action="/timelines/deleteBranch/<%= branchData.branchId %>?_method=DELETE"
                               method="POST"
-                              class="col-3"
                             >
                               <button class="btn btn-light fa fa-trash" type="submit"></button>
                             </form>
                           </div>
-                          <%}%>
+                        <% } %>
+
                       </div>
-                      
-                      <%# Edit branch collapsible %>
-                      <div class="row collapse" id="editBranch<%= branchData.branchId %>">
-                        <div class="col">
-                          <form
-                          action="/timelines/<%= branchData.branchId %>/editBranch?_method=PUT"
-                          method="POST"
-                          enctype="multipart/form-data"
-                          >
-                            <%# Edit privacy option %>
-                            <div class="row mb-3">
-                              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="privacy" id="editPublic" autocomplete="off" value="public" 
-                                <% if(branchData.privacy === 'public') { %>
-                                  checked
-                                <% } %>
-                                >
-                                <label class="btn btn-outline-dark" for="editPublic">Public</label>
+                      <div class="row">
+                        <div class="col p-5">
+
+                          <%# Branch info display %>
+                          <div class="collapse show multi-collapse-<%= branchData.branchId %>" id="multiCollapseBranch">
+                            <div class="card-body">
+
+                              <%# branch name %>
+                              <h5 class="card-title">
+                                <%= branchData.timelineName %>
+                              </h5>
+
+                              <%# description %>
+                              <p class="card-text"><%= branchData.description %></p>
+
+                            </div>
+                          </div>
+
+                          <%# Edit mode %>
+                          <div class="collapse multi-collapse-<%= branchData.branchId %>" id="multiCollapseEdit">
+                            <div class="card card-body">
                               
-                                <input type="radio" class="btn-check" name="privacy" id="editPrivate" autocomplete="off" value="private" 
-                                <% if(branchData.privacy === 'private') { %>
-                                  checked
-                                <% } %>
-                                >
-                                <label class="btn btn-outline-dark" for="editPrivate">Private</label>
-                              
-                              </div>
-                            </div>
+                              <form
+                                action="/timelines/<%= branchData.branchId %>/editBranch?_method=PUT"
+                                method="POST"
+                                enctype="multipart/form-data"
+                              >
 
-                            <%# Change photo %>
-                            <div class="mb-3">
-                              <label for="timelineThumb" class="form-label">Thumbnail</label>
-                              <input type="file" class="form-control" id="timelineThumb" name="file">
-                            </div>
+                                <%# Edit description %>
+                                <div class="mb-3">
+                                  <label for="editTimelineName" class="form-label">Name</label>
+                                  <input type="text" class="form-control" id="editTimelineName" name="timelineName" value="<%= branchData.timelineName %>" required>
+                                </div>
 
-                            <%# Edit description %>
-                            <div class="mb-3">
-                              <label for="description">Description:</label>
-                              <textarea id="description" name="description"
-                              rows="5" cols="45"><%= branchData.description %></textarea>
-                            </div>
+                                <%# Edit privacy option %>
+                                <div class="row mb-3">
+                                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check" name="privacy" id="editPublic<%= branchData.branchId %>" autocomplete="off" value="public" 
+                                    <% if(branchData.privacy === 'public') { %>
+                                      checked
+                                    <% } %>
+                                    >
+                                    <label class="btn btn-outline-dark" for="editPublic<%= branchData.branchId %>">Public</label>
+                                  
+                                    <input type="radio" class="btn-check" name="privacy" id="editPrivate<%= branchData.branchId %>" autocomplete="off" value="private" 
+                                    <% if(branchData.privacy === 'private') { %>
+                                      checked
+                                    <% } %>
+                                    >
+                                    <label class="btn btn-outline-dark" for="editPrivate<%= branchData.branchId %>">Private</label>
+                                  
+                                  </div>
+                                </div>
 
-                            <div class="row mb-3">
-                              <div class="col">
-                                <button type="submit" class="btn btn-primary" value="Upload">Save</button>
-                              </div>
+                                <%# Change photo %>
+                                <div class="mb-3">
+                                  <label for="editTimelineThumb" class="form-label">Thumbnail</label>
+                                  <input type="file" class="form-control" id="editTimelineThumb" name="file">
+                                </div>
+
+                                <%# Edit description %>
+                                <div class="mb-3">
+                                  <label for="description">Description:</label><br>
+                                  <textarea id="description" name="description" style="min-width: 100%"><%= branchData.description %></textarea>
+                                </div>
+
+                                <div class="row mb-3">
+                                  <div class="col">
+                                    <button type="submit" class="btn btn-primary" value="Upload">Save</button>
+                                  </div>
+                                </div>
+                              </form>
+
                             </div>
-                          </form>
+                          </div>
+
                         </div>
                       </div>
 
-                      <a href="/timelines/<%= branchData.branchId %>" class="btn btn-outline-secondary">Go to branch</a>
+                      <div class="row d-flex align-items-center">
+                        <%# Display date range in footer%>
+                        <% if(branchData.firstDate) { %>
+                          <div class="col">
+                            <h6 class="card-text col">
+                              <%= branchData.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= branchData.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %>
+                            </h6>
+                          </div>
+                        <% } %>
+  
+                        <%# branch privacy badge %>
+                        <div class="col-2 d-flex justify-content-md-end justify-content-center">
+                          <span class="btn btn-<% if(branchData.privacy === 'private') { %>light<% } else if(branchData.privacy === 'public') { %>warning<% } %>">
+                            <%= branchData.privacy %>
+                          </span>
+                        </div>
+                      </div>
 
                     </div>
                   </div>
@@ -255,5 +284,15 @@
   </div>
   
 </section>
+
+<% if(!timelinesGrouped.length){ %>
+  <div class="row w-75 m-auto">
+    <div class="col card d-flex justify-content-center align-items-center" style="height: 100px">
+      <h5>
+        No Branches yet! Create a branch to get started.
+      </h5>
+    </div>
+  </div>
+<% } %>
 
 <%- include('partials/footer') -%>
