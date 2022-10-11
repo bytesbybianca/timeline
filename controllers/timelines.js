@@ -84,6 +84,7 @@ module.exports = {
                 { 
                   momentId: "$_id", 
                   momentType: "$momentType", 
+                  momentImage: "$momentImage", 
                   location: "$location", 
                   tweetId: "$tweetId", 
                   journalEntry: "$journalEntry", 
