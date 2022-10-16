@@ -58,7 +58,7 @@ module.exports = {
 
       // console.log(branchByYear)
       console.log(timelinesGrouped)
-      res.render("timelines-test.ejs", { timelinesGrouped: timelinesGrouped, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
+      res.render("timelines.ejs", { timelinesGrouped: timelinesGrouped, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
     } catch (err) {
       console.log(err);
     }
@@ -88,6 +88,7 @@ module.exports = {
                   location: "$location", 
                   tweetId: "$tweetId", 
                   journalEntry: "$journalEntry", 
+                  caption: "$caption", 
                   date: "$date", 
                   user: "$user", 
                   timelineProject: "$timelineProject", 
@@ -100,7 +101,6 @@ module.exports = {
       ])
 
       console.log(momentsGrouped)
-      // console.log(testTwo)
 
       res.render("branch-test.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped });
     } catch (err) {
@@ -211,6 +211,7 @@ module.exports = {
         location: req.body.location,
         tweetId: req.body.tweetId,
         journalEntry: req.body.journal,
+        caption: req.body.caption,
         date: req.body.date,
         time: req.body.time,
         user: req.user.id,

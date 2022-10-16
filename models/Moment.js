@@ -26,6 +26,10 @@ const MomentSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  caption: {
+    type: String,
+    required: false,
+  },
   date: {
     type: Date,
     required: false,

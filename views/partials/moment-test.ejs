@@ -28,65 +28,85 @@
   </div>
 </section>
 
-<%# Moments%>
-<section class="row p-0 m-0 w-100">
+ <%# Moments%>
+ <section class="row p-0 m-0 w-100">
   <div class="col">
     <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-offset="0" tabindex="0">
       <div class="row" data-masonry='{"percentPosition": true }' style="position: relative; height: 544px;">
       
+          <% let momentYears = [] %>
           <% for(let i = 0; i < momentsGrouped.length; i++) { %>
             <% const momentGroup = momentsGrouped[i] %>
-  
-  
-            <div class="col-sm-6 col-lg-4 p-1" id="moment-<%= momentGroup._id.year %>">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title"><%= momentGroup._id.year %></h5>
+
+            <% if(!momentYears.includes(momentGroup._id.year)) { %>
+              <% momentYears.push(momentGroup._id.year) %>
+              <div class="col-sm-6 col-lg-4 p-1" id="moment-<%= momentGroup._id.year %>">
+                <div style="background-color: rgb(206, 206, 206, .2); border: none;">
+                  <h5 class="text-center" style="font-size: xx-large; font-family: 'Bebas Neue', sans-serif;"><%= momentGroup._id.year %></h5>
                 </div>
               </div>
-            </div>
-    
+            <% } %>
+  
             <% for(let j = 0; j < momentGroup.momentData.length; j++) { %>
               <% const momentData = momentGroup.momentData[j] %>
               <% const momentType = momentData.momentType %>
     
               <%# Journal %>
               <% if(momentType === 'journal') { %>
-                <div class="col-sm-6 col-lg-4 p-1" id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>">
-                  <div class="card">
-                    <div class="card-body">
-                      <h5 class="card-title"><%= momentData.date.toLocaleString('en-US', { dateStyle: 'full' }) %></h5>
+                <div class="col-sm-6 col-lg-4 p-1" 
+                <% if(j === 0) { %>
+                  id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>"
+                  <% } %>
+                  >
+                  <div class="card border-secondary mb-3">
+                    <div class="card-header"><i class="fa-regular fa-book" style="font-weight: 900;"></i> Journal</div>
+                    <div class="card-body text-secondary">
+                      <h5 class="card-title">Secondary card title</h5>
                       <p class="card-text"><%= momentData.journalEntry %></p>
                     </div>
+                    <% if(momentData.caption) { %>
+                      <div class="card-footer"><%= momentData.caption %></div>
+                    <% } %>
                   </div>
                 </div>
               
               <%# Photo %>
               <% } else if(momentType === 'photo') { %>
-                <div class="col-sm-6 col-lg-4 p-1" id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>">
-                  <div class="card">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
+                <div class="col-sm-6 col-lg-4 p-1" 
+                <% if(j === 0) { %>
+                  id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>"
+                  <% } %>
+                  >
+                  <div class="card border-secondary mb-3">
+                    <img src="<%= momentData.momentImage %>" class="card-img-top">
+                    <% if(momentData.caption) { %>
+                      <div class="card-footer"><%= momentData.caption %></div>
+                    <% } %>
                   </div>
                 </div>
 
                 <%# Location %>
                 <% } else if(momentType === 'location') { %>
-                  <div class="col-sm-6 col-lg-4 p-1" id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>">
-                    <div class="card">
-                      <div class="card-body">
-                        This is some text within a card body.
-                      </div>
+                  <div class="col-sm-6 col-lg-4 p-1" 
+                  <% if(j === 0) { %>
+                    id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>"
+                    <% } %>
+                    >
+                    <div class="card text-dark bg-light mb-3">
+                      <div class="card-header"><i class="fa-solid fa-location-dot"></i> <%= momentData.location %></div>
                     </div>
                   </div>
 
                 <%# Tweet %>
                 <% } else if(momentType === 'twitter') { %>
-                  <div class="col-sm-6 col-lg-4 p-1 h-100" id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>">
+                  <div class="col-sm-6 col-lg-4 p-1" 
+                  <% if(j === 0) { %>
+                    id="moment-<%= momentGroup._id.year %>-<%= momentGroup._id.month %>"
+                    <% } %>
+                    >
                     <div id="tweet-<%= momentData.tweetId %>"></div>
                   </div>
+                  
                 <% } %>
     
             <% } %>
@@ -97,9 +117,8 @@
   </div>
 </section>
 
-
 <script type="text/javascript" src="/js/twitter.js"></script>
-
+  
 <% for(let i = 0; i < momentsGrouped.length; i++) { %>
   <% const momentGroup = momentsGrouped[i] %>
   <% for(let j = 0; j < momentGroup.momentData.length; j++) { %>
