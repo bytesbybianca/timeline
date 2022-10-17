@@ -123,7 +123,7 @@
           <% const branchData = timeGroup.branchData[j] %>
 
           <div class="col col-md-4 p-0">
-            <div class="card card-block border-0 rounded-0 bg-dark" <% if(branchData.firstDate && j == 0) { %>id="group-<%= timeGroup._id.year %>"<% } else if(!branchData.firstDate) { %>id="ungrouped"<% } %> style="background: url(<%= branchData.timelineThumb %>); background-size: cover;"></div>
+            <div class="card card-block border-0 rounded-0 bg-dark" <% if(branchData.firstDate && j == 0) { %>id="group-<%= timeGroup._id.year %>"<% } else if(!branchData.firstDate) { %>id="ungrouped"<% } %> style="background: url(<%= branchData.timelineThumb %>); background-size: cover; background-position: center;"></div>
           </div>
           <div class="col col-md-3 p-0">
             <div class="card card-block border-0 rounded-0 p-5">
