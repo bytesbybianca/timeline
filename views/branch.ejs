@@ -134,8 +134,8 @@
       <div class="row flex-lg-row flex-column flex-wrap pb-5"  style="height: 80vh;">
     
         <%# Left, branch info %>
-        <div class="col col-lg-4 h-100 bg-light">
-          <h1 class="display-1"><%= project.timelineName %></h1>
+        <div class="col col-lg-4 h-100 bg-light p-3">
+          <h1 class="display-1 text-break"><%= project.timelineName %></h1>
 
           <%# If one moment exists in branch %>
           <% if( project.firstDate) { %>
@@ -186,10 +186,7 @@
                 <div id="tweet-<%= momentData.tweetId %>" class="d-flex justify-content-center" style="overflow-y: auto;"></div>
               </div>
             
-          <% } else { %>
-
-            
-            <% if(momentType === 'location') { %>
+          <% } else if(momentType === 'location') { %>
             <%# Moment row start %>
             <div class="row flex-md-row-reverse flex-column p-3" 
             <% if(j === 0) { %>
@@ -250,13 +247,21 @@
   
             <% } %>
 
-
+            <%# Delete moment %>
+            <div class="row moment-delete">
+              <form
+              action="/moments/<%= moments[i]._id %>/deleteMoment?_method=DELETE"
+              method="POST"
+              enctype="multipart/form-data"
+              >
+                <button class="btn btn-light fa fa-trash" type="submit"></button>
+              </form>
+            </div>
           <% } %>
 
         </div>
 
       <% } %>
-    <% } %>
 
 <%- include('partials/footer') -%>
 
