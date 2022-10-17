@@ -102,7 +102,7 @@ module.exports = {
 
       console.log(momentsGrouped)
 
-      res.render("branch-test.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped });
+      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped });
     } catch (err) {
       console.log(err);
     }

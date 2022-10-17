@@ -1,0 +1,295 @@
+<%- include('partials/header') -%>
+
+<body data-bs-spy="scroll" data-bs-target="#timelineDates" data-bs-smooth-scroll="true">
+
+<%# Timeline %>
+<section class="timelineWrapper row">  
+
+    <div class="col p-0 m-0">
+      
+      <%# Navigation %>
+      <div id="timelineDates" class="list-group list-group-horizontal sticky-top text-center mb-3">
+        <%# loop through all groupings by same year and month%>
+        <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
+          <% const timeGroup = timelinesGrouped[i] %>
+        
+          <a class="list-group-item list-group-item-action border-0 p-2" style="background-color: #F6F7FD;" href="#<% if(timeGroup._id.year) { %>group-<%= timeGroup._id.year %><% } else { %>ungrouped<% } %>">
+            <% if(timeGroup._id.year) { %>
+              <%= timeGroup._id.year %>
+            <% } else { %>
+                No date
+            <% } %>
+          </a>
+          
+        <% } %>
+      </div>
+
+      <%# Modals %>
+      <div class="d-flex justify-content-md-end justify-content-center w-75 mx-auto my-5" id="timelineModals">
+        <div class="row">
+          <%# New branch modal %>
+          <div class="col">
+            <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#newBranchModal">
+              New branch
+            </button>
+
+            <div class="modal fade" id="newBranchModal">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1>Create a new branch</h1>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/timelines/createTimeline" enctype="multipart/form-data" method="POST">
+                      <div class="mb-3">
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                          <input type="radio" class="btn-check" name="privacy" id="public" autocomplete="off" value="public" >
+                          <label class="btn btn-outline-dark" for="public">Public</label>
+                        
+                          <input type="radio" class="btn-check" name="privacy" id="private" autocomplete="off" value="private" checked>
+                          <label class="btn btn-outline-dark" for="private">Private</label>
+                        
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="timelineName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="timelineName" name="title">
+                      </div>
+                      <div class="mb-3">
+                        <label for="timelineThumb" class="form-label">Thumbnail</label>
+                        <input type="file" class="form-control" id="timelineThumb" name="file">
+                      </div>
+                      <div class="mb-3">
+                        <label for="description">Description:</label>
+                        <textarea id="description" name="description"
+                        rows="5" cols="45"></textarea>
+                      </div>
+                      <%# hidden %>
+                      <input id="firstDate" name="firstDate" value="" hidden>
+                      <input id="lastDate" name="lastDate" value="" hidden>
+                      <button type="submit" class="btn btn-dark btn-sm text-nowrap" value="Upload">Submit</button>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <%# Info modal %>
+          <div class="col">
+            <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#infoModal">
+              Information
+            </button>
+
+            <div class="modal fade" id="infoModal">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1>Information</h1>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    Timeline helps you organize your favorite Moments in life by collecting them in Branches. Public branches can be viewed by others on Timeline.
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%# Branches %>
+      <div class="scrollspy-example w-75 m-auto" tabindex="0">
+        <%# loop through all groupings by same year and month%>
+        <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
+    
+        <% const timeGroup = timelinesGrouped[i] %>
+        <% if(timeGroup._id.year) { %>
+          <div class="row" id="group-<%= timeGroup._id.year %>">
+        <% } else { %>
+          <div class="row" id="ungrouped">
+        <% } %>
+
+          <%# year badges %>
+          <div class="row mt-4 mb-2">
+            <div class="col">
+              <span class="badge rounded-pill py-2 px-3 bg-secondary"><%= timeGroup._id.year %></span>
+            </div>
+          </div>
+
+          <%# loop through each branch per grouping %>
+          <% for(let j = 0; j < timeGroup.branchData.length; j++) { %>
+            <% const branchData = timeGroup.branchData[j] %>
+
+              <%# card %>
+              <div class="card mt-2 mb-4 position-relative shadow">
+                <div class="row g-0">
+
+                  
+                  
+                  
+                  <div class="col-md-4 px-xl-4 p-2 align-self-center">
+                    <img class="card-img-top img-thumbnail" src="<%= branchData.timelineThumb %>" alt="Card image cap">
+                  </div>
+                  
+                  <div class="col-md-8 pl-md-0">
+                    <div class="card-body">
+                      
+                      <%# Edit branch collapsible %>
+                      <div class="row">
+
+                        <div class="col d-flex justify-content-start">
+                          <a href="/timelines/<%= branchData.branchId %>" class="btn btn-outline-secondary">Visit branch</a>
+                        </div>
+
+                        <%if(branchData.user == user.id){ %>
+                          <div class="col-xl-1 col-2 d-flex justify-content-end">
+                            <%# Edit button%>
+                            <button class="btn btn-light far fa-edit" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse-<%= branchData.branchId %>" aria-expanded="false" aria-controls="multiCollapseBranch multiCollapseEdit"></button>
+                          </div>
+
+                          <%# Delete branch %>
+                          <div class="col-xl-1 col-2 d-flex justify-content-end">
+                            <form
+                              action="/timelines/deleteBranch/<%= branchData.branchId %>?_method=DELETE"
+                              method="POST"
+                            >
+                              <button class="btn btn-light fa fa-trash" type="submit"></button>
+                            </form>
+                          </div>
+                        <% } %>
+
+                      </div>
+                      <div class="row">
+                        <div class="col p-5">
+
+                          <%# Branch info display %>
+                          <div class="collapse show multi-collapse-<%= branchData.branchId %>" id="multiCollapseBranch">
+                            <div class="card-body">
+
+                              <%# branch name %>
+                              <h5 class="card-title">
+                                <%= branchData.timelineName %>
+                              </h5>
+
+                              <%# description %>
+                              <p class="card-text"><%= branchData.description %></p>
+
+                            </div>
+                          </div>
+
+                          <%# Edit mode %>
+                          <div class="collapse multi-collapse-<%= branchData.branchId %>" id="multiCollapseEdit">
+                            <div class="card card-body">
+                              
+                              <form
+                                action="/timelines/<%= branchData.branchId %>/editBranch?_method=PUT"
+                                method="POST"
+                                enctype="multipart/form-data"
+                              >
+
+                                <%# Edit description %>
+                                <div class="mb-3">
+                                  <label for="editTimelineName" class="form-label">Name</label>
+                                  <input type="text" class="form-control" id="editTimelineName" name="timelineName" value="<%= branchData.timelineName %>" required>
+                                </div>
+
+                                <%# Edit privacy option %>
+                                <div class="row mb-3">
+                                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check" name="privacy" id="editPublic<%= branchData.branchId %>" autocomplete="off" value="public" 
+                                    <% if(branchData.privacy === 'public') { %>
+                                      checked
+                                    <% } %>
+                                    >
+                                    <label class="btn btn-outline-dark" for="editPublic<%= branchData.branchId %>">Public</label>
+                                  
+                                    <input type="radio" class="btn-check" name="privacy" id="editPrivate<%= branchData.branchId %>" autocomplete="off" value="private" 
+                                    <% if(branchData.privacy === 'private') { %>
+                                      checked
+                                    <% } %>
+                                    >
+                                    <label class="btn btn-outline-dark" for="editPrivate<%= branchData.branchId %>">Private</label>
+                                  
+                                  </div>
+                                </div>
+
+                                <%# Change photo %>
+                                <div class="mb-3">
+                                  <label for="editTimelineThumb" class="form-label">Thumbnail</label>
+                                  <input type="file" class="form-control" id="editTimelineThumb" name="file">
+                                </div>
+
+                                <%# Edit description %>
+                                <div class="mb-3">
+                                  <label for="description">Description:</label><br>
+                                  <textarea id="description" name="description" style="min-width: 100%"><%= branchData.description %></textarea>
+                                </div>
+
+                                <div class="row mb-3">
+                                  <div class="col">
+                                    <button type="submit" class="btn btn-primary" value="Upload">Save</button>
+                                  </div>
+                                </div>
+                              </form>
+
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <div class="row d-flex align-items-center">
+                        <%# Display date range in footer%>
+                        <% if(branchData.firstDate) { %>
+                          <div class="col">
+                            <h6 class="card-text col">
+                              <%= branchData.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= branchData.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %>
+                            </h6>
+                          </div>
+                        <% } %>
+  
+                        <%# branch privacy badge %>
+                        <div class="col-2 d-flex justify-content-md-end justify-content-center">
+                          <span class="btn btn-<% if(branchData.privacy === 'private') { %>light<% } else if(branchData.privacy === 'public') { %>warning<% } %>">
+                            <%= branchData.privacy %>
+                          </span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+    
+
+                </div>
+
+              </div>
+
+            <% } %>
+          </div>
+          
+        <% } %>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
+<% if(!timelinesGrouped.length){ %>
+  <div class="row w-75 m-auto">
+    <div class="col card d-flex justify-content-center align-items-center" style="height: 100px">
+      <h5>
+        No Branches yet! Create a branch to get started.
+      </h5>
+    </div>
+  </div>
+<% } %>
+
+<%- include('partials/footer') -%>

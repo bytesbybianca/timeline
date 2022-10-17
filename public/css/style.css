@@ -6,7 +6,7 @@
 body, header {
     padding: 0 !important;
     margin: 0 !important;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .logo-small {
@@ -108,3 +108,16 @@ header a:hover, .timeline-name.text-dark:hover {
 		opacity: 0.9;
 	}
 }
+
+.branch-card-block{
+	height: 40vh;
+}
+
+/* .vertical_dotted_line, #momentContainer {
+    border-left: 2px dashed rgb(216, 216, 216);
+    border-right: 2px dashed rgb(216, 216, 216);
+}  */
+
+#momentContainer .row:not(:first-child) {
+    border-top: 3px dashed rgb(237, 237, 237);
+} 

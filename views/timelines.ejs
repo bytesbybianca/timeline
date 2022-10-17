@@ -83,7 +83,7 @@
 <%# Modals end %>
 
 <%# Year links %>
-<div class="container-fluid my-2 p-0">
+<div class="container-fluid my-2 p-0 sticky-top bg-light">
   <div class="row">
     <div class="col text-center">
       <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
@@ -126,7 +126,7 @@
             <div class="card card-block border-0 rounded-0 bg-dark" <% if(branchData.firstDate && j == 0) { %>id="group-<%= timeGroup._id.year %>"<% } else if(!branchData.firstDate) { %>id="ungrouped"<% } %> style="background: url(<%= branchData.timelineThumb %>); background-size: cover;"></div>
           </div>
           <div class="col col-md-3 p-0">
-            <div class="card card-block border-0 rounded-0 p-5" id="card2">
+            <div class="card card-block border-0 rounded-0 p-5">
               <h3>
                 <%= branchData.timelineName %>
               </h3>
