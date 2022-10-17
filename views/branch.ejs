@@ -1,52 +1,29 @@
 <%- include('partials/header') -%>
 
-<head>
-  <link rel="stylesheet" href="/css/login.css" />
-</head>
+<%#
+<div class="row">
+  <div class="col-6 bg-light" style="height: 300px;">
+      <img src="https://media.haircutinspiration.com/photos/20181204011855/boy-hairstyle-e1536810585307.jpg" class="img-fluid">
+  </div>
+      <div class="col-6 align-self-center">
+          <div><span>hello hello</span></div>
+      </div>
+  
+  </div>
+  %>
 
-<!-- Branch hero -->
-<div style="background: linear-gradient(
-  to bottom,
-  hsla(0, 0%, 0%, 0),
-  hsla(0, 0%, 0%, 0.8)
-  ), url(<%= project.timelineThumb %>)" class="jumbotron bg-cover text-white">
-    <div class="container py-5 text-center">
-      <!-- Branch name -->
-      <h1 class="display-4 font-weight-bold text-white"><%= project.timelineName %></h1>
-      <!-- Branch description -->
-      <p class="font-italic mb-0">
-        <% if(project.description) { %>
-          <%= project.description %>
-        <% } %>
-      </p>
-        <% if(moments.length) { %>
-          <p><%= moments[0].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %> - <%= moments[moments.length - 1].date.toLocaleString(('en-us'), { dateStyle: 'full', }) %></p>
-        <% } %>
-        <button class="btn btn-light text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
-          New moment
-        </button>
-      </div>
-    </div>
- 
-<!-- Moments -->
-<div class="container py-5">
-  <h2 class="h3 font-weight-bold">Moments</h2>
+<%# Modals %>
+<div class="d-flex justify-content-md-end justify-content-center w-75 mx-auto my-5" id="branchModals">
   <div class="row">
-      <div class="col-lg-10 mb-4">
-        <% if(!moments.length) { %>
-          <p class="mt-4 mb-0">
-            You haven't created any moments yet!
-          </p>
-          <button class="btn btn-light text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
-            New moment
-          </button>
-        <% } %>
-        <%- include('partials/moment') -%>
-      </div>
+    <%# New branch modal %>
+    <div class="col">
+      <button class="btn btn-light btn-outline-dark text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
+        New moment
+      </button>
+    </div>
   </div>
 </div>
 
-<!-- New moment modal -->
 <div class="col">
   <div class="modal fade" id="newMomentModal">
     <div class="modal-dialog modal-dialog-centered">
@@ -68,7 +45,7 @@
               
             </div>
 
-            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <div class="btn-group my-3" role="group" aria-label="Basic radio toggle button group">
               <input type="radio" class="btn-check" name="momentType" id="photo" autocomplete="off" value="photo" data-bs-toggle="collapse" data-bs-target=".momentImageContainer" aria-expanded="true" aria-controls="momentImageContainer" checked>
               <label class="btn btn-outline-dark" for="photo">Photo</label>
             
@@ -89,24 +66,33 @@
               <div class="mb-3 momentImageContainer show" data-bs-parent="#collapseContainer">
                 <label for="momentImage" class="form-label">Image upload</label>
                 <input type="file" class="form-control" id="momentImage" name="file">
+
+                <div class="mb-3">
+                  <label for="caption" class="form-label">Caption</label>
+                  <input type="text" class="form-control" id="caption" name="caption">
+                </div>
               </div>
               <div class="mb-3 locationContainer collapse" data-bs-parent="#collapseContainer">
                 <label for="location">Location:</label>
-                
                 <input type="text" id="location" name="location"
                 minlength="1" size="10">
+
+
               </div>
               <div class="mb-3 tweetIdContainer collapse" data-bs-parent="#collapseContainer">
                 <label for="tweetId">Tweet ID:</label>
-                
                 <input type="text" id="tweetId" name="tweetId"
                 minlength="1" size="10">
+                <small class="d-block">
+                  Provide the ID of a <em>public</em> tweet.
+                </small>
               </div>
               <div class="mb-3 journalContainer collapse" data-bs-parent="#collapseContainer">
                 <label for="journalEntry">Journal entry:</label>
-                
                 <textarea id="journalEntry" name="journal"
                 rows="5" cols="45"></textarea>
+
+
               </div>
               
               <button type="submit" class="btn btn btn-primary" value="Upload">Submit</button>
@@ -120,5 +106,179 @@
     </div>
   </div>
 </div>
+<%# Modals end %>
+
+<div class="container">
+  <%# Year links %>
+  <div class="container-fluid my-2 p-0 sticky-top bg-light text-nowrap" style="overflow-x: scroll;">
+    <div class="row">
+      <div class="col text-center">
+        <% for(let i = 0; i < momentsGrouped.length; i++) { %>
+          <% const momentGroup = momentsGrouped[i] %>
+
+            <a href="#moment-<%= momentGroup.momentData[0].date.toLocaleString('en-US', { dateStyle: 'short' }) %>">
+              <button type="button" class="btn btn-link" data-mdb-ripple-color="dark">
+                <%= momentGroup.momentData[0].date.toLocaleString('en-US', { month: 'long', year: 'numeric' }) %>
+              </button>
+            </a>
+
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+  <%# Year links end %>
+
+  <div class="container" id="momentContainer">
+    <%# Moment heading %>
+      <div class="row flex-lg-row flex-column flex-wrap pb-5"  style="height: 80vh;">
+    
+        <%# Left, branch info %>
+        <div class="col col-lg-4 h-100 bg-light">
+          <h1 class="display-1"><%= project.timelineName %></h1>
+
+          <%# If one moment exists in branch %>
+          <% if( project.firstDate) { %>
+            <small><%= project.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= project.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %></small>
+          <% } %>
+        </div>
+    
+        <%# Right, branch image %>
+        <div class="col col-lg-8 h-100" style="height: 400px; background: url(<%= project.timelineThumb %>); background-size: cover; background-position: center;">
+        </div>
+    
+      </div>
+    <%# Moment heading end %>
+
+    <%# No Moments %>
+    <% if(!moments.length) { %>
+      <div class="row my-5">
+        <div class="col text-center">
+          <p class="mt-4 mb-0">
+            You haven't created any moments yet!
+          </p>
+          <button class="btn btn-light btn-outline-dark text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
+            New moment
+          </button>
+        </div>
+      </div>
+    <% } %>
+    <%# No Moments end %>
+
+    <%# Moments %>
+
+    <% for(let i = 0; i < momentsGrouped.length; i++) { %>
+      <% const momentGroup = momentsGrouped[i] %>
+      <% for(let j = 0; j < momentGroup.momentData.length; j++) { %>
+        <% const momentData = momentGroup.momentData[j] %>
+        <% const momentType = momentData.momentType %>
+
+        
+
+          <% if(momentType === 'twitter') { %>
+            <%# Moment row start %>
+            <div class="row flex-md-row flex-column p-3" 
+            <% if(j === 0) { %>
+              id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
+              <% } %>
+            >
+              <div class="col border-0 rounded-0 bg-light">
+                <div id="tweet-<%= momentData.tweetId %>" class="d-flex justify-content-center" style="overflow-y: auto;"></div>
+              </div>
+            
+          <% } else { %>
+
+            
+            <% if(momentType === 'location') { %>
+            <%# Moment row start %>
+            <div class="row flex-md-row-reverse flex-column p-3" 
+            <% if(j === 0) { %>
+              id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
+              <% } %>
+            >
+
+              <%# One block %>
+              <div class="col border-0 rounded-0 bg-light p-5">
+                <h2 class="text-center"><i class="fa-solid fa-location-dot"></i> In <%= momentData.location %> on <%= momentData.date.toLocaleString('en-US', { dateStyle: 'full' }) %></h2>
+              </div>
+
+            <% } else if(momentType === 'photo') { %>
+
+            <%# Moment row start %>
+            <div class="row flex-md-row flex-column p-3 bg-light" 
+            <% if(j === 0) { %>
+              id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
+              <% } %>
+            >
+
+              <%# Left %>
+              <div class="col col-md-2 col-lg-4 border-0 rounded-0 align-self-center m-md-0 mb-5">
+                <div class="text-center d-flex flex-column p-auto">
+                  <h3 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { weekday: 'long' }) %></h3>
+                  <h2 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { dateStyle: 'medium' }) %></h2>
+                </div>
+              </div>
+
+              <div class="col col-md-10 col-lg-8 card border-0 rounded-0 bg-light p-md-5">
+                <img src="<%= momentData.momentImage %>" class="rounded-3 img-fluid">
+                <% if(momentData.caption) { %>
+                  <p><%= momentData.caption %></p>
+                <% } %>
+              </div>
+
+            <% } else if(momentType === 'journal') { %>
+
+            <%# Moment row start %>
+            <div class="row flex-md-row-reverse flex-column p-3" 
+            <% if(j === 0) { %>
+              id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
+              <% } %>
+            >
+
+              <%# Left %>
+              <div class="col col-md-2 card border-0 rounded-0 bg-light align-self-center">
+                <div class="text-center d-flex flex-column p-auto">
+                  <h3 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { weekday: 'long' }) %></h3>
+                  <h2 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { dateStyle: 'medium' }) %></h2>
+                </div>
+              </div>
+    
+              <%# Right %>
+              <div class="col col-md-10 card border-0 p-5 rounded-0 bg-light">
+                <p><%= momentData.journalEntry %></p>
+              </div>
+  
+            <% } %>
+
+
+          <% } %>
+
+        </div>
+
+      <% } %>
+    <% } %>
 
 <%- include('partials/footer') -%>
+
+<script type="text/javascript" src="/js/twitter.js"></script>
+  
+<% for(let i = 0; i < momentsGrouped.length; i++) { %>
+  <% const momentGroup = momentsGrouped[i] %>
+  <% for(let j = 0; j < momentGroup.momentData.length; j++) { %>
+    <% const momentData = momentGroup.momentData[j] %>
+    <% const momentType = momentData.momentType %>
+
+    <% if(momentType === 'twitter') { %>
+      <script type="text/javascript">
+        TwitterWidgetsLoader.load(function(err, twttr) {
+        if(err) {
+          console.error(err);
+          return;
+        }
+      
+        twttr.widgets.createTweet('<%= momentData.tweetId %>', document.getElementById('tweet-<%= momentData.tweetId %>'));
+      });
+      </script>
+    <% } %>
+  <% } %>
+<% } %>

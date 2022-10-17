@@ -1,6 +1,7 @@
 <%- include('partials/header') -%>
 
-<div class="d-flex justify-content-end m-5">
+<%# Modals %>
+<div class="d-flex justify-content-md-end justify-content-center w-75 mx-auto my-5" id="timelineModals">
   <div class="row">
     <%# New branch modal %>
     <div class="col">
@@ -79,156 +80,77 @@
     </div>
   </div>
 </div>
+<%# Modals end %>
 
-  <%# Page %>
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h1>Your Timeline</h1>
-        <h2 class="mb-5">
-          <% if(!timelines.length) { %>
-            You have no branches
+<%# Year links %>
+<div class="container-fluid my-2 p-0 sticky-top bg-light">
+  <div class="row">
+    <div class="col text-center">
+      <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
+        <% const timeGroup = timelinesGrouped[i] %>
 
-            <div class="row">
-              <%# New branch modal %>
-              <div class="col">
-                <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#newBranchModal">
-                  Create new branch
-                </button>
-              </div>
-            </div>
-          <% } else { %>
-            Branches
-          <% } %>
-        </h2>  
-        
-        <%# Timeline start %>
-        <%# Loop through each unique year for each branch %>
-        <% for(const year in branchByYear) { %>
-          <%# One timeline area/side bar for each year   %>
-          <%# Timeline Area %>
-          <%# Side bar and year %>
-          <div class="apland-timeline-area">
-            <%# Single Timeline Content %>
-            <div class="single-timeline-area">
-              <div class="timeline-date branch wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                <%# Timeline year %>
-                <% if(branchByYear[year][0].firstDate) { %>
-                  <p><%= branchByYear[year][0].firstDate.toLocaleString(('en-us'), { year: 'numeric' }) %></p>
-                <% } %>
-              </div>
-          <%# Side bar and year end %>
-          <section class="row">
-            <%# Loop through an array of branch objects in one year %>
-            <% for(let i = 0; i < branchByYear[year].length; i++) { %>
-              <%# Conditionals for size of div for length of branch by year %>
-              <% let sizeForOne = 'col-lg-8'%>
-              <% let sizeForMore = 'col-lg-4'%>
-              <div id="branchContainer<%= branchByYear[year][i]._id %>" class="col-12 col-md-6 
-              <% if(branchByYear[year].length == 1) { %>
-                <%= sizeForOne %>
-              <% } else if(branchByYear[year].length > 1) {%>
-                <%= sizeForMore %>
-              <% } %>
-              ">
-            <%# Branch object %>
-            <% let currentBranch = branchByYear[year][i] %>
-              <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                <div class="timeline-icon"><i class="fab fa-pagelines" aria-hidden="true"></i></div>
-                <div class="timeline-text">
-                  <a href="/timelines/<%= currentBranch._id %>">
-                    <h6 class="timeline-name text-dark"><%= currentBranch.timelineName %></h6>
-                    <img class="img-fluid" src="<%= currentBranch.timelineThumb %>">
-                  </a>
-                  <% if(currentBranch.firstDate) { %>
-                    <span class="branch-dates"><%= currentBranch.firstDate.toLocaleString(('en-us'), { dateStyle: 'short' }) %> - <%= currentBranch.lastDate.toLocaleString(('en-us'), { dateStyle: 'short' }) %></span>
-                  <% } %>
-                  <% if(currentBranch.description) { %>
-                    <p class="branch-description"><%= currentBranch.description %></p>
-                  <% } %>
-
-                  <div class="row justify-content-between mb-3">
-
-                    <%if(currentBranch.user == user.id){ %>
-                      <%# Edit branch %>
-                      <div class="col">
-                        <button class="btn btn-light far fa-edit" type="submit" data-toggle="collapse" data-target="#editBranch<%= currentBranch._id %>" aria-expanded="false" aria-controls="editBranch<%= currentBranch._id %>"></button>
-                      </div>
-
-                      <%# Delete branch %>
-                      <div class="col">
-                        <form
-                          action="/timelines/deleteBranch/<%= currentBranch._id %>?_method=DELETE"
-                          method="POST"
-                          class="col-3"
-                        >
-                          <button class="btn btn-light fa fa-trash" type="submit"></button>
-                        </form>
-                      </div>
-                      <%}%>
-                  </div>
-
-                  <%# Edit branch collapsible %>
-                  <div class="row collapse" id="editBranch<%= currentBranch._id %>">
-                    <div class="col">
-                      <form
-                      action="/timelines/<%= currentBranch._id %>/editBranch?_method=PUT"
-                      method="POST"
-                      enctype="multipart/form-data"
-                      >
-                        <%# Edit privacy option %>
-                        <div class="row mb-3">
-                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="privacy" id="editPublic" autocomplete="off" value="public" 
-                            <% if(currentBranch.privacy === 'public') { %>
-                              checked
-                            <% } %>
-                            >
-                            <label class="btn btn-outline-dark" for="editPublic">Public</label>
-                          
-                            <input type="radio" class="btn-check" name="privacy" id="editPrivate" autocomplete="off" value="private" 
-                            <% if(currentBranch.privacy === 'private') { %>
-                              checked
-                            <% } %>
-                            >
-                            <label class="btn btn-outline-dark" for="editPrivate">Private</label>
-                          
-                          </div>
-                        </div>
-
-                        <%# Change photo %>
-                        <div class="mb-3">
-                          <label for="timelineThumb" class="form-label">Thumbnail</label>
-                          <input type="file" class="form-control" id="timelineThumb" name="file">
-                        </div>
-
-                        <%# Edit description %>
-                        <div class="mb-3">
-                          <label for="description">Description:</label>
-                          <textarea id="description" name="description"
-                          rows="5" cols="45"><%= currentBranch.description %></textarea>
-                        </div>
-
-                        <div class="row mb-3">
-                          <div class="col">
-                            <button type="submit" class="btn btn-primary" value="Upload">Save</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
+        <a href="#<% if(timeGroup._id.year) { %>group-<%= timeGroup._id.year %><% } else { %>ungrouped<% } %>">
+          <button type="button" class="btn btn-link" data-mdb-ripple-color="dark">
+            <% if(timeGroup._id.year) { %>
+              <%= timeGroup._id.year %>
+            <% } else { %>
+                No date
             <% } %>
-          </section>
-        </div>
-        <% } %>
-      </div>
-      <%# Timeline area end %>
+          </button>
+        </a>
+        
+      <% } %>
 
     </div>
   </div>
+</div>
+<%# Year links end %>
+
+<div class="container-fluid m-0">
+  <div class="scrolling-wrapper row flex-md-row flex-column flex-nowrap">
+    
+    <div class="col col-md-5 p-0">
+      <div class="card card-block border-0 rounded-0 bg-secondary p-5">
+        <h1 class="display-4" style="font-weight: 900;">Welcome to your Timeline</h1>
+      </div>
+    </div>
+
+    <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
+      <% const timeGroup = timelinesGrouped[i] %>
+
+        <%# loop through each branch per grouping %>
+        <% for(let j = 0; j < timeGroup.branchData.length; j++) { %>
+          <% const branchData = timeGroup.branchData[j] %>
+
+          <div class="col col-md-4 p-0">
+            <div class="card card-block border-0 rounded-0 bg-dark" <% if(branchData.firstDate && j == 0) { %>id="group-<%= timeGroup._id.year %>"<% } else if(!branchData.firstDate) { %>id="ungrouped"<% } %> style="background: url(<%= branchData.timelineThumb %>); background-size: cover;"></div>
+          </div>
+          <div class="col col-md-3 p-0">
+            <div class="card card-block border-0 rounded-0 p-5">
+              <h3>
+                <%= branchData.timelineName %>
+              </h3>
+              <p>
+                <%= branchData.description %>
+              </p>
+              <small>
+                <% if(branchData.firstDate) { %>
+                  <%= branchData.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= branchData.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %> 
+                <% } %>
+              </small>
+              <a href="/timelines/<%= branchData.branchId %>" class="btn btn-outline-secondary">Visit branch</a>
+              <small>
+                <%= branchData.privacy %>
+              </small>
+            </div>
+          </div>
+
+      <% } %>
+
+    <% } %>
+
+
+  </div>
+</div>
 
 <%- include('partials/footer') -%>

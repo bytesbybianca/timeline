@@ -6,6 +6,7 @@
 body, header {
     padding: 0 !important;
     margin: 0 !important;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .logo-small {
@@ -86,3 +87,37 @@ header a:hover, .timeline-name.text-dark:hover {
 #timelineDates {
     border-bottom: 1px dotted;
 }
+
+.scrolling-wrapper{
+	overflow-x: scroll;
+    position: relative;
+    height: 100%;
+}
+
+.card-block{
+	min-height: 45vh;
+	background-color: #fff;
+	border: none;
+	background-position: center;
+	background-size: cover;
+	transition: all 0.2s ease-in-out !important;
+	border-radius: 24px;
+	&:hover{
+		transform: translateY(-5px);
+		box-shadow: none;
+		opacity: 0.9;
+	}
+}
+
+.branch-card-block{
+	height: 40vh;
+}
+
+/* .vertical_dotted_line, #momentContainer {
+    border-left: 2px dashed rgb(216, 216, 216);
+    border-right: 2px dashed rgb(216, 216, 216);
+}  */
+
+#momentContainer .row:not(:first-child) {
+    border-top: 3px dashed rgb(237, 237, 237);
+} 
