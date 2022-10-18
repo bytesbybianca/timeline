@@ -90,6 +90,6 @@ header a:hover, .timeline-name.text-dark:hover {
     border-right: 2px dashed rgb(216, 216, 216);
 }  */
 
-#momentContainer .row:not(:first-child):not(.moment-delete) {
+#momentContainer .row:not(:first-child):not(.moment-edit-delete) {
     border-top: 3px dashed rgb(237, 237, 237);
 } 

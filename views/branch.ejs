@@ -12,6 +12,8 @@
   </div>
   %>
 
+<%# if this branch belongs to user %>
+<%if(project.user == user.id){ %>
 <%# Modals %>
 <div class="d-flex justify-content-md-end justify-content-center w-75 mx-auto my-5" id="branchModals">
   <div class="row">
@@ -21,12 +23,10 @@
         New moment
       </button>
     </div>
-
-    <%# if this branch belongs to user %>
-    <%if(project.user == user.id){ %>
+    
       <%# Edit branch modal %>
       <div class="col">
-        <button class="btn btn-light btn-outline-dark text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#editBranchModal">
+        <button class="btn btn-light btn-outline-dark text-nowrap px-3 my-3" data-bs-toggle="modal" data-bs-target="#editBranchModal">
           Edit Branch
         </button>
       </div>
@@ -37,13 +37,14 @@
           action="/timelines/deleteBranch/<%= project._id %>?_method=DELETE"
           method="POST"
         >
-          <button class="btn btn-light btn-outline-dark text-nowrap px-5 my-3" type="submit">Delete Branch</button>
+          <button class="btn btn-light btn-outline-dark text-nowrap px-3 my-3" type="submit">Delete Branch</button>
         </form>
       </div>
-    <% } %>
+    
 
   </div>
 </div>
+<% } %>
 
 <%# Create a new moment modal %>
 <div class="col">
@@ -349,16 +350,93 @@
   
             <% } %>
 
-            <%# Delete moment %>
-            <div class="row moment-delete">
-              <form
-              action="/moments/<%= moments[i]._id %>/deleteMoment?_method=DELETE"
-              method="POST"
-              enctype="multipart/form-data"
-              >
-                <button class="btn btn-light fa fa-trash" type="submit"></button>
-              </form>
+            <%if(project.user == user.id){ %>
+            <div class="row moment-edit-delete d-flex justify-content-end">
+              <%# Edit moment %>
+              <div class="col-1">
+                <button class="btn btn-light far fa-edit" data-bs-toggle="modal" data-bs-target="#editMoment<%= momentData.momentId %>"></button>
+              </div>
+
+              <div class="modal fade" id="editMoment<%= momentData.momentId %>">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1>Edit moment</h1>
+                      <button class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+
+                      <form
+                      action="/moments/<%= momentData.momentId %>/editMoment?_method=PUT"
+                      method="POST"
+                      enctype="multipart/form-data"
+                      >
+
+                      <div class="my-3">
+                        <%# Edit date and time %>
+                        <% const momentDate = new Date(momentData.date).toISOString().slice(0, 16) %>
+                        <label for="date">Change date and time for this moment:</label><br>
+                        <input type="datetime-local" id="date"
+                          name="date" value="<%= momentDate %>">
+                      </div>
+
+                      <div class="my-3">
+                        <%# Edit journal entries %>
+                        <% if(momentData.momentType === 'journal') { %>
+                          <label for="editJournalEntry">Journal entry:</label>
+                          <textarea id="editJournalEntry" name="journal"
+                          rows="5" cols="45"><%= momentData.journalEntry %></textarea>
+                        <% } %>
+                        <%# Edit location %>
+                        <% if(momentData.momentType === 'location') { %>
+                          <label for="editLocation">Location:</label>
+                          <input type="text" id="editLocation" name="location"
+                          minlength="1" size="10" value="<%= momentData.location %>">
+                        <% } %>
+                        <%# Edit Tweet %>
+                        <% if(momentData.momentType === 'twitter') { %>
+                          <label for="editTweet">Tweet ID:</label>
+                          <small class="d-block">Provide the ID of a <em>public</em> tweet.</small>
+                          <input type="text" id="editTweet" name="tweetId"
+                          minlength="1" size="10" value="<%= momentData.tweetId %>">
+                        <% } %>
+                        <%# Edit photo %>
+                        <% if(momentData.momentType === 'photo') { %>
+                          <label for="editMomentImage" class="form-label">Replace Image</label>
+                          <input type="file" class="form-control" id="editMomentImage" name="file">
+
+                          
+                          <label for="editCaption" class="form-label">Caption</label>
+                          <input type="text" class="form-control" id="editCaption" name="caption" value="<%= momentData.caption %>">
+                          
+                        <% } %>
+                      </div>
+
+                      <div class="my-3">
+                        <div class="col">
+                          <button type="submit" class="btn btn-primary" value="Upload">Save</button>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-1">
+                <form
+                action="/moments/<%= momentData.momentId %>/deleteMoment?_method=DELETE"
+                method="POST"
+                enctype="multipart/form-data"
+                >
+                  <button class="btn btn-light fa fa-trash" type="submit"></button>
+                </form>
+              </div>
             </div>
+            <% } %>
           <% } %>
 
         </div>
