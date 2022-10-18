@@ -32,12 +32,12 @@
       </div>
 
       <%# Delete branch %>
-      <div class="col-xl-1 col-2 d-flex justify-content-end">
+      <div class="col">
         <form
           action="/timelines/deleteBranch/<%= project._id %>?_method=DELETE"
           method="POST"
         >
-          <button class="btn btn-light fa fa-trash" type="submit"></button>
+          <button class="btn btn-light btn-outline-dark text-nowrap px-5 my-3" type="submit">Delete Branch</button>
         </form>
       </div>
     <% } %>
@@ -226,11 +226,22 @@
     
         <%# Left, branch info %>
         <div class="col col-lg-4 h-100 bg-light p-3">
-          <h1 class="display-1 text-break"><%= project.timelineName %></h1>
+          <h1 class="display-1 text-break my-2"><%= project.timelineName %></h1>
+
+          <%# If branch description %>
+          <% if( project.description) { %>
+            <p class="my-2"><%= project.description %></p>
+          <% } %>
 
           <%# If one moment exists in branch %>
           <% if( project.firstDate) { %>
-            <small><%= project.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= project.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %></small>
+            <small class="my-2"><%= project.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= project.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %></small>
+          <% } %>
+
+          <% if( project.privacy === 'private' ) { %>
+            <span class="badge rounded-pill bg-secondary text-light py-2 px-3 my-2">Private</span>
+          <% } else { %>
+            <span class="badge rounded-pill bg-warning text-dark py-2 px-3 my-2">Public</span>
           <% } %>
         </div>
     
