@@ -161,7 +161,7 @@ module.exports = {
 
     
       console.log("Branch updated");
-      res.redirect(`/timelines`);
+      res.redirect(`/timelines/${req.params.branchId}`);
     } catch (err) {
       console.log(err);
     }
