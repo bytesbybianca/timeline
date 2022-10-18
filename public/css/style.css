@@ -60,34 +60,6 @@ header a:hover, .timeline-name.text-dark:hover {
     background: linear-gradient(to right, #f7f7f7, #f3eef3)
 }
 
-#timelineDates a {
-    color: rgb(120, 120, 120);
-}
-
-#timelineDates .active {
-    color: #9a669a;
-    font-size: 125%;
-}
-
-#timelineDates a:hover {
-    color: #9a669a;
-}
-
-#timelineDates a:after {
-    border-radius: 0.2em;
-    bottom: 0;
-    content: '';
-    height: 0.2em;
-    position: absolute;
-    right: 0;
-    width: 100%;
-    transition: max-width 0.2s ease;
-}
-
-#timelineDates {
-    border-bottom: 1px dotted;
-}
-
 .scrolling-wrapper{
 	overflow-x: scroll;
     position: relative;
@@ -95,18 +67,18 @@ header a:hover, .timeline-name.text-dark:hover {
 }
 
 .card-block{
-	min-height: 45vh;
+	height: 45vh;
 	background-color: #fff;
 	border: none;
 	background-position: center;
 	background-size: cover;
 	transition: all 0.2s ease-in-out !important;
 	border-radius: 24px;
-	&:hover{
+	/* &:hover{
 		transform: translateY(-5px);
 		box-shadow: none;
 		opacity: 0.9;
-	}
+	} */
 }
 
 .branch-card-block{

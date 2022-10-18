@@ -30,16 +30,16 @@
                 </div>
                 <div class="mb-3">
                   <label for="timelineName" class="form-label">Name</label>
-                  <input type="text" class="form-control" id="timelineName" name="title">
+                  <input type="text" class="form-control" id="timelineName" name="title" required>
                 </div>
                 <div class="mb-3">
                   <label for="timelineThumb" class="form-label">Thumbnail</label>
-                  <input type="file" class="form-control" id="timelineThumb" name="file">
+                  <input type="file" class="form-control" id="timelineThumb" name="file" required>
                 </div>
                 <div class="mb-3">
                   <label for="description">Description:</label>
                   <textarea id="description" name="description"
-                  rows="5" cols="45"></textarea>
+                  rows="5" cols="45" required></textarea>
                 </div>
                 <%# hidden %>
                 <input id="firstDate" name="firstDate" value="" hidden>
@@ -126,22 +126,27 @@
             <div class="card card-block border-0 rounded-0 bg-dark" <% if(branchData.firstDate && j == 0) { %>id="group-<%= timeGroup._id.year %>"<% } else if(!branchData.firstDate) { %>id="ungrouped"<% } %> style="background: url(<%= branchData.timelineThumb %>); background-size: cover; background-position: center;"></div>
           </div>
           <div class="col col-md-3 p-0">
-            <div class="card card-block border-0 rounded-0 p-5">
-              <h3>
-                <%= branchData.timelineName %>
-              </h3>
-              <p>
-                <%= branchData.description %>
-              </p>
-              <small>
-                <% if(branchData.firstDate) { %>
-                  <%= branchData.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= branchData.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %> 
+            <div class="card card-block border-0 rounded-0 p-5 d-flex justify-content-between">
+              <div class="d-flex justify-content-end">
+                <% if( branchData.privacy === 'private' ) { %>
+                  <small>Private</small>
+                <% } else { %>
+                  <small>Public</small>
                 <% } %>
-              </small>
-              <a href="/timelines/<%= branchData.branchId %>" class="btn btn-outline-secondary">Visit branch</a>
-              <small>
-                <%= branchData.privacy %>
-              </small>
+              </div>
+              <div>
+                <h3 class="mb-0">
+                  <%= branchData.timelineName %>
+                </h3>
+                <small class="mt-0 mb-2">
+                  <% if(branchData.firstDate) { %>
+                    <%= branchData.firstDate.toLocaleString('en-US', { dateStyle: 'medium' }) %> - <%= branchData.lastDate.toLocaleString('en-US', { dateStyle: 'medium' }) %> 
+                  <% } %>
+                </small>
+              </div>
+              <div class="d-flex justify-content-end">
+                <a href="/timelines/<%= branchData.branchId %>" class="btn btn-outline-secondary mb-2">Visit branch</a>
+              </div>
             </div>
           </div>
 
