@@ -5,7 +5,7 @@ Timeline is a full-stack web application that allows user to organize their favo
   <img src="https://github.com/bytesbybianca/readme-assets/blob/main/project-images/timeline-1.jpg?raw=true" width="90%">
 </p>
 
-**Link to project:** soon :)
+**Link to project**: [https://timeline.up.railway.app/](https://timeline.up.railway.app/)
 
 ## How It's Made:
 
