@@ -26,20 +26,42 @@ module.exports = {
           }
         );     
       }
-      // update photo
-      if(moment.momentType === 'photo') {
-        const result = await cloudinary.uploader.upload(req.file.path);
-        const secure_url = result.secure_url;
-        const public_id = result.public_id;
-
+      // update tweet
+      if(moment.momentType === 'twitter') {
         await Moment.findOneAndUpdate(
           { _id: moment._id },
           {
             date: req.body.date,
-            momentImage: result.secure_url,
-            cloudinaryId: result.public_id,
+            tweetId: req.body.tweetId,
           }
         );     
+      }
+      // update photo
+      if(moment.momentType === 'photo') {
+
+        if(req.file) {
+          const result = await cloudinary.uploader.upload(req.file.path);
+          const secure_url = result.secure_url;
+          const public_id = result.public_id;
+  
+          await Moment.findOneAndUpdate(
+            { _id: moment._id },
+            {
+              date: req.body.date,
+              momentImage: result.secure_url,
+              cloudinaryId: result.public_id,
+              caption: req.body.caption,
+            }
+          );     
+        } else {
+          await Moment.findOneAndUpdate(
+            { _id: moment._id },
+            {
+              date: req.body.date,
+              caption: req.body.caption,
+            }
+          ); 
+        }
       }
       console.log("Moment updated");
       res.redirect(`/timelines/${moment.timelineProject}`);
