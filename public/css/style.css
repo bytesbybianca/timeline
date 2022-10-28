@@ -93,3 +93,7 @@ header a:hover, .timeline-name.text-dark:hover {
 #momentContainer .row:not(:first-child):not(.moment-edit-delete) {
     border-top: 3px dashed rgb(237, 237, 237);
 } 
+
+#branchInfo {
+    overflow-y: scroll;
+}
