@@ -244,6 +244,8 @@
           <% } else { %>
             <span class="badge rounded-pill bg-warning text-dark py-2 px-3 my-2">Public</span>
           <% } %>
+
+          <p class="align-self-end">created by <a href="/profile/<%= branchCreator.id %>"><%= branchCreator.userName %></a></p>
         </div>
     
         <%# Right, branch image %>

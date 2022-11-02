@@ -2,6 +2,7 @@ const cloudinary = require("../middleware/cloudinary");
 const Timeline = require("../models/Timeline");
 const Moment = require("../models/Moment");
 const mongoose = require("mongoose");
+const User = require("../models/User");
 
 module.exports = {
   getTimelines: async (req, res) => {
@@ -100,9 +101,11 @@ module.exports = {
         { $sort: {_id: 1} },
       ])
 
-      console.log(momentsGrouped)
+      const branchCreator = await User.findById(project.user)
 
-      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped });
+      console.log(branchCreator)
+
+      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped, branchCreator: branchCreator });
     } catch (err) {
       console.log(err);
     }
