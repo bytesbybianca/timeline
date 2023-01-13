@@ -1,9 +1,10 @@
 <%- include('partials/header') -%>
 
-
+<body class="heroBg">
+  
 
       <!-- Timeline start -->
-      <div class="container mx-2">
+      <div class="container mx-2 ">
         <div class="row">
           <!-- Left start -->
             <div class="col overflow-auto" style="height: 90vh" id="timelineNav">
@@ -54,7 +55,7 @@
               <%# Modal buttons end%>
 
               <%# Branches container start %>
-              <div class="row all-branch-container my-5 px-2 overflow-auto"  style="height: 60vh;" data-bs-spy="scroll" data-bs-target="#timelineNav">
+              <div class="row all-branch-container my-5 px-2 overflow-auto y mandatory-scroll-snapping"  style="height: 60vh; scroll-snap-type: y proximity;" data-bs-spy="scroll" data-bs-target="#timelineNav">
 
                 <% for(let i = 0; i < timelinesGrouped.length; i++) { %>
                   <% const timeGroup = timelinesGrouped[i] %>
@@ -64,7 +65,7 @@
                     <% const branchData = timeGroup.branchData[j] %>
   
                     <%# Branch Image %>
-                    <div class="container single-branch-container mb-5">
+                    <div class="container single-branch-container mb-5 bg-dark" style="scroll-snap-align: start;">
   
                       <div class="row rounded mb-5" style="height: 30vh; background: url(<%= branchData.timelineThumb %>); background-size: cover; background-position: center;" id="<%= branchData.branchId %>"></div>
     
