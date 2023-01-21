@@ -1,13 +1,15 @@
 <%- include('partials/header') -%>
 
 <body class="heroBg">
+
+
   
 
       <!-- Timeline start -->
-      <div class="container mx-2 ">
+      <div class="container mx-auto">
         <div class="row">
           <!-- Left start -->
-            <div class="col overflow-auto" style="height: 90vh" id="timelineNav">
+            <div class="col overflow-auto bg-dark p-5" style="height: 90vh" id="timelineNav">
                 
                 <!-- Timeline -->
                 <ul class="timeline">
@@ -17,20 +19,22 @@
                       <%# loop through each branch per grouping %>
                       <% for(let j = 0; j < timeGroup.branchData.length; j++) { %>
                         <% const branchData = timeGroup.branchData[j] %>
-                        <a href="#<%= branchData.branchId %>">
+
+                        <a class="link-primary" href="#<%= branchData.branchId %>">
                           <li class="timeline-item rounded ml-3 p-4">
                             <%= branchData.timelineName %>
                           </li>
                         </a>
                       <% } %>
                     <% } %>
-                </ul><!-- End -->
+                </ul>
+                <!-- End -->
   
             </div>
             <!-- Left end -->
 
             <!-- Right start -->
-            <div class="col">
+            <div class="col bg-dark">
 
               <%# Modal buttons start %>
               <div class="row modal-button-container position-sticky">
@@ -65,7 +69,7 @@
                     <% const branchData = timeGroup.branchData[j] %>
   
                     <%# Branch Image %>
-                    <div class="container single-branch-container mb-5 bg-dark" style="scroll-snap-align: start;">
+                    <div class="container single-branch-container" style="scroll-snap-align: start;">
   
                       <div class="row rounded mb-5" style="height: 30vh; background: url(<%= branchData.timelineThumb %>); background-size: cover; background-position: center;" id="<%= branchData.branchId %>"></div>
     

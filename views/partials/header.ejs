@@ -26,16 +26,14 @@ https://www.behance.net/gallery/132810259/Hyperframe-Interactive-Experience -->
     <!-- Fontawesome -->
     <script src="https://kit.fontawesome.com/7ccd62abca.js" crossorigin="anonymous"></script>
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;600;900&display=swap" rel="stylesheet">
     <!-- Timeline template end -->
     <link rel="stylesheet" href="/css/style.css" />
     <!-- <link rel="stylesheet" href="/css/login.css" /> -->
     <link rel="stylesheet" href="/css/timeline-v3.css" />
     <link rel="stylesheet" href="/css/bootstrap.css" />
   </head>
-  <body class="bg-dark">
+  <body>
     <header class="mt-0">
       <nav class="navbar navbar-expand-md py-2">
         <div class="container">
@@ -49,18 +47,18 @@ https://www.behance.net/gallery/132810259/Hyperframe-Interactive-Experience -->
               <% const nonUserRoutes = ['/', '/login', '/signup'] %>
               <% if(!nonUserRoutes.includes(url)) { %>
                 <li class="nav-item">
-                  <a href="/timelines" class="nav-link text-white">Your Timeline</a>
+                  <a href="/timelines" class="nav-link">Your Timeline</a>
                 </li>
                 <li class="nav-item">
-                  <a href="/profile/<%= user.id %>" class="nav-link text-white">Profile</a>
+                  <a href="/profile/<%= user.id %>" class="nav-link">Profile</a>
                 </li>
                <% } %> 
                 <li class="nav-item">
-                  <a href="#" class="nav-link text-white">About</a>
+                  <a href="#" class="nav-link">About</a>
                 </li>
                 <% if(!nonUserRoutes.includes(url)) { %>
                 <li class="nav-item">
-                  <a href="/logout" class="nav-link text-white">Log out</a>
+                  <a href="/logout" class="nav-link">Log out</a>
                 </li>
               <% } %> 
             </ul>

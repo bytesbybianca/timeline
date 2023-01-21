@@ -59,7 +59,7 @@ module.exports = {
 
       // console.log(branchByYear)
       console.log(timelinesGrouped)
-      res.render("timelines-v3.ejs", { timelinesGrouped: timelinesGrouped, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
+      res.render("timelines-v4.ejs", { timelinesGrouped: timelinesGrouped, timelines: timelines, user: req.user, branchByYear: branchByYear, url: req.url });
     } catch (err) {
       console.log(err);
     }

@@ -1,71 +1,59 @@
-/*
-*
-* ==========================================
-* CUSTOM UTIL CLASSES
-* ==========================================
-*
-*/
-
-/* Timeline holder */
-ul.timeline {
-    list-style-type: none;
-    position: relative;
-    padding-left: 1.5rem;
+@import url("https://fonts.googleapis.com/css?family=Exo+2:400,700&subset=cyrillic");
+html {
+  box-sizing: border-box;
 }
 
- /* Timeline vertical line */
-ul.timeline:before {
-    content: ' ';
-    background: #fff;
-    display: inline-block;
-    position: absolute;
-    left: 16px;
-    width: 4px;
-    height: 100%;
-    z-index: 400;
-    border-radius: 1rem;
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
-li.timeline-item {
-    margin: 20px 0;
+body {
+  font-family: "Exo 2", sans-serif;
+  line-height: 1.5;
 }
 
-/* Timeline item circle marker */
-li.timeline-item::before {
-    content: ' ';
-    background: #ddd;
-    display: inline-block;
-    position: absolute;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    left: 11px;
-    width: 14px;
-    height: 14px;
-    z-index: 400;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-
-/*
-*
-* ==========================================
-* FOR DEMO PURPOSES
-* ==========================================
-*
-*/
-/* body {
-    background: #E8CBC0;
-    background: -webkit-linear-gradient(to right, #E8CBC0, #636FA4);
-    background: linear-gradient(to right, #E8CBC0, #636FA4);
+/* .wrapper {
+  margin: 0 auto;
+  padding: 0 16.66% 50px;
+  width: 100%;
 } */
 
-.text-gray {
-    color: #999;
+/* article {
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto;
+} */
+
+.timeline__nav {
+  position: fixed;
+  /* z-index: 99; */
+  top: 0;
+  transition: top 0.3s ease-out;
 }
 
-.text-truncate-container p {
-    -webkit-line-clamp: 3;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+.timeline__nav ul {
+  list-style: none;
+  list-style-position: inside;
+  margin: 15px 0;
+}
+
+.timeline__nav ul li {
+  margin: 15px 0;
+  padding-left: 0;
+  list-style-type: none;
+  color: #bfc1c3;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.timeline__nav ul li.active {
+  font-weight: bold;
+  color: #f94125;
+  border-bottom: 1px dotted transparent;
+  transform: scale(1.2);
+}
+.timeline__nav ul li:hover {
+  color: #000;
 }
