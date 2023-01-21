@@ -5,19 +5,19 @@
   <div class="row">
 
     <div class="d-none d-lg-block col-md-4">
-      <nav class="timeline__nav">
+      <nav class="timeline__nav"  style="width: 25vw;">
 
         <%# Modal buttons start %>
-          <div class="row modal-button-container position-sticky">
-            <div class="d-flex justify-content-md-end justify-content-center w-75 mx-auto my-5" id="timelineModals">
+          <div class="row modal-button-container">
+            <div class="justify-content-md-end justify-content-center w-75 mx-auto my-5" id="timelineModals">
               <div class="row">
                 <%# New branch modal %>
-                  <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#newBranchModal">
+                  <button class="btn btn-light text-nowrap p-2 m-2" data-bs-toggle="modal" data-bs-target="#newBranchModal">
                     New branch
                   </button>
 
                 <%# Info modal button %>
-                  <button class="btn btn-light btn-outline-secondary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#infoModal">
+                  <button class="btn btn-light text-nowrap p-2 m-2" data-bs-toggle="modal" data-bs-target="#infoModal">
                     Information
                   </button>
               </div>
@@ -33,7 +33,7 @@
             <% for(let j = 0; j < timeGroup.branchData.length; j++) { %>
               <% const branchData = timeGroup.branchData[j] %>
     
-              <li><span><%= branchData.timelineName %></span></li>
+              <li><span class="text-wrap"><%= branchData.timelineName %></span></li>
             <% } %>
           <% } %>
     
@@ -52,7 +52,7 @@
             <% const branchData = timeGroup.branchData[j] %>
   
             <%# Branch Image %>
-            <div class="container single-branch-container">
+            <div class="container single-branch-container my-5">
   
               <div class="row mb-5" style="height: 30vh; background: url(<%= branchData.timelineThumb %>); background-size: cover; background-position: center;" id="<%= branchData.branchId %>"></div>
   
