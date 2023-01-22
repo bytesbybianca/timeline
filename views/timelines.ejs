@@ -130,7 +130,7 @@
             </div>
             <div class="mb-3">
               <label for="timelineName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="timelineName" name="title" required>
+              <input type="text" class="form-control" id="timelineName" name="title" maxlength="45" required>
             </div>
             <div class="mb-3">
               <label for="timelineThumb" class="form-label">Thumbnail</label>
@@ -139,7 +139,7 @@
             <div class="mb-3">
               <label for="description">Description:</label>
               <textarea id="description" name="description"
-              rows="5" cols="45" required></textarea>
+              rows="2" cols="50"  maxlength="100" required></textarea>
             </div>
             <%# hidden %>
             <input id="firstDate" name="firstDate" value="" hidden>
