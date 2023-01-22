@@ -6,13 +6,15 @@
 body, header {
     padding: 0 !important;
     margin: 0 !important;
-    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .logo-small {
     height: 2rem !important;
 }
 
+.fa {
+    font-weight: 900;
+}
 
 /*
 *
