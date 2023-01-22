@@ -105,7 +105,7 @@ module.exports = {
 
       console.log(branchCreator)
 
-      res.render("branch-v2.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped, branchCreator: branchCreator });
+      res.render("branch.ejs", { project: project, moments: moments, user: req.user, url: req.url, momentsGrouped: momentsGrouped, branchCreator: branchCreator });
     } catch (err) {
       console.log(err);
     }
