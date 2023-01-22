@@ -37,10 +37,10 @@ https://www.behance.net/gallery/132810259/Hyperframe-Interactive-Experience -->
   <body>
     <header class="mt-0">
       <nav class="navbar navbar-expand-md py-2">
-        <div class="container">
+        <div class="container-fluid">
           <!-- logo -->
           <a href="/timelines" class="navbar-brand"><img class="img-fluid logo-small" src="/imgs/logo.png"></a>
-          <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"  aria-controls="nav" aria-label="Expand Navigation">
+          <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav" type="button" aria-controls="nav" aria-expanded="false" aria-label="Expand Navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="nav">
@@ -55,7 +55,7 @@ https://www.behance.net/gallery/132810259/Hyperframe-Interactive-Experience -->
                 </li>
                <% } %> 
                 <li class="nav-item">
-                  <a href="#" class="nav-link">About</a>
+                  <a href="/logout" class="nav-link" data-bs-toggle="modal" data-bs-target="#infoModal">About</a>
                 </li>
                 <% if(!nonUserRoutes.includes(url)) { %>
                 <li class="nav-item">
@@ -68,3 +68,20 @@ https://www.behance.net/gallery/132810259/Hyperframe-Interactive-Experience -->
       </nav>
     </header>
 
+  <%# Info modal %>
+  <div class="modal fade" id="infoModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1>About Timeline</h1>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          Timeline helps you organize your favorite Moments in life by collecting them in Branches. Public branches can be viewed by others on Timeline.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
