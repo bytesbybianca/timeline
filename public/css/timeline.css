@@ -9,11 +9,62 @@ html {
   box-sizing: inherit;
 }
 
+/* general styles */
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+/* Hero */
+.text-vcenter {
+    text-align: center;
+}
+
+.text-vcenter h1 {
+    font-size: 4.5em;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.heroInfo {
+	/* From https://css.glass */
+	background: rgba(255, 255, 255, 0.23);
+	border-radius: 16px;
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(6.2px);
+	-webkit-backdrop-filter: blur(6.2px);
+	width: 60vw;
+}
+
+@media (max-width: 768px) {
+	.heroInfo {
+		width: 85vw;
+	}
+}  
+
+@media (max-width: 576px) {
+	.heroInfo {
+		width: 90vw;
+	}
+}  
+
+#hero {
+    display: table;
+    position: relative;
+    width: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/* Timeline Navigation */
+
 .timeline__nav {
-  /* position: fixed; */
-  /* z-index: 99; */
-  top: 0;
   transition: top 0.3s ease-out;
+  padding: 2rem;
 }
 
 .timeline__nav ul {

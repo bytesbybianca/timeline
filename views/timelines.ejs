@@ -1,11 +1,21 @@
 <%- include('partials/header') -%>
 
+<%# Hero start %>
+<div id="hero" class="d-flex justify-content-center align-items-center" style="background-color: #eee; no-repeat center center fixed; background-size: cover; height: 50%;">
+  <div class="text-vcenter">
+    <div class="heroInfo p-3">
+      <h1>Welcome to your Timeline</h1>
+    </div>
+  </div>
+</div>
+<%# Hero end %>
+
 <!-- Timeline start-->
 <article class="container timeline">
   <div class="row">
 
     <div class="d-none d-lg-block col-md-4">
-      <nav class="timeline__nav"  style="width: 25vw; position: fixed;">
+      <nav class="timeline__nav sticky-top">
 
         <%# Modal buttons start %>
           <div class="row modal-button-container">
@@ -14,11 +24,6 @@
                 <%# New branch modal %>
                   <button class="btn btn-light text-nowrap p-2 m-2" data-bs-toggle="modal" data-bs-target="#newBranchModal">
                     New branch
-                  </button>
-
-                <%# Info modal button %>
-                  <button class="btn btn-light text-nowrap p-2 m-2" data-bs-toggle="modal" data-bs-target="#infoModal">
-                    Information
                   </button>
               </div>
             </div>
@@ -154,23 +159,7 @@
     </div>
   </div>
 
-  <%# Info modal %>
-  <div class="modal fade" id="infoModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1>Information</h1>
-          <button class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          Timeline helps you organize your favorite Moments in life by collecting them in Branches. Public branches can be viewed by others on Timeline.
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
 <%# Modal content end %>
 
 <!-- partial -->

@@ -1,9 +1,9 @@
 <%- include('partials/header') -%>
 
 <%# Hero start %>
-<div id="hero" class="d-flex justify-content-center align-items-center" style="background: url(<%= project.timelineThumb %>) no-repeat center center fixed; background-size: cover;">
-  <div class="text-vcenter" style="width: 60vw;">
-    <div class="branchInfo p-3">
+<div id="hero" class="d-flex justify-content-center align-items-center" style="height: 100%; background: url(<%= project.timelineThumb %>) no-repeat center center fixed; background-size: cover;">
+  <div class="text-vcenter">
+    <div class="heroInfo p-3">
       <h1><%= project.timelineName %></h1>
 
       <%# If moments exists in branch %>
@@ -76,7 +76,7 @@
 <article class="container timeline">
   <div class="row">
     <section class="d-none d-lg-block col-md-4">
-      <nav class="timeline__nav sticky-top"  style="width: 25vw;">
+      <nav class="timeline__nav sticky-top">
 
         <ul>
     
