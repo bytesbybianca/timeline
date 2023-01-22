@@ -10,7 +10,8 @@ html {
 }
 
 .timeline__nav {
-  position: fixed;
+  /* position: fixed; */
+  /* z-index: 99; */
   top: 0;
   transition: top 0.3s ease-out;
 }

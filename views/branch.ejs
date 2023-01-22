@@ -1,53 +1,298 @@
 <%- include('partials/header') -%>
 
-<%#
-<div class="row">
-  <div class="col-6 bg-light" style="height: 300px;">
-      <img src="https://media.haircutinspiration.com/photos/20181204011855/boy-hairstyle-e1536810585307.jpg" class="img-fluid">
-  </div>
-      <div class="col-6 align-self-center">
-          <div><span>hello hello</span></div>
-      </div>
-  
-  </div>
-  %>
+<%# Hero start %>
+<div id="hero" style="background: url(<%= project.timelineThumb %>) no-repeat center center fixed; background-size: cover;">
+  <div class="text-vcenter">
+      <h1><%= project.timelineName %></h1>
 
-<%# if this branch belongs to user %>
-<%if(project.user == user.id){ %>
-<%# Modals %>
-<div class="d-flex justify-content-md-end justify-content-center w-75 mx-auto my-5" id="branchModals">
-  <div class="row">
-    <%# New branch modal %>
-    <div class="col">
-      <button class="btn btn-light btn-outline-dark text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
-        New moment
-      </button>
-    </div>
-    
-      <%# Edit branch modal %>
-      <div class="col">
-        <button class="btn btn-light btn-outline-dark text-nowrap px-3 my-3" data-bs-toggle="modal" data-bs-target="#editBranchModal">
-          Edit Branch
-        </button>
-      </div>
+      <%# If moments exists in branch %>
+      <% if( project.firstDate) { %>
+        <h3 class="my-2"><%= project.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= project.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %></h3>
+      <% } %>
 
-      <%# Delete branch %>
-      <div class="col">
-        <form
-          action="/timelines/deleteBranch/<%= project._id %>?_method=DELETE"
-          method="POST"
-        >
-          <button class="btn btn-light btn-outline-dark text-nowrap px-3 my-3" type="submit">Delete Branch</button>
-        </form>
-      </div>
-    
+      <%# If branch description %>
+      <% if( project.description) { %>
+        <p class="my-2"><%= project.description %></p>
+      <% } %>
 
+      <% if( project.privacy === 'private' ) { %>
+        <span class="badge rounded-pill bg-secondary text-light py-2 px-3 my-2">Private</span>
+      <% } else { %>
+        <span class="badge rounded-pill bg-warning text-dark py-2 px-3 my-2">Public</span>
+      <% } %>
   </div>
 </div>
-<% } %>
+<%# Hero end %>
+
+<%# if this branch belongs to user, show modals to edit, create, delete %>
+<%if(project.user == user.id){ %>
+  <%# Modals %>
+  <div class="d-flex justify-content-md-end justify-content-center w-75 mx-auto my-5" id="branchModals">
+    <div class="row">
+      <%# New branch modal %>
+      <div class="col">
+        <button class="btn btn-light btn-outline-dark text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
+          New moment
+        </button>
+      </div>
+      
+        <%# Edit branch modal %>
+        <div class="col">
+          <button class="btn btn-light btn-outline-dark text-nowrap px-3 my-3" data-bs-toggle="modal" data-bs-target="#editBranchModal">
+            Edit Branch
+          </button>
+        </div>
+  
+        <%# Delete branch %>
+        <div class="col">
+          <form
+            action="/timelines/deleteBranch/<%= project._id %>?_method=DELETE"
+            method="POST"
+          >
+            <button class="btn btn-light btn-outline-dark text-nowrap px-3 my-3" type="submit">Delete Branch</button>
+          </form>
+        </div>
+      
+  
+    </div>
+  </div>
+  <% } %>
+
+  <%# No Moments text%>
+  <% if(!moments.length) { %>
+    <div class="row my-5">
+      <div class="col text-center">
+        <p class="mt-4 mb-0">
+          You haven't created any moments yet!
+        </p>
+      </div>
+    </div>
+  <% } %>
+  <%# No Moments end %>
+
+<!-- Timeline start -->
+<article class="container timeline">
+  <div class="row">
+
+    <div class="d-none d-lg-block col-md-4">
+      <nav class="timeline__nav sticky-top"  style="width: 25vw;">
+
+        <ul>
+    
+              <%# Moments %>
+
+              <% for(let i = 0; i < momentsGrouped.length; i++) { %>
+                <% const momentGroup = momentsGrouped[i] %>
+                <% for(let j = 0; j < momentGroup.momentData.length; j++) { %>
+                  <% const momentData = momentGroup.momentData[j] %>
+                  <% const momentType = momentData.momentType %>
+
+                    <li>
+                      <span class="text-wrap">
+                        <%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>
+                        &middot;
+                        <%= momentData.momentType %>
+                      </span>
+                    </li>
+            
+                    <% } %>
+                <% } %>
+    
+        </ul>
+      </nav>
+    </div>
+  
+    <div class="col-lg-8 timeline__section mt-5">
+  
+    <%# Moments %>
+
+      <% for(let i = 0; i < momentsGrouped.length; i++) { %>
+        <% const momentGroup = momentsGrouped[i] %>
+        <% for(let j = 0; j < momentGroup.momentData.length; j++) { %>
+          <% const momentData = momentGroup.momentData[j] %>
+          <% const momentType = momentData.momentType %>
+
+          
+
+            <% if(momentType === 'twitter') { %>
+              <%# Moment row start %>
+              <div class="milestone row flex-md-row flex-column p-3" 
+              <% if(j === 0) { %>
+                id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
+                <% } %>
+              >
+                <div class="col border-0 rounded-0 bg-light">
+                  <div id="tweet-<%= momentData.tweetId %>" class="d-flex justify-content-center" style="overflow-y: auto;"></div>
+                </div>
+              
+            <% } else if(momentType === 'location') { %>
+              <%# Moment row start %>
+              <div class="milestone row flex-md-row-reverse flex-column p-3" 
+              <% if(j === 0) { %>
+                id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
+                <% } %>
+              >
+
+                <%# One block %>
+                <div class="col border-0 rounded-0 bg-light p-5">
+                  <h2 class="text-center"><i class="fa-solid fa-location-dot"></i> In <%= momentData.location %> on <%= momentData.date.toLocaleString('en-US', { dateStyle: 'full' }) %></h2>
+                </div>
+
+              <% } else if(momentType === 'photo') { %>
+
+              <%# Moment row start %>
+              <div class="milestone row flex-md-row flex-column p-3 bg-light" 
+              <% if(j === 0) { %>
+                id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
+                <% } %>
+              >
+
+                <%# Left %>
+                <div class="col col-md-2 col-lg-4 border-0 rounded-0 align-self-center m-md-0 mb-5">
+                  <div class="text-center d-flex flex-column p-auto">
+                    <h3 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { weekday: 'long' }) %></h3>
+                    <h2 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { dateStyle: 'medium' }) %></h2>
+                  </div>
+                </div>
+
+                <div class="col col-md-10 col-lg-8 card border-0 rounded-0 bg-light p-md-5">
+                  <img src="<%= momentData.momentImage %>" class="rounded-3 img-fluid">
+                  <% if(momentData.caption) { %>
+                    <p><%= momentData.caption %></p>
+                  <% } %>
+                </div>
+
+              <% } else if(momentType === 'journal') { %>
+
+              <%# Moment row start %>
+              <div class="milestone row flex-md-row-reverse flex-column p-3" 
+              <% if(j === 0) { %>
+                id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
+                <% } %>
+              >
+
+                <%# Left %>
+                <div class="col col-md-2 card border-0 rounded-0 bg-light align-self-center">
+                  <div class="text-center d-flex flex-column p-auto">
+                    <h3 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { weekday: 'long' }) %></h3>
+                    <h2 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { dateStyle: 'medium' }) %></h2>
+                  </div>
+                </div>
+      
+                <%# Right %>
+                <div class="col col-md-10 card border-0 p-5 rounded-0 bg-light">
+                  <p><%= momentData.journalEntry %></p>
+                </div>
+    
+              <% } %>
+
+              <%if(project.user == user.id){ %>
+              <div class="row moment-edit-delete d-flex justify-content-end">
+                <%# Edit moment %>
+                <div class="col-1">
+                  <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editMoment<%= momentData.momentId %>">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </div>
+
+                <div class="modal fade" id="editMoment<%= momentData.momentId %>">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1>Edit moment</h1>
+                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+
+                        <form
+                        action="/moments/<%= momentData.momentId %>/editMoment?_method=PUT"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        >
+
+                        <div class="my-3">
+                          <%# Edit date and time %>
+                          <% const momentDate = new Date(momentData.date).toISOString().slice(0, 16) %>
+                          <label for="date">Change date and time for this moment:</label><br>
+                          <input type="datetime-local" id="date"
+                            name="date" value="<%= momentDate %>">
+                        </div>
+
+                        <div class="my-3">
+                          <%# Edit journal entries %>
+                          <% if(momentData.momentType === 'journal') { %>
+                            <label for="editJournalEntry">Journal entry:</label>
+                            <textarea id="editJournalEntry" name="journal"
+                            rows="5" cols="45"><%= momentData.journalEntry %></textarea>
+                          <% } %>
+                          <%# Edit location %>
+                          <% if(momentData.momentType === 'location') { %>
+                            <label for="editLocation">Location:</label>
+                            <input type="text" id="editLocation" name="location"
+                            minlength="1" size="10" value="<%= momentData.location %>">
+                          <% } %>
+                          <%# Edit Tweet %>
+                          <% if(momentData.momentType === 'twitter') { %>
+                            <label for="editTweet">Tweet ID:</label>
+                            <small class="d-block">Provide the ID of a <em>public</em> tweet.</small>
+                            <input type="text" id="editTweet" name="tweetId"
+                            minlength="1" size="10" value="<%= momentData.tweetId %>">
+                          <% } %>
+                          <%# Edit photo %>
+                          <% if(momentData.momentType === 'photo') { %>
+                            <label for="editMomentImage" class="form-label">Replace Image</label>
+                            <input type="file" class="form-control" id="editMomentImage" name="file">
+
+                            
+                            <label for="editCaption" class="form-label">Caption</label>
+                            <input type="text" class="form-control" id="editCaption" name="caption" value="<%= momentData.caption %>">
+                            
+                          <% } %>
+                        </div>
+
+                        <div class="my-3">
+                          <div class="col">
+                            <button type="submit" class="btn btn-primary" value="Upload">Save</button>
+                          </div>
+                        </div>
+                      </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <%# Delete moment %>
+                <div class="col-1">
+                  <form
+                  action="/moments/<%= momentData.momentId %>/deleteMoment?_method=DELETE"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  >
+                    <button class="btn btn-light" type="submit">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+              <% } %>
+            <% } %>
+
+          </div>
+
+        <% } %>
+  
+    </div>
+  </div>
+</article>
+<!-- Timeline end -->
+
 
 <%# Create a new moment modal %>
-<div class="col">
+<div class="col mb-5">
   <div class="modal fade" id="newMomentModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -131,322 +376,8 @@
 </div>
 <%# Create new moment modal end %>
 
-<%# Edit branch modal %>
-
-  <div class="modal fade" id="editBranchModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1>Edit branch <strong><%= project.timelineName %></strong></h1>
-          <button class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form
-            action="/timelines/<%= project._id %>/editBranch?_method=PUT"
-            method="POST"
-            enctype="multipart/form-data"
-          >
-
-            <%# Edit description %>
-            <div class="mb-3">
-              <label for="editTimelineName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="editTimelineName" name="timelineName" value="<%= project.timelineName %>" required>
-            </div>
-
-            <%# Edit privacy option %>
-            <div class="row mb-3">
-              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="privacy" id="editPublic<%= project._id %>" autocomplete="off" value="public" 
-                <% if(project.privacy === 'public') { %>
-                  checked
-                <% } %>
-                >
-                <label class="btn btn-outline-dark" for="editPublic<%= project._id %>">Public</label>
-              
-                <input type="radio" class="btn-check" name="privacy" id="editPrivate<%= project._id %>" autocomplete="off" value="private" 
-                <% if(project.privacy === 'private') { %>
-                  checked
-                <% } %>
-                >
-                <label class="btn btn-outline-dark" for="editPrivate<%= project._id %>">Private</label>
-              
-              </div>
-            </div>
-
-            <%# Change photo %>
-            <div class="mb-3">
-              <label for="editTimelineThumb" class="form-label">Thumbnail</label>
-              <input type="file" class="form-control" id="editTimelineThumb" name="file">
-            </div>
-
-            <%# Edit description %>
-            <div class="mb-3">
-              <label for="description">Description:</label><br>
-              <textarea id="description" name="description" style="min-width: 100%"><%= project.description %></textarea>
-            </div>
-
-            <div class="row mb-3">
-              <div class="col">
-                <button type="submit" class="btn btn-primary" value="Upload">Save</button>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<%# Edit modal end%>
-
-<div class="container">
-  <%# Year links %>
-  <div class="container-fluid my-2 p-0 sticky-top bg-light text-nowrap" style="overflow-x: scroll;">
-    <div class="row">
-      <div class="col text-center">
-        <% for(let i = 0; i < momentsGrouped.length; i++) { %>
-          <% const momentGroup = momentsGrouped[i] %>
-
-            <a href="#moment-<%= momentGroup.momentData[0].date.toLocaleString('en-US', { dateStyle: 'short' }) %>">
-              <button type="button" class="btn btn-link" data-mdb-ripple-color="dark">
-                <%= momentGroup.momentData[0].date.toLocaleString('en-US', { month: 'long', year: 'numeric' }) %>
-              </button>
-            </a>
-
-        <% } %>
-
-      </div>
-    </div>
-  </div>
-  <%# Year links end %>
-
-  <div class="container" id="momentContainer">
-    <%# Moment heading %>
-      <div class="row flex-lg-row flex-column flex-wrap pb-5"  style="height: 80vh;">
-    
-        <%# Left, branch info %>
-        <div class="col col-lg-4 h-100 bg-light p-3" id="branchInfo">
-          <h1 class="display-1 text-break my-2"><%= project.timelineName %></h1>
-
-          <%# If branch description %>
-          <% if( project.description) { %>
-            <p class="my-2"><%= project.description %></p>
-          <% } %>
-
-          <%# If one moment exists in branch %>
-          <% if( project.firstDate) { %>
-            <small class="my-2"><%= project.firstDate.toLocaleString('en-US', { dateStyle: 'full' }) %> - <%= project.lastDate.toLocaleString('en-US', { dateStyle: 'full' }) %></small>
-          <% } %>
-
-          <% if( project.privacy === 'private' ) { %>
-            <span class="badge rounded-pill bg-secondary text-light py-2 px-3 my-2">Private</span>
-          <% } else { %>
-            <span class="badge rounded-pill bg-warning text-dark py-2 px-3 my-2">Public</span>
-          <% } %>
-
-          <p class="align-self-end">created by <a href="/profile/<%= branchCreator.id %>"><%= branchCreator.userName %></a></p>
-        </div>
-    
-        <%# Right, branch image %>
-        <div class="col col-lg-8 h-100" style="height: 400px; background: url(<%= project.timelineThumb %>); background-size: cover; background-position: center;">
-        </div>
-    
-      </div>
-    <%# Moment heading end %>
-
-    <%# No Moments %>
-    <% if(!moments.length) { %>
-      <div class="row my-5">
-        <div class="col text-center">
-          <p class="mt-4 mb-0">
-            You haven't created any moments yet!
-          </p>
-          <button class="btn btn-light btn-outline-dark text-nowrap px-5 my-3" data-bs-toggle="modal" data-bs-target="#newMomentModal">
-            New moment
-          </button>
-        </div>
-      </div>
-    <% } %>
-    <%# No Moments end %>
-
-    <%# Moments %>
-
-    <% for(let i = 0; i < momentsGrouped.length; i++) { %>
-      <% const momentGroup = momentsGrouped[i] %>
-      <% for(let j = 0; j < momentGroup.momentData.length; j++) { %>
-        <% const momentData = momentGroup.momentData[j] %>
-        <% const momentType = momentData.momentType %>
-
-        
-
-          <% if(momentType === 'twitter') { %>
-            <%# Moment row start %>
-            <div class="row flex-md-row flex-column p-3" 
-            <% if(j === 0) { %>
-              id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
-              <% } %>
-            >
-              <div class="col border-0 rounded-0 bg-light">
-                <div id="tweet-<%= momentData.tweetId %>" class="d-flex justify-content-center" style="overflow-y: auto;"></div>
-              </div>
-            
-          <% } else if(momentType === 'location') { %>
-            <%# Moment row start %>
-            <div class="row flex-md-row-reverse flex-column p-3" 
-            <% if(j === 0) { %>
-              id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
-              <% } %>
-            >
-
-              <%# One block %>
-              <div class="col border-0 rounded-0 bg-light p-5">
-                <h2 class="text-center"><i class="fa-solid fa-location-dot"></i> In <%= momentData.location %> on <%= momentData.date.toLocaleString('en-US', { dateStyle: 'full' }) %></h2>
-              </div>
-
-            <% } else if(momentType === 'photo') { %>
-
-            <%# Moment row start %>
-            <div class="row flex-md-row flex-column p-3 bg-light" 
-            <% if(j === 0) { %>
-              id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
-              <% } %>
-            >
-
-              <%# Left %>
-              <div class="col col-md-2 col-lg-4 border-0 rounded-0 align-self-center m-md-0 mb-5">
-                <div class="text-center d-flex flex-column p-auto">
-                  <h3 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { weekday: 'long' }) %></h3>
-                  <h2 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { dateStyle: 'medium' }) %></h2>
-                </div>
-              </div>
-
-              <div class="col col-md-10 col-lg-8 card border-0 rounded-0 bg-light p-md-5">
-                <img src="<%= momentData.momentImage %>" class="rounded-3 img-fluid">
-                <% if(momentData.caption) { %>
-                  <p><%= momentData.caption %></p>
-                <% } %>
-              </div>
-
-            <% } else if(momentType === 'journal') { %>
-
-            <%# Moment row start %>
-            <div class="row flex-md-row-reverse flex-column p-3" 
-            <% if(j === 0) { %>
-              id="moment-<%= momentData.date.toLocaleString('en-US', { dateStyle: 'short' }) %>"
-              <% } %>
-            >
-
-              <%# Left %>
-              <div class="col col-md-2 card border-0 rounded-0 bg-light align-self-center">
-                <div class="text-center d-flex flex-column p-auto">
-                  <h3 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { weekday: 'long' }) %></h3>
-                  <h2 class="m-0 p-0" style="line-height: .95;"><%= momentData.date.toLocaleString('en-US', { dateStyle: 'medium' }) %></h2>
-                </div>
-              </div>
-    
-              <%# Right %>
-              <div class="col col-md-10 card border-0 p-5 rounded-0 bg-light">
-                <p><%= momentData.journalEntry %></p>
-              </div>
-  
-            <% } %>
-
-            <%if(project.user == user.id){ %>
-            <div class="row moment-edit-delete d-flex justify-content-end">
-              <%# Edit moment %>
-              <div class="col-1">
-                <button class="btn btn-light far fa-edit" data-bs-toggle="modal" data-bs-target="#editMoment<%= momentData.momentId %>"></button>
-              </div>
-
-              <div class="modal fade" id="editMoment<%= momentData.momentId %>">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1>Edit moment</h1>
-                      <button class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-
-                      <form
-                      action="/moments/<%= momentData.momentId %>/editMoment?_method=PUT"
-                      method="POST"
-                      enctype="multipart/form-data"
-                      >
-
-                      <div class="my-3">
-                        <%# Edit date and time %>
-                        <% const momentDate = new Date(momentData.date).toISOString().slice(0, 16) %>
-                        <label for="date">Change date and time for this moment:</label><br>
-                        <input type="datetime-local" id="date"
-                          name="date" value="<%= momentDate %>">
-                      </div>
-
-                      <div class="my-3">
-                        <%# Edit journal entries %>
-                        <% if(momentData.momentType === 'journal') { %>
-                          <label for="editJournalEntry">Journal entry:</label>
-                          <textarea id="editJournalEntry" name="journal"
-                          rows="5" cols="45"><%= momentData.journalEntry %></textarea>
-                        <% } %>
-                        <%# Edit location %>
-                        <% if(momentData.momentType === 'location') { %>
-                          <label for="editLocation">Location:</label>
-                          <input type="text" id="editLocation" name="location"
-                          minlength="1" size="10" value="<%= momentData.location %>">
-                        <% } %>
-                        <%# Edit Tweet %>
-                        <% if(momentData.momentType === 'twitter') { %>
-                          <label for="editTweet">Tweet ID:</label>
-                          <small class="d-block">Provide the ID of a <em>public</em> tweet.</small>
-                          <input type="text" id="editTweet" name="tweetId"
-                          minlength="1" size="10" value="<%= momentData.tweetId %>">
-                        <% } %>
-                        <%# Edit photo %>
-                        <% if(momentData.momentType === 'photo') { %>
-                          <label for="editMomentImage" class="form-label">Replace Image</label>
-                          <input type="file" class="form-control" id="editMomentImage" name="file">
-
-                          
-                          <label for="editCaption" class="form-label">Caption</label>
-                          <input type="text" class="form-control" id="editCaption" name="caption" value="<%= momentData.caption %>">
-                          
-                        <% } %>
-                      </div>
-
-                      <div class="my-3">
-                        <div class="col">
-                          <button type="submit" class="btn btn-primary" value="Upload">Save</button>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="modal-footer">
-                      <button class="btn btn-secondary btn-sm text-nowrap" data-bs-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-1">
-                <form
-                action="/moments/<%= momentData.momentId %>/deleteMoment?_method=DELETE"
-                method="POST"
-                enctype="multipart/form-data"
-                >
-                  <button class="btn btn-light fa fa-trash" type="submit"></button>
-                </form>
-              </div>
-            </div>
-            <% } %>
-          <% } %>
-
-        </div>
-
-      <% } %>
-
-<%- include('partials/footer') -%>
-
+<!-- js -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script><script  src="/js/timeline.js"></script>
 <script type="text/javascript" src="/js/twitter.js"></script>
   
 <% for(let i = 0; i < momentsGrouped.length; i++) { %>

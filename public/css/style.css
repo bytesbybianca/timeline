@@ -12,6 +12,9 @@ body, header {
     height: 2rem !important;
 }
 
+.fa {
+    font-weight: 900;
+}
 
 /*
 *
