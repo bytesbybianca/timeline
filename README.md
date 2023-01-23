@@ -1,8 +1,9 @@
 # Timeline
 <p align="center">
-Timeline is a full-stack web application that allows user to organize their favorite Moments in Branches.
+Timeline is a full-stack web application that allows user to organize their favorite Moments in Branches.</br>
 
-  <img src="https://github.com/bytesbybianca/readme-assets/blob/main/project-images/timeline-1.jpg?raw=true" width="90%">
+  <img src="https://github.com/bytesbybianca/readme-assets/blob/main/project-images/timeline-1.png?raw=true" width="35%">
+  <img src="https://github.com/bytesbybianca/readme-assets/blob/main/project-images/timeline-2.png?raw=true" width="35%">
 </p>
 
 **Link to project**: [https://timeline.up.railway.app/](https://timeline.up.railway.app/)
