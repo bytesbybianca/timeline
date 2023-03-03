@@ -103,14 +103,10 @@
   
                 <div class="row g-2">
                   
-                  <%# Link and image to Branch %>
-                  <div class="col mb-2">
-                    <a href="/timelines/<%= randomBranch._id %>">
-                      <p><%= randomBranch.timelineName %></p>
-                      <div class="w-100 rounded-3" style="height: 12rem; background: url(<%= randomBranch.timelineThumb %>); background-size: cover; background-position: center;">
-                      </div>
-                    </a>
-                  </div>
+                  <%# Link to Branch %>
+                  <a href="/timelines/<%= randomBranch._id %>">
+                    <p><%= randomBranch.timelineName %></p>
+                  </a>
   
                   <div class="col mb-2 justify-content-end align-self-end">
                     <h6>
@@ -127,8 +123,9 @@
                             <h6 class="text-dark"><i class="fas fa-map-marker" aria-hidden="true"></i> Location:</h6>
                             <span><%= randomMoment.location %></span>
                         <% } else if(randomMoment.momentType === 'photo') { %>
-                            <div class="w-100 rounded-3" style="height: 10rem; background: url(<%= randomMoment.momentImage %>); background-size: cover; background-position: center;">
-                            </div>
+                            <img src="<%= randomMoment.momentImage %>" class="img-thumbnail" style="height: 30rem">
+                            <!-- <div class=".img-fluid" style="height: 50vh; background: url(<%= randomMoment.momentImage %>); background-size: cover; background-position: center;">
+                            </div> -->
                         <% } %>
                   </div>
                   </div>
